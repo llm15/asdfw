@@ -1,0 +1,8 @@
+{
+  "sources": ["sas", "awardhacks", "roamsnap", "awardfares", "seatsaero"],
+  "directions": ["inbound"],
+  "cabins": ["AG", "AP", "AB"],
+  "minSeats": 1,
+  "earliestDate": "2027-05-01",
+  "latestDate": "2027-05-31"
+}

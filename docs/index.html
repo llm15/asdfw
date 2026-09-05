@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NYC → Nordics Award Finder</title>
+  <meta name="description" content="SAS award availability from JFK or EWR to ARN, OSL, or CPH." />
+  <!-- Bump ?v= on both asset URLs below whenever app.js/styles.css change, to bust browser caches -->
+  <link rel="stylesheet" href="assets/styles.css?v=32" />
+</head>
+<body class="auth-locked">
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="site-header__titles">
+        <h1>NYC → Nordics Award Finder</h1>
+        <p class="subtitle">SAS award availability from JFK or EWR to ARN, OSL, or CPH</p>
+      </div>
+      <div class="site-header__actions">
+        <div class="header-button-row">
+          <button id="fetch-btn" type="button" class="fetch-btn">
+            <span id="fetch-btn-spinner" class="spinner" hidden aria-hidden="true"></span>
+            <span id="fetch-btn-label">Fetch latest availability</span>
+          </button>
+          <button id="refresh-page-btn" type="button" class="refresh-page-btn">Refresh page + data</button>
+        </div>
+        <p class="last-fetched">
+          Last successful fetch:
+          <time id="last-fetched-value">Not yet fetched</time>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="dashboard-overview" aria-label="Search overview">
+      <div class="dashboard-overview__status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+      </div>
+
+      <section class="filters" aria-label="Filters">
+      <div class="filter-group">
+        <label for="direction-select">Direction</label>
+        <select id="direction-select">
+          <option value="inbound" selected>Return: New York → home</option>
+          <option value="outbound">Outbound: home → New York</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="month-input">Month</label>
+        <input type="month" id="month-input" value="2027-05" />
+      </div>
+      <fieldset class="filter-group filter-group--checkboxes">
+        <legend>
+          New York airport
+          <button type="button" class="select-shortcut" data-group="nyc" data-action="all">All</button>
+          <button type="button" class="select-shortcut" data-group="nyc" data-action="none">None</button>
+        </legend>
+        <label><input type="checkbox" id="nyc-jfk" checked /> JFK</label>
+        <label><input type="checkbox" id="nyc-ewr" checked /> EWR</label>
+      </fieldset>
+      <fieldset class="filter-group filter-group--checkboxes">
+        <legend>
+          Home airport
+          <button type="button" class="select-shortcut" data-group="home" data-action="all">All</button>
+          <button type="button" class="select-shortcut" data-group="home" data-action="none">None</button>
+        </legend>
+        <label><input type="checkbox" id="home-arn" checked /> ARN</label>
+        <label><input type="checkbox" id="home-osl" checked /> OSL</label>
+        <label><input type="checkbox" id="home-cph" checked /> CPH</label>
+      </fieldset>
+      <div class="filter-group">
+        <label for="cabin-select">Cabin</label>
+        <select id="cabin-select">
+          <option value="all" selected>All</option>
+          <option value="AG">Economy</option>
+          <option value="AP">Premium Economy</option>
+          <option value="AB">Business</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="min-seats-input">Minimum seats</label>
+        <input type="number" id="min-seats-input" min="0" step="1" value="1" />
+      </div>
+      <p class="filter-group filter-group--static">
+        <span>Passengers</span>
+        <span class="filter-static-value">1 (fixed — data is requested for one passenger)</span>
+      </p>
+      </section>
+
+      <section id="summary-cards" class="summary-cards" aria-label="Summary"></section>
+    </section>
+
+    <section class="calendar-section">
+      <div class="calendar-heading-row">
+        <button type="button" id="jump-earliest-btn" class="jump-match-btn jump-match-btn--earliest">
+          Jump to earliest match
+        </button>
+        <button type="button" id="prev-month-btn" class="month-nav-btn" aria-label="Previous month">‹</button>
+        <h2 id="calendar-heading">Calendar</h2>
+        <button type="button" id="next-month-btn" class="month-nav-btn" aria-label="Next month">›</button>
+        <button type="button" id="jump-latest-btn" class="jump-match-btn jump-match-btn--latest">
+          Jump to latest match
+        </button>
+      </div>
+      <div id="calendar" class="calendar" aria-live="polite"></div>
+    </section>
+
+    <section class="monthly-activity-section">
+      <h2>Monthly activity</h2>
+      <div id="monthly-activity" class="monthly-activity"></div>
+    </section>
+
+    <section class="table-section">
+      <div class="table-toolbar">
+        <h2>Available dates</h2>
+        <p id="table-meta" class="table-meta"></p>
+        <label class="all-months-toggle">
+          <input type="checkbox" id="all-months-toggle" />
+          Show all fetched months, not just the selected one
+        </label>
+        <label class="include-missing-toggle">
+          <input type="checkbox" id="include-missing-toggle" />
+          Include dates with no result returned
+        </label>
+      </div>
+      <div class="table-scroll">
+        <table id="dates-table">
+          <thead>
+            <tr>
+              <th data-sort="date">Date</th>
+              <th data-sort="dow">Day</th>
+              <th data-sort="nyc">Airport</th>
+              <th data-sort="home">Home</th>
+              <th data-sort="direction">Direction</th>
+              <th data-sort="AG">Economy</th>
+              <th data-sort="AP">Premium</th>
+              <th data-sort="AB">Business</th>
+              <th data-sort="total">Total</th>
+              <th>Sources</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="dates-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="technical-section">
+      <h2>Source health</h2>
+      <div id="technical-details"></div>
+    </section>
+
+  </main>
+
+  <dialog id="day-detail-dialog" class="day-detail-dialog">
+    <button id="day-detail-close" class="day-detail-close" type="button" aria-label="Close">×</button>
+    <div id="day-detail-content"></div>
+  </dialog>
+
+  <dialog id="login-dialog" class="login-dialog" aria-labelledby="login-title">
+    <form id="login-form" class="login-form">
+      <h2 id="login-title">Enter password</h2>
+      <label for="login-password">Password</label>
+      <input id="login-password" type="password" autocomplete="current-password" required />
+      <p id="login-error" class="login-error" role="alert" hidden>Wrong password.</p>
+      <button type="submit" class="login-submit">Log in</button>
+    </form>
+  </dialog>
+
+  <footer class="site-footer">
+    <p>
+      Availability data is refreshed periodically by automated jobs, each publishing its
+      own static file (SAS official, Awardhacks, RoamSnap, AwardFares, seats.aero). This
+      page loads all of them automatically (and again if you press “Fetch latest
+      availability”) and merges them into one calendar, taking the highest seat count
+      any source reports per date/cabin — it does not call any of those sites directly
+      from your browser.
+    </p>
+  </footer>
+
+  <script src="assets/app.js?v=32"></script>
+</body>
+</html>
+
+
