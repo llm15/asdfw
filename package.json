@@ -1,0 +1,19 @@
+{
+  "name": "awards",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "fetch:data": "node scripts/fetch-sas-data.mjs",
+    "fetch:awardhacks": "node scripts/fetch-awardhacks-data.mjs",
+    "fetch:roamsnap": "node scripts/fetch-roamsnap-data.mjs",
+    "fetch:awardfares": "node scripts/fetch-awardfares-data.mjs",
+    "fetch:seatsaero": "node scripts/fetch-seatsaero-data.mjs",
+    "notify": "node scripts/notify.mjs"
+  },
+  "dependencies": {
+    "camoufox": "0.1.19"
+  }
+}

@@ -1,0 +1,773 @@
+{
+  "updatedAt": "2026-09-05T10:57:43.041Z",
+  "routes": {
+    "arn-jfk": {
+      "origin": "ARN",
+      "destination": "JFK",
+      "source": "awardfares.com",
+      "endpoint": "https://awardfares.com/api/anonymous/fares.json",
+      "status": "ok",
+      "response": [
+        {
+          "airportCode": "JFK",
+          "availability": {
+            "outbound": [
+              {
+                "date": "2026-10-01",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL205"
+                ],
+                "checkedAt": "2026-09-04T23:18:41.345Z"
+              },
+              {
+                "date": "2026-10-04",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL205"
+                ],
+                "checkedAt": "2026-09-05T04:25:46.949Z"
+              },
+              {
+                "date": "2026-10-05",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL205"
+                ],
+                "checkedAt": "2026-09-05T04:10:40.651Z"
+              },
+              {
+                "date": "2026-10-06",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL205"
+                ],
+                "checkedAt": "2026-09-05T03:17:09.853Z"
+              },
+              {
+                "date": "2027-04-05",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL205"
+                ],
+                "checkedAt": "2026-09-05T07:18:15.144Z"
+              }
+            ],
+            "inbound": [
+              {
+                "date": "2026-09-09",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL204"
+                ],
+                "checkedAt": "2026-09-05T05:17:42.853Z"
+              },
+              {
+                "date": "2026-09-14",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL204"
+                ],
+                "checkedAt": "2026-09-05T08:12:30.193Z"
+              },
+              {
+                "date": "2026-09-15",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL204"
+                ],
+                "checkedAt": "2026-09-05T09:42:53.645Z"
+              },
+              {
+                "date": "2026-09-17",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL204"
+                ],
+                "checkedAt": "2026-09-05T10:47:09.929Z"
+              },
+              {
+                "date": "2026-09-24",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL204"
+                ],
+                "checkedAt": "2026-09-05T10:06:42.028Z"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "arn-ewr": {
+      "origin": "ARN",
+      "destination": "EWR",
+      "source": "awardfares.com",
+      "endpoint": "https://awardfares.com/api/anonymous/fares.json",
+      "status": "ok",
+      "response": [
+        {
+          "airportCode": "EWR",
+          "availability": {
+            "outbound": [
+              {
+                "date": "2026-09-11",
+                "AG": 9,
+                "AP": 9,
+                "AB": 0,
+                "availableSeatsTotal": 18,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-05T06:02:50.347Z"
+              },
+              {
+                "date": "2026-09-18",
+                "AG": 7,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 7,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-05T05:29:18.818Z"
+              },
+              {
+                "date": "2026-09-21",
+                "AG": 1,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-05T04:20:25.879Z"
+              },
+              {
+                "date": "2026-10-11",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-05T07:26:53.860Z"
+              },
+              {
+                "date": "2026-10-14",
+                "AG": 5,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 5,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-05T00:00:44.690Z"
+              }
+            ],
+            "inbound": [
+              {
+                "date": "2026-09-06",
+                "AG": 7,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 8,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-05T10:04:59.006Z"
+              },
+              {
+                "date": "2026-09-07",
+                "AG": 9,
+                "AP": 9,
+                "AB": 0,
+                "availableSeatsTotal": 18,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-05T10:56:12.741Z"
+              },
+              {
+                "date": "2026-09-09",
+                "AG": 9,
+                "AP": 9,
+                "AB": 0,
+                "availableSeatsTotal": 18,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-05T05:17:42.853Z"
+              },
+              {
+                "date": "2026-09-10",
+                "AG": 9,
+                "AP": 2,
+                "AB": 0,
+                "availableSeatsTotal": 11,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-05T10:33:56.130Z"
+              },
+              {
+                "date": "2026-09-11",
+                "AG": 9,
+                "AP": 9,
+                "AB": 0,
+                "availableSeatsTotal": 18,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-05T06:18:29.064Z"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "osl-jfk": {
+      "origin": "OSL",
+      "destination": "JFK",
+      "source": "awardfares.com",
+      "endpoint": "https://awardfares.com/api/anonymous/fares.json",
+      "status": "ok",
+      "response": [
+        {
+          "airportCode": "JFK",
+          "availability": {
+            "outbound": [
+              {
+                "date": "2026-09-06",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK923"
+                ],
+                "checkedAt": "2026-09-05T04:45:36.662Z"
+              },
+              {
+                "date": "2026-09-10",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK923"
+                ],
+                "checkedAt": "2026-09-05T10:02:07.303Z"
+              },
+              {
+                "date": "2026-09-18",
+                "AG": 3,
+                "AP": 3,
+                "AB": 0,
+                "availableSeatsTotal": 6,
+                "flightNumbers": [
+                  "SK923"
+                ],
+                "checkedAt": "2026-09-05T06:35:34.436Z"
+              },
+              {
+                "date": "2026-09-19",
+                "AG": 2,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK923"
+                ],
+                "checkedAt": "2026-09-05T03:13:26.033Z"
+              },
+              {
+                "date": "2026-09-21",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK923"
+                ],
+                "checkedAt": "2026-09-05T10:48:49.482Z"
+              }
+            ],
+            "inbound": [
+              {
+                "date": "2026-09-06",
+                "AG": 6,
+                "AP": 0,
+                "AB": 3,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK924"
+                ],
+                "checkedAt": "2026-09-05T10:04:58.884Z"
+              },
+              {
+                "date": "2026-09-07",
+                "AG": 9,
+                "AP": 1,
+                "AB": 0,
+                "availableSeatsTotal": 10,
+                "flightNumbers": [
+                  "SK924"
+                ],
+                "checkedAt": "2026-09-05T03:55:46.844Z"
+              },
+              {
+                "date": "2026-09-08",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK924"
+                ],
+                "checkedAt": "2026-09-05T05:40:25.996Z"
+              },
+              {
+                "date": "2026-09-09",
+                "AG": 7,
+                "AP": 0,
+                "AB": 3,
+                "availableSeatsTotal": 10,
+                "flightNumbers": [
+                  "SK924"
+                ],
+                "checkedAt": "2026-09-05T08:16:06.204Z"
+              },
+              {
+                "date": "2026-09-10",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK924"
+                ],
+                "checkedAt": "2026-09-04T23:59:31.807Z"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "osl-ewr": {
+      "origin": "OSL",
+      "destination": "EWR",
+      "source": "awardfares.com",
+      "endpoint": "https://awardfares.com/api/anonymous/fares.json",
+      "status": "ok",
+      "response": [
+        {
+          "airportCode": "EWR",
+          "availability": {
+            "outbound": [
+              {
+                "date": "2026-09-09",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-05T10:13:51.483Z"
+              },
+              {
+                "date": "2026-09-11",
+                "AG": 5,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 5,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-05T05:06:23.254Z"
+              },
+              {
+                "date": "2026-09-12",
+                "AG": 8,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 8,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-05T00:03:05.038Z"
+              },
+              {
+                "date": "2026-09-14",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-05T06:30:56.846Z"
+              },
+              {
+                "date": "2026-09-16",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-05T01:28:21.910Z"
+              }
+            ],
+            "inbound": [
+              {
+                "date": "2026-11-04",
+                "AG": 3,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 3,
+                "flightNumbers": [
+                  "SK908"
+                ],
+                "checkedAt": "2026-09-05T08:49:08.329Z"
+              },
+              {
+                "date": "2026-11-05",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK908"
+                ],
+                "checkedAt": "2026-09-05T08:52:27.087Z"
+              },
+              {
+                "date": "2026-11-06",
+                "AG": 7,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 7,
+                "flightNumbers": [
+                  "SK908"
+                ],
+                "checkedAt": "2026-09-05T00:48:38.146Z"
+              },
+              {
+                "date": "2026-11-07",
+                "AG": 4,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 4,
+                "flightNumbers": [
+                  "SK908"
+                ],
+                "checkedAt": "2026-09-05T01:08:52.455Z"
+              },
+              {
+                "date": "2026-11-08",
+                "AG": 1,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK908"
+                ],
+                "checkedAt": "2026-09-05T00:33:50.964Z"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "cph-jfk": {
+      "origin": "CPH",
+      "destination": "JFK",
+      "source": "awardfares.com",
+      "endpoint": "https://awardfares.com/api/anonymous/fares.json",
+      "status": "ok",
+      "response": [
+        {
+          "airportCode": "JFK",
+          "availability": {
+            "outbound": [
+              {
+                "date": "2026-09-10",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL219"
+                ],
+                "checkedAt": "2026-09-05T02:30:51.936Z"
+              },
+              {
+                "date": "2026-09-11",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL219"
+                ],
+                "checkedAt": "2026-09-05T06:14:43.267Z"
+              },
+              {
+                "date": "2026-09-15",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL219"
+                ],
+                "checkedAt": "2026-09-05T01:33:53.309Z"
+              },
+              {
+                "date": "2026-09-17",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL219"
+                ],
+                "checkedAt": "2026-09-05T10:20:01.667Z"
+              },
+              {
+                "date": "2026-09-24",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL219"
+                ],
+                "checkedAt": "2026-09-05T08:18:44.839Z"
+              }
+            ],
+            "inbound": [
+              {
+                "date": "2026-10-25",
+                "AG": 0,
+                "AP": 4,
+                "AB": 0,
+                "availableSeatsTotal": 4,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-05T09:04:42.181Z"
+              },
+              {
+                "date": "2026-10-26",
+                "AG": 1,
+                "AP": 3,
+                "AB": 0,
+                "availableSeatsTotal": 4,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-05T06:55:33.807Z"
+              },
+              {
+                "date": "2026-11-03",
+                "AG": 0,
+                "AP": 2,
+                "AB": 0,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-05T07:32:52.322Z"
+              },
+              {
+                "date": "2026-11-04",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-05T10:21:52.679Z"
+              },
+              {
+                "date": "2026-11-05",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-05T06:58:11.565Z"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "cph-ewr": {
+      "origin": "CPH",
+      "destination": "EWR",
+      "source": "awardfares.com",
+      "endpoint": "https://awardfares.com/api/anonymous/fares.json",
+      "status": "ok",
+      "response": [
+        {
+          "airportCode": "EWR",
+          "availability": {
+            "outbound": [
+              {
+                "date": "2026-09-11",
+                "AG": 1,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-05T06:14:43.267Z"
+              },
+              {
+                "date": "2026-09-18",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-05T05:05:54.071Z"
+              },
+              {
+                "date": "2026-09-25",
+                "AG": 0,
+                "AP": 6,
+                "AB": 0,
+                "availableSeatsTotal": 6,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-05T00:15:07.026Z"
+              },
+              {
+                "date": "2026-10-16",
+                "AG": 0,
+                "AP": 1,
+                "AB": 0,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-05T07:53:44.951Z"
+              },
+              {
+                "date": "2027-04-08",
+                "AG": 4,
+                "AP": 6,
+                "AB": 0,
+                "availableSeatsTotal": 10,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-05T01:13:46.893Z"
+              }
+            ],
+            "inbound": [
+              {
+                "date": "2026-10-25",
+                "AG": 4,
+                "AP": 6,
+                "AB": 0,
+                "availableSeatsTotal": 10,
+                "flightNumbers": [
+                  "SK910"
+                ],
+                "checkedAt": "2026-09-05T02:20:07.633Z"
+              },
+              {
+                "date": "2026-10-26",
+                "AG": 4,
+                "AP": 1,
+                "AB": 0,
+                "availableSeatsTotal": 5,
+                "flightNumbers": [
+                  "SK910"
+                ],
+                "checkedAt": "2026-09-05T08:32:48.240Z"
+              },
+              {
+                "date": "2026-10-27",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK910"
+                ],
+                "checkedAt": "2026-09-05T10:27:47.948Z"
+              },
+              {
+                "date": "2026-11-05",
+                "AG": 9,
+                "AP": 2,
+                "AB": 0,
+                "availableSeatsTotal": 11,
+                "flightNumbers": [
+                  "SK910"
+                ],
+                "checkedAt": "2026-09-05T05:13:50.170Z"
+              },
+              {
+                "date": "2026-11-06",
+                "AG": 9,
+                "AP": 9,
+                "AB": 0,
+                "availableSeatsTotal": 18,
+                "flightNumbers": [
+                  "SK910"
+                ],
+                "checkedAt": "2026-09-05T01:44:49.777Z"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
