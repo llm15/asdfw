@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T15:18:40.494Z",
+  "updatedAt": "2026-09-05T18:21:39.351Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -34,7 +34,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T07:18:40.494Z"
+                "checkedAt": "2026-09-05T07:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -42,7 +42,7 @@
                 "AP": 0,
                 "AB": 9,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -50,7 +50,15 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
+              },
+              {
+                "date": "2026-09-12",
+                "AG": 8,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 8,
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-13",
@@ -58,7 +66,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -66,7 +74,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T09:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-15",
@@ -74,7 +82,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T20:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-16",
@@ -82,7 +90,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T20:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -90,7 +98,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T19:18:40.494Z"
+                "checkedAt": "2026-09-04T19:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -98,7 +106,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T14:18:40.494Z"
+                "checkedAt": "2026-09-04T14:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -106,7 +114,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
@@ -114,7 +122,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T13:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -122,7 +130,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T13:21:39.351Z"
               },
               {
                 "date": "2026-09-24",
@@ -130,7 +138,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -138,7 +146,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-04T02:18:40.494Z"
+                "checkedAt": "2026-09-04T02:21:39.351Z"
               },
               {
                 "date": "2026-10-11",
@@ -146,7 +154,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T07:18:40.494Z"
+                "checkedAt": "2026-09-05T07:21:39.351Z"
               },
               {
                 "date": "2026-10-13",
@@ -154,7 +162,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -162,7 +170,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T04:18:40.494Z"
+                "checkedAt": "2026-09-05T04:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -170,7 +178,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-04T22:18:40.494Z"
+                "checkedAt": "2026-09-04T22:21:39.351Z"
               },
               {
                 "date": "2026-10-16",
@@ -178,7 +186,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-04T22:18:40.494Z"
+                "checkedAt": "2026-09-04T22:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -186,15 +194,15 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T07:18:40.494Z"
+                "checkedAt": "2026-09-05T07:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
-                "AG": 6,
+                "AG": 7,
                 "AP": 0,
                 "AB": 0,
-                "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-04T16:18:40.494Z"
+                "availableSeatsTotal": 7,
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -202,7 +210,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T03:18:40.494Z"
+                "checkedAt": "2026-09-04T03:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -210,7 +218,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T20:18:40.494Z"
+                "checkedAt": "2026-09-04T20:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -218,7 +226,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -226,15 +234,15 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-30",
                 "AG": 9,
-                "AP": 5,
+                "AP": 6,
                 "AB": 0,
-                "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-04T14:18:40.494Z"
+                "availableSeatsTotal": 15,
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-31",
@@ -242,7 +250,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-11-01",
@@ -250,7 +258,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               }
             ],
             "inbound": [
@@ -260,7 +268,7 @@
                 "AP": 9,
                 "AB": 3,
                 "availableSeatsTotal": 21,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
@@ -268,7 +276,7 @@
                 "AP": 9,
                 "AB": 1,
                 "availableSeatsTotal": 19,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-07",
@@ -276,7 +284,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-09",
@@ -284,7 +292,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -292,7 +300,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -300,7 +308,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-12",
@@ -308,7 +316,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T06:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-13",
@@ -316,7 +324,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -324,7 +332,7 @@
                 "AP": 2,
                 "AB": 3,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-16",
@@ -332,7 +340,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -340,7 +348,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -348,7 +356,7 @@
                 "AP": 9,
                 "AB": 8,
                 "availableSeatsTotal": 26,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -356,15 +364,15 @@
                 "AP": 7,
                 "AB": 1,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
                 "AG": 9,
-                "AP": 0,
+                "AP": 1,
                 "AB": 0,
-                "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "availableSeatsTotal": 10,
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -372,7 +380,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -380,7 +388,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-09-26",
@@ -388,7 +396,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-05T04:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-27",
@@ -396,7 +404,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-05T04:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-28",
@@ -404,7 +412,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T04:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-29",
@@ -412,7 +420,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-03T14:18:40.494Z"
+                "checkedAt": "2026-09-03T14:21:39.351Z"
               },
               {
                 "date": "2026-09-30",
@@ -420,7 +428,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-01",
@@ -428,7 +436,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-05T07:18:40.494Z"
+                "checkedAt": "2026-09-05T07:21:39.351Z"
               },
               {
                 "date": "2026-10-02",
@@ -436,7 +444,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-10-03",
@@ -444,7 +452,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-04",
@@ -452,7 +460,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T04:18:40.494Z"
+                "checkedAt": "2026-09-05T04:21:39.351Z"
               },
               {
                 "date": "2026-10-05",
@@ -460,7 +468,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-03T17:18:40.494Z"
+                "checkedAt": "2026-09-03T17:21:39.351Z"
               },
               {
                 "date": "2026-10-07",
@@ -468,7 +476,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T18:18:40.494Z"
+                "checkedAt": "2026-09-04T18:21:39.351Z"
               },
               {
                 "date": "2026-10-08",
@@ -476,7 +484,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T19:18:40.494Z"
+                "checkedAt": "2026-09-04T19:21:39.351Z"
               },
               {
                 "date": "2026-10-09",
@@ -484,7 +492,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T00:18:40.494Z"
+                "checkedAt": "2026-09-05T00:21:39.351Z"
               },
               {
                 "date": "2026-10-10",
@@ -492,7 +500,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T20:18:40.494Z"
+                "checkedAt": "2026-09-03T20:21:39.351Z"
               },
               {
                 "date": "2026-10-11",
@@ -500,7 +508,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
               },
               {
                 "date": "2026-10-12",
@@ -508,7 +516,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-04T03:18:40.494Z"
+                "checkedAt": "2026-09-04T03:21:39.351Z"
               },
               {
                 "date": "2026-10-13",
@@ -516,7 +524,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T14:18:40.494Z"
+                "checkedAt": "2026-09-04T14:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -524,7 +532,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -532,7 +540,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-16",
@@ -540,7 +548,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T09:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-17",
@@ -548,7 +556,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-04T03:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -556,7 +564,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-03T14:18:40.494Z"
+                "checkedAt": "2026-09-03T14:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -564,7 +572,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T01:18:40.494Z"
+                "checkedAt": "2026-09-05T01:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -572,7 +580,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T14:18:40.494Z"
+                "checkedAt": "2026-09-03T14:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -580,7 +588,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T17:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -588,7 +596,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T14:18:40.494Z"
+                "checkedAt": "2026-09-03T14:21:39.351Z"
               },
               {
                 "date": "2026-10-23",
@@ -596,7 +604,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-03T14:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-10-24",
@@ -604,7 +612,7 @@
                 "AP": 8,
                 "AB": 0,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-04T14:18:40.494Z"
+                "checkedAt": "2026-09-04T14:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -612,7 +620,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-04T03:18:40.494Z"
+                "checkedAt": "2026-09-04T03:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -620,7 +628,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -628,7 +636,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-04T21:18:40.494Z"
+                "checkedAt": "2026-09-04T21:21:39.351Z"
               }
             ]
           }
@@ -652,7 +660,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -660,7 +668,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -668,7 +676,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -676,7 +684,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -684,7 +692,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
@@ -692,7 +700,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -700,7 +708,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-06",
@@ -708,7 +716,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -716,7 +724,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -724,7 +732,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -732,7 +740,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -740,7 +748,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -748,7 +756,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-23",
@@ -756,7 +764,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -764,7 +772,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -772,7 +780,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -780,7 +788,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-28",
@@ -788,7 +796,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 3,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-30",
@@ -796,7 +804,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-05T02:18:40.494Z"
+                "checkedAt": "2026-09-05T02:21:39.351Z"
               },
               {
                 "date": "2026-10-31",
@@ -804,7 +812,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-11-01",
@@ -812,7 +820,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               },
               {
                 "date": "2026-11-02",
@@ -820,25 +828,25 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-04T04:18:40.494Z"
+                "checkedAt": "2026-09-04T04:21:39.351Z"
               }
             ],
             "inbound": [
               {
                 "date": "2026-09-05",
-                "AG": 0,
-                "AP": 3,
+                "AG": 9,
+                "AP": 9,
                 "AB": 0,
-                "availableSeatsTotal": 3,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "availableSeatsTotal": 18,
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
                 "AG": 9,
-                "AP": 5,
-                "AB": 3,
-                "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "AP": 9,
+                "AB": 5,
+                "availableSeatsTotal": 23,
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-07",
@@ -846,7 +854,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-08",
@@ -854,7 +862,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-09",
@@ -862,7 +870,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -870,7 +878,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -878,7 +886,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-12",
@@ -886,7 +894,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-13",
@@ -894,7 +902,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-05T06:18:40.494Z"
+                "checkedAt": "2026-09-05T06:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -902,7 +910,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-04T11:18:40.494Z"
+                "checkedAt": "2026-09-04T11:21:39.351Z"
               },
               {
                 "date": "2026-09-15",
@@ -910,7 +918,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-04T11:18:40.494Z"
+                "checkedAt": "2026-09-04T11:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -918,7 +926,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -926,7 +934,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -934,7 +942,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T23:18:40.494Z"
+                "checkedAt": "2026-09-04T23:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
@@ -942,7 +950,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-04T20:18:40.494Z"
+                "checkedAt": "2026-09-04T20:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -950,7 +958,7 @@
                 "AP": 7,
                 "AB": 1,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-05T13:18:40.494Z"
+                "checkedAt": "2026-09-05T13:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -958,7 +966,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 3,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-27",
@@ -966,7 +974,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-28",
@@ -974,7 +982,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-29",
@@ -982,7 +990,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-30",
@@ -990,7 +998,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-04",
@@ -998,7 +1006,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-05",
@@ -1006,7 +1014,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-06",
@@ -1014,7 +1022,7 @@
                 "AP": 2,
                 "AB": 1,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-07",
@@ -1022,7 +1030,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-12",
@@ -1030,7 +1038,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -1038,7 +1046,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -1046,7 +1054,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -1054,7 +1062,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -1062,7 +1070,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -1070,7 +1078,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -1078,7 +1086,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-04T16:18:40.494Z"
+                "checkedAt": "2026-09-04T16:21:39.351Z"
               },
               {
                 "date": "2026-10-23",
@@ -1086,7 +1094,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -1094,7 +1102,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -1102,7 +1110,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-28",
@@ -1110,7 +1118,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               }
             ]
           }
@@ -1134,7 +1142,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T23:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -1142,7 +1150,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -1150,7 +1158,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T23:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -1158,7 +1166,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T10:18:40.494Z"
+                "checkedAt": "2026-09-05T10:21:39.351Z"
               },
               {
                 "date": "2026-09-16",
@@ -1166,7 +1174,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -1174,7 +1182,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T23:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -1182,7 +1190,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -1190,7 +1198,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
@@ -1198,7 +1206,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -1206,7 +1214,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-10",
@@ -1214,7 +1222,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-11",
@@ -1222,7 +1230,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-13",
@@ -1230,7 +1238,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -1238,7 +1246,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -1246,7 +1254,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T23:21:39.351Z"
               },
               {
                 "date": "2026-10-16",
@@ -1254,7 +1262,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -1262,7 +1270,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T23:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -1270,7 +1278,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -1278,7 +1286,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -1286,7 +1294,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-03T23:18:40.494Z"
+                "checkedAt": "2026-09-03T23:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -1294,7 +1302,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -1302,7 +1310,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -1310,7 +1318,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-30",
@@ -1318,7 +1326,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-10-31",
@@ -1326,7 +1334,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               },
               {
                 "date": "2026-11-01",
@@ -1334,7 +1342,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T22:18:40.494Z"
+                "checkedAt": "2026-09-03T22:21:39.351Z"
               }
             ],
             "inbound": [
@@ -1342,17 +1350,17 @@
                 "date": "2026-09-05",
                 "AG": 5,
                 "AP": 9,
-                "AB": 0,
-                "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "AB": 3,
+                "availableSeatsTotal": 17,
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
                 "AG": 9,
-                "AP": 8,
+                "AP": 9,
                 "AB": 1,
-                "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "availableSeatsTotal": 19,
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-07",
@@ -1360,7 +1368,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-04T13:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-09",
@@ -1368,7 +1376,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -1376,7 +1384,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -1384,7 +1392,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-12",
@@ -1392,7 +1400,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-13",
@@ -1400,7 +1408,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T06:18:40.494Z"
+                "checkedAt": "2026-09-05T06:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -1408,7 +1416,7 @@
                 "AP": 2,
                 "AB": 1,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-04T11:18:40.494Z"
+                "checkedAt": "2026-09-04T11:21:39.351Z"
               },
               {
                 "date": "2026-09-16",
@@ -1416,7 +1424,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -1424,7 +1432,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -1432,7 +1440,7 @@
                 "AP": 1,
                 "AB": 8,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -1440,7 +1448,7 @@
                 "AP": 8,
                 "AB": 1,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-04T23:18:40.494Z"
+                "checkedAt": "2026-09-04T23:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
@@ -1448,7 +1456,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-04T20:18:40.494Z"
+                "checkedAt": "2026-09-04T20:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -1456,7 +1464,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-04T20:18:40.494Z"
+                "checkedAt": "2026-09-04T20:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -1464,7 +1472,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-26",
@@ -1472,7 +1480,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-27",
@@ -1480,7 +1488,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-28",
@@ -1488,7 +1496,7 @@
                 "AP": 8,
                 "AB": 0,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-29",
@@ -1496,7 +1504,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-09-30",
@@ -1504,7 +1512,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-01",
@@ -1512,7 +1520,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 3,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-04",
@@ -1520,7 +1528,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-05",
@@ -1528,7 +1536,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-07",
@@ -1536,7 +1544,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-08",
@@ -1544,7 +1552,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-11",
@@ -1552,7 +1560,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-12",
@@ -1560,7 +1568,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-13",
@@ -1568,7 +1576,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -1576,7 +1584,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -1584,7 +1592,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-16",
@@ -1592,7 +1600,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-17",
@@ -1600,7 +1608,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-02T13:18:40.494Z"
+                "checkedAt": "2026-09-02T13:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -1608,7 +1616,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -1616,7 +1624,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -1624,7 +1632,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -1632,7 +1640,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T03:18:40.494Z"
+                "checkedAt": "2026-09-05T03:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -1640,7 +1648,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -1648,7 +1656,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -1656,7 +1664,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -1664,7 +1672,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               }
             ]
           }
@@ -1688,7 +1696,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
@@ -1696,7 +1704,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-09",
@@ -1704,7 +1712,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -1712,7 +1720,7 @@
                 "AP": 0,
                 "AB": 9,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -1720,7 +1728,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -1728,7 +1736,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -1736,7 +1744,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -1744,7 +1752,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -1752,7 +1760,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-06",
@@ -1760,7 +1768,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-10-17",
@@ -1768,7 +1776,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -1776,7 +1784,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -1784,7 +1792,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -1792,7 +1800,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -1800,7 +1808,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -1808,7 +1816,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -1816,7 +1824,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -1824,7 +1832,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-10-28",
@@ -1832,7 +1840,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-10-31",
@@ -1840,7 +1848,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-11-02",
@@ -1848,7 +1856,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-11-03",
@@ -1856,7 +1864,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               }
             ],
             "inbound": [
@@ -1866,7 +1874,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
@@ -1874,7 +1882,7 @@
                 "AP": 9,
                 "AB": 5,
                 "availableSeatsTotal": 23,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-07",
@@ -1882,7 +1890,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-08",
@@ -1890,7 +1898,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-09",
@@ -1898,7 +1906,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -1906,7 +1914,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -1914,7 +1922,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-12",
@@ -1922,7 +1930,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-13",
@@ -1930,7 +1938,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -1938,7 +1946,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-15",
@@ -1946,7 +1954,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -1954,7 +1962,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -1962,7 +1970,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
@@ -1970,7 +1978,7 @@
                 "AP": 9,
                 "AB": 2,
                 "availableSeatsTotal": 20,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -1978,7 +1986,7 @@
                 "AP": 9,
                 "AB": 1,
                 "availableSeatsTotal": 19,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-27",
@@ -1986,7 +1994,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-28",
@@ -1994,7 +2002,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-29",
@@ -2002,7 +2010,7 @@
                 "AP": 9,
                 "AB": 4,
                 "availableSeatsTotal": 22,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-30",
@@ -2010,7 +2018,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-10-04",
@@ -2018,7 +2026,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-05",
@@ -2026,7 +2034,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-06",
@@ -2034,7 +2042,7 @@
                 "AP": 2,
                 "AB": 6,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-10-07",
@@ -2042,7 +2050,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
               },
               {
                 "date": "2026-10-08",
@@ -2050,7 +2058,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
               },
               {
                 "date": "2026-10-09",
@@ -2058,7 +2066,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-10",
@@ -2066,7 +2074,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 3,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-11",
@@ -2074,7 +2082,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
               },
               {
                 "date": "2026-10-12",
@@ -2082,7 +2090,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -2090,7 +2098,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -2098,7 +2106,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 3,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -2106,7 +2114,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T14:18:40.494Z"
+                "checkedAt": "2026-09-05T14:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -2114,7 +2122,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -2122,7 +2130,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-03T18:18:40.494Z"
+                "checkedAt": "2026-09-03T18:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -2130,7 +2138,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -2138,7 +2146,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -2146,7 +2154,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-04T03:18:40.494Z"
+                "checkedAt": "2026-09-04T03:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -2154,7 +2162,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 4,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               },
               {
                 "date": "2026-11-03",
@@ -2162,7 +2170,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-05T11:18:40.494Z"
+                "checkedAt": "2026-09-05T11:21:39.351Z"
               }
             ]
           }
@@ -2186,7 +2194,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
@@ -2194,7 +2202,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-09",
@@ -2202,7 +2210,7 @@
                 "AP": 0,
                 "AB": 7,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-05T10:18:40.494Z"
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -2210,7 +2218,7 @@
                 "AP": 8,
                 "AB": 7,
                 "availableSeatsTotal": 24,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -2218,7 +2226,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -2226,7 +2234,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-15",
@@ -2234,7 +2242,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-16",
@@ -2242,7 +2250,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-17",
@@ -2250,7 +2258,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -2258,7 +2266,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -2266,7 +2274,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -2274,7 +2282,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -2282,7 +2290,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-08",
@@ -2290,7 +2298,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-09",
@@ -2298,7 +2306,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-10",
@@ -2306,7 +2314,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-13",
@@ -2314,7 +2322,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -2322,7 +2330,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -2330,7 +2338,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-16",
@@ -2338,7 +2346,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-17",
@@ -2346,7 +2354,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -2354,7 +2362,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -2362,7 +2370,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 7,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -2370,7 +2378,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -2378,7 +2386,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -2386,7 +2394,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-03T15:18:40.494Z"
+                "checkedAt": "2026-09-03T15:21:39.351Z"
               },
               {
                 "date": "2026-10-24",
@@ -2394,7 +2402,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -2402,7 +2410,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -2410,7 +2418,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-31",
@@ -2418,7 +2426,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-11-02",
@@ -2426,7 +2434,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-11-03",
@@ -2434,7 +2442,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               }
             ],
             "inbound": [
@@ -2444,7 +2452,7 @@
                 "AP": 9,
                 "AB": 3,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-05T15:18:40.494Z"
+                "checkedAt": "2026-09-05T15:21:39.351Z"
               },
               {
                 "date": "2026-09-06",
@@ -2452,7 +2460,7 @@
                 "AP": 9,
                 "AB": 1,
                 "availableSeatsTotal": 19,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-07",
@@ -2460,7 +2468,7 @@
                 "AP": 7,
                 "AB": 0,
                 "availableSeatsTotal": 16,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-10",
@@ -2468,7 +2476,7 @@
                 "AP": 8,
                 "AB": 0,
                 "availableSeatsTotal": 17,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-11",
@@ -2476,7 +2484,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-12",
@@ -2484,7 +2492,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-13",
@@ -2492,7 +2500,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-14",
@@ -2500,7 +2508,7 @@
                 "AP": 2,
                 "AB": 3,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-18",
@@ -2508,7 +2516,7 @@
                 "AP": 5,
                 "AB": 4,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-09-19",
@@ -2516,15 +2524,15 @@
                 "AP": 9,
                 "AB": 1,
                 "availableSeatsTotal": 19,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-20",
                 "AG": 9,
-                "AP": 0,
+                "AP": 1,
                 "AB": 0,
-                "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "availableSeatsTotal": 10,
+                "checkedAt": "2026-09-05T18:21:39.351Z"
               },
               {
                 "date": "2026-09-21",
@@ -2532,7 +2540,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-25",
@@ -2540,7 +2548,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-09-26",
@@ -2548,7 +2556,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-27",
@@ -2556,7 +2564,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-28",
@@ -2564,7 +2572,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-29",
@@ -2572,7 +2580,7 @@
                 "AP": 2,
                 "AB": 0,
                 "availableSeatsTotal": 2,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-09-30",
@@ -2580,7 +2588,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-10-01",
@@ -2588,7 +2596,7 @@
                 "AP": 3,
                 "AB": 0,
                 "availableSeatsTotal": 12,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-02",
@@ -2596,7 +2604,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T16:21:39.351Z"
               },
               {
                 "date": "2026-10-03",
@@ -2604,7 +2612,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-04",
@@ -2612,7 +2620,7 @@
                 "AP": 9,
                 "AB": 0,
                 "availableSeatsTotal": 18,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-05",
@@ -2620,7 +2628,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 8,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-07",
@@ -2628,7 +2636,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-08",
@@ -2636,7 +2644,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-09",
@@ -2644,7 +2652,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-10",
@@ -2652,7 +2660,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-11",
@@ -2660,7 +2668,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-12",
@@ -2668,7 +2676,7 @@
                 "AP": 8,
                 "AB": 0,
                 "availableSeatsTotal": 11,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-13",
@@ -2676,7 +2684,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-14",
@@ -2684,7 +2692,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-15",
@@ -2692,7 +2700,7 @@
                 "AP": 5,
                 "AB": 0,
                 "availableSeatsTotal": 14,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-17",
@@ -2700,7 +2708,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 1,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T17:21:39.351Z"
               },
               {
                 "date": "2026-10-18",
@@ -2708,7 +2716,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 6,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-19",
@@ -2716,7 +2724,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 15,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-20",
@@ -2724,7 +2732,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-21",
@@ -2732,7 +2740,7 @@
                 "AP": 4,
                 "AB": 0,
                 "availableSeatsTotal": 13,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-22",
@@ -2740,7 +2748,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-25",
@@ -2748,7 +2756,7 @@
                 "AP": 6,
                 "AB": 0,
                 "availableSeatsTotal": 10,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-26",
@@ -2756,7 +2764,7 @@
                 "AP": 1,
                 "AB": 0,
                 "availableSeatsTotal": 5,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               },
               {
                 "date": "2026-10-27",
@@ -2764,7 +2772,7 @@
                 "AP": 0,
                 "AB": 0,
                 "availableSeatsTotal": 9,
-                "checkedAt": "2026-09-05T12:18:40.494Z"
+                "checkedAt": "2026-09-05T12:21:39.351Z"
               }
             ]
           }
