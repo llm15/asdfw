@@ -1,0 +1,75 @@
+name: Fetch seats.aero availability data
+
+on:
+  schedule:
+    # Fires every 3 hours, offset from the awardhacks/roamsnap/awardfares jobs.
+    - cron: "5 */3 * * *"
+  workflow_dispatch: {}
+
+# Least privilege: only contents write is needed to commit the data file.
+permissions:
+  contents: write
+
+# Avoid two scheduled/manual runs racing to commit at once; queue instead of
+# cancelling so an in-progress atomic write is never interrupted.
+concurrency:
+  group: fetch-seatsaero-data
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Camoufox browser
+        run: npx camoufox fetch
+
+      - name: Fetch latest seats.aero availability
+        run: npm run fetch:seatsaero
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # `git diff` alone misses a brand-new untracked file (e.g. the very
+          # first run), so check status too, not just diff against tracked content.
+          if [ -z "$(git status --porcelain -- docs/data/latest-seatsaero.json)" ]; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git add docs/data/latest-seatsaero.json
+          git commit -m "chore: update seats.aero availability data"
+          git pull --rebase
+          git push
+
+      - name: Check preferences and notify (Telegram)
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: npm run notify
+
+      - name: Commit and push notified-state if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- docs/data/notified-state.json)" ]; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git add docs/data/notified-state.json
+          git commit -m "chore: update notification state"
+          git pull --rebase
+          git push
