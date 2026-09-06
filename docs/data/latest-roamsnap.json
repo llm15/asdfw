@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-06T09:45:26.633Z",
+  "updatedAt": "2026-09-06T15:44:58.781Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -50,11 +50,11 @@
                 ]
               },
               {
-                "date": "2026-09-14",
+                "date": "2026-10-10",
                 "AG": 0,
                 "AP": 0,
-                "AB": 3,
-                "availableSeatsTotal": 3,
+                "AB": 1,
+                "availableSeatsTotal": 1,
                 "flightNumbers": [
                   "SK904"
                 ]
@@ -75,7 +75,18 @@
           "airportCode": "JFK",
           "availability": {
             "outbound": [],
-            "inbound": []
+            "inbound": [
+              {
+                "date": "2026-09-06",
+                "AG": 0,
+                "AP": 0,
+                "AB": 3,
+                "availableSeatsTotal": 3,
+                "flightNumbers": [
+                  "SK924"
+                ]
+              }
+            ]
           }
         }
       ]
@@ -107,7 +118,118 @@
           "airportCode": "JFK",
           "availability": {
             "outbound": [],
-            "inbound": []
+            "inbound": [
+              {
+                "date": "2026-09-06",
+                "AG": 0,
+                "AP": 0,
+                "AB": 5,
+                "availableSeatsTotal": 5,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-09-20",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-09-21",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-09-29",
+                "AG": 0,
+                "AP": 0,
+                "AB": 4,
+                "availableSeatsTotal": 4,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-10-06",
+                "AG": 0,
+                "AP": 0,
+                "AB": 6,
+                "availableSeatsTotal": 6,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-10-10",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-11-28",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-12-07",
+                "AG": 0,
+                "AP": 0,
+                "AB": 4,
+                "availableSeatsTotal": 4,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2027-01-23",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2027-04-07",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2027-04-17",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              }
+            ]
           }
         }
       ]
