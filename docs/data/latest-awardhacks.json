@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-06T12:32:02.001Z",
+  "updatedAt": "2026-09-06T15:26:49.458Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -250,6 +250,17 @@
                   "SK904"
                 ],
                 "checkedAt": "2026-09-06T07:02:20Z"
+              },
+              {
+                "date": "2026-10-10",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-06T14:13:46Z"
               }
             ]
           }
@@ -603,6 +614,17 @@
                   "SK907"
                 ],
                 "checkedAt": "2026-09-06T01:34:12Z"
+              },
+              {
+                "date": "2027-06-06",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-06T12:50:53Z"
               }
             ],
             "inbound": [
