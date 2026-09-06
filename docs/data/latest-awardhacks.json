@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T21:25:47.976Z",
+  "updatedAt": "2026-09-06T00:40:00.040Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -656,6 +656,17 @@
                 "checkedAt": "2026-09-05T18:06:32Z"
               },
               {
+                "date": "2027-01-08",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK915"
+                ],
+                "checkedAt": "2026-09-05T23:06:26Z"
+              },
+              {
                 "date": "2027-03-04",
                 "AG": 0,
                 "AP": 0,
@@ -1162,6 +1173,17 @@
                   "SK916"
                 ],
                 "checkedAt": "2026-09-05T01:45:14Z"
+              },
+              {
+                "date": "2027-04-17",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-05T22:25:24Z"
               }
             ]
           }
@@ -1179,6 +1201,17 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [
+              {
+                "date": "2027-01-07",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-05T23:05:46Z"
+              },
               {
                 "date": "2027-01-23",
                 "AG": 0,
