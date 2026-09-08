@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T21:46:34.778Z",
+  "updatedAt": "2026-09-08T00:52:57.962Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -28,18 +28,7 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [],
-            "inbound": [
-              {
-                "date": "2026-09-06",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK904"
-                ]
-              }
-            ]
+            "inbound": []
           }
         }
       ]
@@ -55,18 +44,7 @@
           "airportCode": "JFK",
           "availability": {
             "outbound": [],
-            "inbound": [
-              {
-                "date": "2026-09-06",
-                "AG": 0,
-                "AP": 0,
-                "AB": 3,
-                "availableSeatsTotal": 3,
-                "flightNumbers": [
-                  "SK924"
-                ]
-              }
-            ]
+            "inbound": []
           }
         }
       ]
@@ -99,16 +77,6 @@
           "availability": {
             "outbound": [],
             "inbound": [
-              {
-                "date": "2026-09-06",
-                "AG": 0,
-                "AP": 0,
-                "AB": 5,
-                "availableSeatsTotal": 5,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              },
               {
                 "date": "2026-09-20",
                 "AG": 0,
