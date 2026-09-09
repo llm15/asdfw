@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-09T13:00:29.628Z",
+  "updatedAt": "2026-09-09T15:57:30.951Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -43,7 +43,7 @@
                 "flightNumbers": [
                   "DL205"
                 ],
-                "checkedAt": "2026-09-09T11:32:30.414Z"
+                "checkedAt": "2026-09-09T15:41:47.338Z"
               },
               {
                 "date": "2027-04-05",
@@ -78,7 +78,7 @@
                 "flightNumbers": [
                   "DL204"
                 ],
-                "checkedAt": "2026-09-09T04:02:25.536Z"
+                "checkedAt": "2026-09-09T13:14:46.320Z"
               },
               {
                 "date": "2026-09-15",
@@ -171,7 +171,7 @@
                 "flightNumbers": [
                   "SK903"
                 ],
-                "checkedAt": "2026-09-09T10:55:14.518Z"
+                "checkedAt": "2026-09-09T15:53:02.510Z"
               },
               {
                 "date": "2026-10-14",
@@ -193,7 +193,7 @@
                 "flightNumbers": [
                   "SK903"
                 ],
-                "checkedAt": "2026-09-09T03:26:42.043Z"
+                "checkedAt": "2026-09-09T13:10:28.351Z"
               }
             ],
             "inbound": [
@@ -228,7 +228,7 @@
                 "flightNumbers": [
                   "SK904"
                 ],
-                "checkedAt": "2026-09-09T03:21:32.250Z"
+                "checkedAt": "2026-09-09T13:14:46.320Z"
               },
               {
                 "date": "2026-09-16",
@@ -405,7 +405,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-09T03:21:02.060Z"
+                "checkedAt": "2026-09-09T15:36:03.435Z"
               },
               {
                 "date": "2026-09-11",
@@ -438,7 +438,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-09T03:22:04.512Z"
+                "checkedAt": "2026-09-09T13:23:09.801Z"
               },
               {
                 "date": "2026-09-18",
@@ -449,7 +449,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-09T03:23:21.173Z"
+                "checkedAt": "2026-09-09T15:36:43.339Z"
               }
             ],
             "inbound": [
@@ -547,6 +547,17 @@
                 "checkedAt": "2026-09-09T08:49:26.739Z"
               },
               {
+                "date": "2026-09-18",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK915"
+                ],
+                "checkedAt": "2026-09-09T06:01:14.186Z"
+              },
+              {
                 "date": "2026-09-24",
                 "AG": 9,
                 "AP": 0,
@@ -556,17 +567,6 @@
                   "DL219"
                 ],
                 "checkedAt": "2026-09-09T04:53:29.922Z"
-              },
-              {
-                "date": "2026-09-28",
-                "AG": 9,
-                "AP": 0,
-                "AB": 0,
-                "availableSeatsTotal": 9,
-                "flightNumbers": [
-                  "DL219"
-                ],
-                "checkedAt": "2026-09-09T01:42:18.720Z"
               },
               {
                 "date": "2026-09-29",
@@ -601,7 +601,7 @@
                 "flightNumbers": [
                   "SK916"
                 ],
-                "checkedAt": "2026-09-09T10:07:42.628Z"
+                "checkedAt": "2026-09-09T15:46:46.836Z"
               },
               {
                 "date": "2026-12-08",
@@ -718,7 +718,7 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-09T10:48:44.849Z"
+                "checkedAt": "2026-09-09T13:36:27.839Z"
               },
               {
                 "date": "2026-10-26",
