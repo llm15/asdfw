@@ -155,11 +155,10 @@ body.auth-locked > footer {
 .site-header__inner {
   max-width: 72rem;
   margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 27rem;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .site-header h1 {
@@ -180,25 +179,38 @@ body.auth-locked > footer {
 .site-header__actions {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 0.65rem;
+  align-items: stretch;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .header-button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 0.75rem;
+}
+
+.header-button-row button {
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  text-align: center;
 }
 
 .last-fetched {
   margin: 0;
   font-size: 0.85rem;
   color: rgba(247, 248, 251, 0.68);
-  padding: 0.25rem 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.07);
+  text-align: right;
+}
+
+.last-fetched time {
+  display: inline-block;
+  color: rgba(247, 248, 251, 0.9);
 }
 
 .fetch-btn {
@@ -247,6 +259,7 @@ body.auth-locked > footer {
 }
 
 .spinner {
+  flex-shrink: 0;
   width: 0.9rem;
   height: 0.9rem;
   border-radius: 50%;
@@ -1281,6 +1294,19 @@ a {
   outline-offset: 2px;
 }
 
+@media (max-width: 60rem) {
+  .site-header__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .site-header__actions {
+    width: min(100%, 27rem);
+  }
+  .last-fetched {
+    text-align: left;
+  }
+}
+
 @media (max-width: 40rem) {
   .container {
     padding: 0.8rem 0.55rem 2.2rem;
@@ -1295,23 +1321,11 @@ a {
     margin-top: 0.6rem;
     font-size: 0.98rem;
   }
-  .site-header__inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
   .site-header__actions {
-    align-items: flex-start;
     width: 100%;
   }
   .header-button-row {
-    justify-content: flex-start;
-    width: 100%;
-  }
-  .fetch-btn,
-  .refresh-page-btn {
-    flex: 1 1 100%;
-    justify-content: center;
-    min-height: 2.75rem;
+    grid-template-columns: minmax(0, 1fr);
   }
   .last-fetched {
     width: 100%;
