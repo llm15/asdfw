@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-10T09:30:03.739Z",
+  "updatedAt": "2026-09-10T12:35:48.006Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -571,6 +571,17 @@
               }
             ],
             "inbound": [
+              {
+                "date": "2026-09-18",
+                "AG": 0,
+                "AP": 0,
+                "AB": 9,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK908"
+                ],
+                "checkedAt": "2026-09-10T10:04:45Z"
+              },
               {
                 "date": "2026-10-18",
                 "AG": 0,
