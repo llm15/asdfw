@@ -720,7 +720,27 @@
     return { routeCount, shownTotal, hasIncrease, hasDecrease, hasAvailability: routeCount > 0 };
   }
 
+  // Fit complete airport rows rather than clipping seat counts or widening cells.
+  const calendarRowObserver = new ResizeObserver(() => {
+    const rows = [...els.calendar.querySelectorAll(".calendar-day__airport")];
+    rows.forEach((row) => { row.style.fontSize = ""; });
+    const sizes = rows.map((row) => {
+      if (!row.clientWidth || row.scrollWidth <= row.clientWidth) return null;
+      const fontSize = Number.parseFloat(getComputedStyle(row).fontSize);
+      const borderWidth = [...row.children].reduce((total, child) => {
+        const style = getComputedStyle(child);
+        return total + Number.parseFloat(style.borderLeftWidth) + Number.parseFloat(style.borderRightWidth);
+      }, 0);
+      // Gaps and padding use em units and scale with the text; borders don't.
+      return fontSize * Math.max(0, row.clientWidth - borderWidth - 1) / (row.scrollWidth - borderWidth);
+    });
+    rows.forEach((row, index) => {
+      if (sizes[index] !== null) row.style.fontSize = `${sizes[index]}px`;
+    });
+  });
+
   function renderCalendar() {
+    calendarRowObserver.disconnect();
     els.calendarHeading.textContent = formatMonthHeading(state.month);
     els.calendar.replaceChildren();
 
@@ -871,6 +891,7 @@
     }
 
     els.calendar.appendChild(grid);
+    calendarRowObserver.observe(grid);
   }
 
   /** Adds one term/value pair to a <dl>, matching the technical-details style. */
