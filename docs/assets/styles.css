@@ -655,7 +655,7 @@ body.auth-locked > footer {
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(7.5rem, 1fr));
+  grid-template-columns: repeat(7, minmax(max-content, 1fr));
   gap: 0.5rem;
   overflow-x: auto;
 }
@@ -751,10 +751,15 @@ body.auth-locked > footer {
 
 .calendar-day__airport {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   align-items: center;
   gap: 0.25rem;
   font-size: 0.72rem;
+}
+
+.calendar-day__airport > * {
+  flex-shrink: 0;
 }
 
 .calendar-day__airport-code {
