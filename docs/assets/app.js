@@ -37,6 +37,11 @@
  * date is treated as "no result returned", never as "0 seats available".
  */
 (() => {
+  const CALENDAR_LOCALE = "sv-SE";
+  const calendarLocale = new Intl.Locale(CALENDAR_LOCALE);
+  const calendarWeekStart = (
+    calendarLocale.getWeekInfo?.() ?? calendarLocale.weekInfo ?? { firstDay: 1 }
+  ).firstDay % 7;
   const AUTH_PASSWORD = "pizza12";
   const AUTH_STORAGE_KEY = "awards:dashboardUnlocked";
   const MONTHLY_ACTIVITY_STORAGE_KEY = "awards:monthlyAvailabilityActivity";
@@ -177,7 +182,7 @@
   function formatDateDisplay(dateStr) {
     if (!isIsoDateOnly(dateStr)) return String(dateStr);
     const [y, m, d] = dateStr.split("-").map(Number);
-    return new Intl.DateTimeFormat("sv-SE", {
+    return new Intl.DateTimeFormat(CALENDAR_LOCALE, {
       timeZone: "UTC",
       day: "numeric",
       month: "short",
@@ -188,7 +193,7 @@
   function formatWeekday(dateStr) {
     if (!isIsoDateOnly(dateStr)) return "—";
     const [y, m, d] = dateStr.split("-").map(Number);
-    return new Intl.DateTimeFormat("sv-SE", { timeZone: "UTC", weekday: "short" }).format(
+    return new Intl.DateTimeFormat(CALENDAR_LOCALE, { timeZone: "UTC", weekday: "short" }).format(
       new Date(Date.UTC(y, m - 1, d))
     );
   }
@@ -196,7 +201,7 @@
   function formatMonthHeading(monthStr) {
     const [y, m] = monthStr.split("-").map(Number);
     if (!y || !m) return "Calendar";
-    const label = new Intl.DateTimeFormat("sv-SE", {
+    const label = new Intl.DateTimeFormat(CALENDAR_LOCALE, {
       timeZone: "UTC",
       month: "long",
       year: "numeric",
@@ -730,15 +735,20 @@
     const [y, m] = state.month.split("-").map(Number);
     if (!y || !m) return;
     const numDays = daysInMonth(y, m);
-    const firstWeekday = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7; // Monday = 0
+    const firstWeekday = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() - calendarWeekStart + 7) % 7;
 
     const grid = document.createElement("div");
     grid.className = "calendar-grid";
 
-    for (const wd of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]) {
+    const weekdayLabel = new Intl.DateTimeFormat(CALENDAR_LOCALE, { weekday: "narrow", timeZone: "UTC" });
+    const weekdayName = new Intl.DateTimeFormat(CALENDAR_LOCALE, { weekday: "long", timeZone: "UTC" });
+    for (let column = 0; column < 7; column++) {
+      // January 7, 2024 was a Sunday; use UTC just like the date cells.
+      const date = new Date(Date.UTC(2024, 0, 7 + calendarWeekStart + column));
       const el = document.createElement("div");
       el.className = "calendar-weekday";
-      el.textContent = wd;
+      el.textContent = weekdayLabel.format(date).toLocaleUpperCase(CALENDAR_LOCALE);
+      el.setAttribute("aria-label", weekdayName.format(date));
       grid.appendChild(el);
     }
 
