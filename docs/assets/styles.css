@@ -655,9 +655,9 @@ body.auth-locked > footer {
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(max-content, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.5rem;
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 .calendar-weekday {
@@ -754,12 +754,21 @@ body.auth-locked > footer {
   flex-wrap: nowrap;
   white-space: nowrap;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.72rem;
+  min-width: 0;
+  gap: 0.12rem;
+  font-size: 0.62rem;
 }
 
-.calendar-day__airport > * {
+.calendar-day__airport-code {
   flex-shrink: 0;
+}
+
+.calendar-day__airport .calendar-badge {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding-inline: 0.12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .calendar-day__airport-code {
