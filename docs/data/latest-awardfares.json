@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T06:58:12.800Z",
+  "updatedAt": "2026-09-12T09:57:10.413Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -21,7 +21,7 @@
                 "flightNumbers": [
                   "DL205"
                 ],
-                "checkedAt": "2026-09-12T03:19:07.943Z"
+                "checkedAt": "2026-09-12T09:39:36.828Z"
               },
               {
                 "date": "2026-10-05",
@@ -32,7 +32,7 @@
                 "flightNumbers": [
                   "DL205"
                 ],
-                "checkedAt": "2026-09-12T03:58:51.686Z"
+                "checkedAt": "2026-09-12T09:46:16.358Z"
               },
               {
                 "date": "2026-10-06",
@@ -70,17 +70,6 @@
             ],
             "inbound": [
               {
-                "date": "2026-09-15",
-                "AG": 9,
-                "AP": 0,
-                "AB": 0,
-                "availableSeatsTotal": 9,
-                "flightNumbers": [
-                  "DL204"
-                ],
-                "checkedAt": "2026-09-11T19:58:15.006Z"
-              },
-              {
                 "date": "2026-09-17",
                 "AG": 9,
                 "AP": 0,
@@ -100,7 +89,7 @@
                 "flightNumbers": [
                   "DL204"
                 ],
-                "checkedAt": "2026-09-11T20:20:31.858Z"
+                "checkedAt": "2026-09-12T08:30:47.964Z"
               },
               {
                 "date": "2026-09-25",
@@ -122,7 +111,18 @@
                 "flightNumbers": [
                   "DL204"
                 ],
-                "checkedAt": "2026-09-11T19:24:40.399Z"
+                "checkedAt": "2026-09-12T07:41:51.930Z"
+              },
+              {
+                "date": "2026-09-27",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "DL204"
+                ],
+                "checkedAt": "2026-09-12T08:57:23.868Z"
               }
             ]
           }
@@ -149,7 +149,7 @@
                 "flightNumbers": [
                   "SK903"
                 ],
-                "checkedAt": "2026-09-12T05:08:55.740Z"
+                "checkedAt": "2026-09-12T07:01:03.607Z"
               },
               {
                 "date": "2026-09-17",
@@ -174,17 +174,6 @@
                 "checkedAt": "2026-09-12T05:55:13.369Z"
               },
               {
-                "date": "2026-09-21",
-                "AG": 1,
-                "AP": 0,
-                "AB": 0,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK903"
-                ],
-                "checkedAt": "2026-09-11T20:45:31.447Z"
-              },
-              {
                 "date": "2026-10-11",
                 "AG": 9,
                 "AP": 0,
@@ -193,7 +182,18 @@
                 "flightNumbers": [
                   "SK903"
                 ],
-                "checkedAt": "2026-09-12T04:57:05.390Z"
+                "checkedAt": "2026-09-12T08:49:40.566Z"
+              },
+              {
+                "date": "2026-10-14",
+                "AG": 3,
+                "AP": 2,
+                "AB": 0,
+                "availableSeatsTotal": 5,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-12T08:41:15.369Z"
               }
             ],
             "inbound": [
@@ -206,7 +206,7 @@
                 "flightNumbers": [
                   "SK904"
                 ],
-                "checkedAt": "2026-09-12T00:02:36.808Z"
+                "checkedAt": "2026-09-12T09:22:37.837Z"
               },
               {
                 "date": "2026-09-16",
@@ -217,7 +217,7 @@
                 "flightNumbers": [
                   "SK904"
                 ],
-                "checkedAt": "2026-09-11T22:17:14.323Z"
+                "checkedAt": "2026-09-12T08:37:48.415Z"
               },
               {
                 "date": "2026-09-17",
@@ -228,7 +228,7 @@
                 "flightNumbers": [
                   "SK904"
                 ],
-                "checkedAt": "2026-09-12T00:37:07.885Z"
+                "checkedAt": "2026-09-12T09:44:22.165Z"
               },
               {
                 "date": "2026-09-18",
@@ -277,7 +277,7 @@
                 "flightNumbers": [
                   "SK923"
                 ],
-                "checkedAt": "2026-09-11T21:29:53.978Z"
+                "checkedAt": "2026-09-12T09:34:36.471Z"
               },
               {
                 "date": "2026-09-17",
@@ -288,7 +288,7 @@
                 "flightNumbers": [
                   "SK923"
                 ],
-                "checkedAt": "2026-09-11T21:30:34.352Z"
+                "checkedAt": "2026-09-12T08:37:25.879Z"
               },
               {
                 "date": "2026-09-18",
@@ -299,7 +299,7 @@
                 "flightNumbers": [
                   "SK923"
                 ],
-                "checkedAt": "2026-09-11T21:31:52.306Z"
+                "checkedAt": "2026-09-12T09:38:37.441Z"
               },
               {
                 "date": "2026-09-20",
@@ -310,7 +310,7 @@
                 "flightNumbers": [
                   "SK923"
                 ],
-                "checkedAt": "2026-09-11T21:33:46.338Z"
+                "checkedAt": "2026-09-12T08:44:27.939Z"
               },
               {
                 "date": "2026-09-21",
@@ -321,7 +321,7 @@
                 "flightNumbers": [
                   "SK923"
                 ],
-                "checkedAt": "2026-09-11T21:34:36.232Z"
+                "checkedAt": "2026-09-12T09:17:05.007Z"
               }
             ],
             "inbound": [
@@ -334,18 +334,18 @@
                 "flightNumbers": [
                   "SK924"
                 ],
-                "checkedAt": "2026-09-11T21:29:55.313Z"
+                "checkedAt": "2026-09-12T09:36:23.274Z"
               },
               {
                 "date": "2026-09-14",
-                "AG": 4,
+                "AG": 2,
                 "AP": 0,
                 "AB": 0,
-                "availableSeatsTotal": 4,
+                "availableSeatsTotal": 2,
                 "flightNumbers": [
                   "SK924"
                 ],
-                "checkedAt": "2026-09-11T21:29:59.608Z"
+                "checkedAt": "2026-09-12T08:47:21.039Z"
               },
               {
                 "date": "2026-09-16",
@@ -356,7 +356,7 @@
                 "flightNumbers": [
                   "SK924"
                 ],
-                "checkedAt": "2026-09-11T21:30:49.464Z"
+                "checkedAt": "2026-09-12T09:48:41.606Z"
               },
               {
                 "date": "2026-09-17",
@@ -370,15 +370,15 @@
                 "checkedAt": "2026-09-11T21:30:42.999Z"
               },
               {
-                "date": "2026-09-21",
-                "AG": 9,
+                "date": "2026-09-18",
+                "AG": 8,
                 "AP": 0,
                 "AB": 0,
-                "availableSeatsTotal": 9,
+                "availableSeatsTotal": 8,
                 "flightNumbers": [
                   "SK924"
                 ],
-                "checkedAt": "2026-09-11T21:35:26.710Z"
+                "checkedAt": "2026-09-12T08:55:38.074Z"
               }
             ]
           }
@@ -405,7 +405,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-11T21:30:24.564Z"
+                "checkedAt": "2026-09-12T09:35:14.892Z"
               },
               {
                 "date": "2026-09-18",
@@ -416,7 +416,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-11T21:31:44.055Z"
+                "checkedAt": "2026-09-12T09:22:19.227Z"
               },
               {
                 "date": "2026-09-19",
@@ -427,7 +427,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-11T21:33:02.692Z"
+                "checkedAt": "2026-09-12T08:42:54.030Z"
               },
               {
                 "date": "2026-09-21",
@@ -438,7 +438,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-11T21:34:03.771Z"
+                "checkedAt": "2026-09-12T08:42:57.116Z"
               },
               {
                 "date": "2026-10-07",
@@ -449,7 +449,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-12T05:01:31.052Z"
+                "checkedAt": "2026-09-12T08:22:53.454Z"
               }
             ],
             "inbound": [
@@ -462,7 +462,7 @@
                 "flightNumbers": [
                   "SK908"
                 ],
-                "checkedAt": "2026-09-12T03:54:25.648Z"
+                "checkedAt": "2026-09-12T09:00:58.342Z"
               },
               {
                 "date": "2026-11-06",
@@ -484,7 +484,7 @@
                 "flightNumbers": [
                   "SK908"
                 ],
-                "checkedAt": "2026-09-11T21:44:08.923Z"
+                "checkedAt": "2026-09-12T09:39:27.285Z"
               },
               {
                 "date": "2026-11-08",
@@ -533,7 +533,7 @@
                 "flightNumbers": [
                   "DL219"
                 ],
-                "checkedAt": "2026-09-12T04:50:50.829Z"
+                "checkedAt": "2026-09-12T07:53:25.762Z"
               },
               {
                 "date": "2026-09-18",
@@ -544,7 +544,7 @@
                 "flightNumbers": [
                   "SK915"
                 ],
-                "checkedAt": "2026-09-12T00:05:52.816Z"
+                "checkedAt": "2026-09-12T08:16:06.555Z"
               },
               {
                 "date": "2026-09-19",
@@ -555,7 +555,7 @@
                 "flightNumbers": [
                   "SK915"
                 ],
-                "checkedAt": "2026-09-11T22:39:36.534Z"
+                "checkedAt": "2026-09-12T08:51:39.193Z"
               },
               {
                 "date": "2026-09-24",
@@ -566,7 +566,7 @@
                 "flightNumbers": [
                   "DL219"
                 ],
-                "checkedAt": "2026-09-12T02:26:33.974Z"
+                "checkedAt": "2026-09-12T08:34:02.223Z"
               },
               {
                 "date": "2026-09-29",
@@ -634,7 +634,7 @@
                 "flightNumbers": [
                   "SK916"
                 ],
-                "checkedAt": "2026-09-11T22:11:43.972Z"
+                "checkedAt": "2026-09-12T09:49:30.133Z"
               }
             ]
           }
@@ -683,7 +683,7 @@
                 "flightNumbers": [
                   "SK909"
                 ],
-                "checkedAt": "2026-09-12T02:26:33.974Z"
+                "checkedAt": "2026-09-12T08:31:33.279Z"
               },
               {
                 "date": "2026-09-25",
@@ -705,7 +705,7 @@
                 "flightNumbers": [
                   "SK909"
                 ],
-                "checkedAt": "2026-09-11T21:52:14.852Z"
+                "checkedAt": "2026-09-12T09:39:25.200Z"
               }
             ],
             "inbound": [
@@ -718,7 +718,7 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-12T04:07:25.775Z"
+                "checkedAt": "2026-09-12T09:24:06.713Z"
               },
               {
                 "date": "2026-11-06",
@@ -729,18 +729,18 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-12T02:59:02.596Z"
+                "checkedAt": "2026-09-12T09:07:02.230Z"
               },
               {
                 "date": "2026-11-08",
                 "AG": 9,
                 "AP": 9,
-                "AB": 4,
-                "availableSeatsTotal": 22,
+                "AB": 0,
+                "availableSeatsTotal": 18,
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-12T06:47:22.283Z"
+                "checkedAt": "2026-09-12T09:51:01.358Z"
               },
               {
                 "date": "2026-11-09",
@@ -751,18 +751,18 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-12T00:48:50.411Z"
+                "checkedAt": "2026-09-12T09:11:30.190Z"
               },
               {
                 "date": "2026-11-10",
                 "AG": 9,
-                "AP": 8,
+                "AP": 9,
                 "AB": 0,
-                "availableSeatsTotal": 17,
+                "availableSeatsTotal": 18,
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-11T21:45:42.099Z"
+                "checkedAt": "2026-09-12T08:19:15.592Z"
               }
             ]
           }
