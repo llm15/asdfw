@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-11T21:26:06.480Z",
+  "updatedAt": "2026-09-12T00:34:41.411Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -601,6 +601,17 @@
           "availability": {
             "outbound": [
               {
+                "date": "2026-09-18",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK915"
+                ],
+                "checkedAt": "2026-09-11T21:27:23Z"
+              },
+              {
                 "date": "2026-09-22",
                 "AG": 0,
                 "AP": 0,
@@ -610,6 +621,17 @@
                   "SK915"
                 ],
                 "checkedAt": "2026-09-11T18:05:15Z"
+              },
+              {
+                "date": "2027-01-08",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK915"
+                ],
+                "checkedAt": "2026-09-11T21:48:09Z"
               },
               {
                 "date": "2027-01-10",
@@ -1043,6 +1065,61 @@
             ],
             "inbound": [
               {
+                "date": "2026-09-14",
+                "AG": 0,
+                "AP": 0,
+                "AB": 9,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-11T21:49:16Z"
+              },
+              {
+                "date": "2026-09-15",
+                "AG": 0,
+                "AP": 0,
+                "AB": 9,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-11T21:49:28Z"
+              },
+              {
+                "date": "2026-10-10",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-11T21:54:07Z"
+              },
+              {
+                "date": "2026-10-14",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-11T21:54:55Z"
+              },
+              {
+                "date": "2026-11-28",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-11T22:03:25Z"
+              },
+              {
                 "date": "2027-01-11",
                 "AG": 0,
                 "AP": 0,
@@ -1102,6 +1179,17 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [
+              {
+                "date": "2027-01-14",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK909"
+                ],
+                "checkedAt": "2026-09-11T23:05:40Z"
+              },
               {
                 "date": "2027-01-23",
                 "AG": 0,
