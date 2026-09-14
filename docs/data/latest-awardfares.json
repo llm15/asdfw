@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-14T09:59:34.484Z",
+  "updatedAt": "2026-09-14T13:02:10.380Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -533,7 +533,7 @@
                 "flightNumbers": [
                   "SK915"
                 ],
-                "checkedAt": "2026-09-14T06:03:33.737Z"
+                "checkedAt": "2026-09-14T11:26:05.486Z"
               },
               {
                 "date": "2026-09-18",
@@ -590,7 +590,7 @@
                 "flightNumbers": [
                   "SK916"
                 ],
-                "checkedAt": "2026-09-14T06:55:32.266Z"
+                "checkedAt": "2026-09-14T11:08:13.448Z"
               },
               {
                 "date": "2026-12-03",
@@ -601,18 +601,7 @@
                 "flightNumbers": [
                   "SK916"
                 ],
-                "checkedAt": "2026-09-14T03:46:24.012Z"
-              },
-              {
-                "date": "2026-12-08",
-                "AG": 9,
-                "AP": 0,
-                "AB": 0,
-                "availableSeatsTotal": 9,
-                "flightNumbers": [
-                  "SK916"
-                ],
-                "checkedAt": "2026-09-14T06:50:04.307Z"
+                "checkedAt": "2026-09-14T11:41:17.661Z"
               },
               {
                 "date": "2027-01-12",
@@ -635,6 +624,17 @@
                   "SK916"
                 ],
                 "checkedAt": "2026-09-14T01:26:06.844Z"
+              },
+              {
+                "date": "2027-01-17",
+                "AG": 2,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ],
+                "checkedAt": "2026-09-14T03:48:13.396Z"
               }
             ]
           }
@@ -718,7 +718,7 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-14T05:24:29.453Z"
+                "checkedAt": "2026-09-14T12:02:51.354Z"
               },
               {
                 "date": "2026-11-05",
