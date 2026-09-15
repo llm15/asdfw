@@ -283,6 +283,7 @@
       httpStatus: isPlainObject(route) && typeof route.httpStatus === "number" ? route.httpStatus : null,
       endpoint: isPlainObject(route) && typeof route.endpoint === "string" ? route.endpoint : null,
       returnedCode,
+      image: !returnedCode || returnedCode !== requestedCode.toUpperCase() ? null : entry?.image,
       mismatch: Boolean(returnedCode && returnedCode !== requestedCode.toUpperCase()),
       outboundMap: indexByDate(availability.outbound),
       inboundMap: indexByDate(availability.inbound),
@@ -1259,7 +1260,37 @@
     });
   }
 
+  function renderDestinationImage() {
+    const image = document.getElementById("destination-image");
+    const airports = ["ewr", "jfk"].filter((airport) => state.nycAirports[airport]);
+    let src = null;
+    for (const airport of airports) {
+      for (const home of HOME_AIRPORTS) {
+        const candidate = sourcesData?.sas?.routesData[`${home.id}-${airport}`]?.image;
+        if (typeof candidate !== "string") continue;
+        try {
+          const url = new URL(candidate);
+          if (url.protocol === "https:" && url.hostname === "components.flysas.com") {
+            src = url.href;
+            break;
+          }
+        } catch { /* Missing or malformed image metadata should not affect the dashboard. */ }
+      }
+      if (src) break;
+    }
+    if (!src) {
+      image.hidden = true;
+      image.removeAttribute("src");
+    } else if (image.getAttribute("src") !== src) {
+      image.hidden = true;
+      image.onload = () => { image.hidden = false; };
+      image.onerror = () => { image.hidden = true; };
+      image.src = src;
+    }
+  }
+
   function renderAll() {
+    renderDestinationImage();
     updateLastFetchedDisplay();
     renderSummary();
     renderCalendar();
