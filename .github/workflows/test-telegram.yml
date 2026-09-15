@@ -1,26 +1,28 @@
 name: Test Telegram notification
 
 on:
-  workflow_dispatch:
-    inputs:
-      message:
-        description: Message to send
-        required: false
-        default: "✅ Telegram test from GitHub Actions"
+  workflow_dispatch: {}
 
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Telegram message
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Check notification formatting
+        run: node --test scripts/notify.test.mjs
+
+      - name: Send realistic sample alert
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          MESSAGE: ${{ inputs.message }}
-        run: |
-          curl --fail --silent --show-error \
-            --request POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=${MESSAGE}"
+        run: node scripts/notify.mjs --test

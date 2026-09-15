@@ -8,7 +8,7 @@
 // reads the already-published data files.
 
 import { mkdir, rename, writeFile, rm, readFile } from "node:fs/promises";
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const CONFIG_PATH = new URL("../config/notify-preferences.json", import.meta.url);
@@ -106,7 +106,14 @@ function collectMatches(source, payload, config) {
  * per cabin, and a route's dates are listed once under a shared heading
  * instead of repeating "EWR -> ARN" on every single line.
  */
-function buildMessageBody(matches) {
+export function buildSasUrl(from, to, date) {
+  const url = new URL("https://www.sas.se/book/flights/");
+  url.searchParams.set("search", `OW_${from}-${to}-${date.replaceAll("-", "")}_a1c0i0y0`);
+  url.searchParams.set("bookingFlow", "points");
+  return url.toString();
+}
+
+export function buildMessageBody(matches) {
   const routeGroups = new Map();
   for (const match of matches) {
     const [from, to] = match.direction === "outbound" ? [match.home, match.nyc] : [match.nyc, match.home];
@@ -115,7 +122,7 @@ function buildMessageBody(matches) {
     const dateGroups = routeGroups.get(routeKey);
     const dateKey = `${match.date}|${match.source}`;
     if (!dateGroups.has(dateKey)) {
-      dateGroups.set(dateKey, { date: match.date, source: match.source, cabins: new Map() });
+      dateGroups.set(dateKey, { date: match.date, source: match.source, from, to, cabins: new Map() });
     }
     dateGroups.get(dateKey).cabins.set(match.cabin, match.count);
   }
@@ -128,12 +135,35 @@ function buildMessageBody(matches) {
           .sort((a, b) => CABIN_ORDER.indexOf(a[0]) - CABIN_ORDER.indexOf(b[0]))
           .map(([cabin, count]) => `${CABIN_LABELS[cabin]} ${count}`)
           .join(", ");
-        return `\u2022 ${d.date} \u2014 ${cabinText} (${SOURCE_LABELS[d.source]})`;
+        return `\u2022 ${d.date} \u2014 ${cabinText} (${SOURCE_LABELS[d.source]})\n  [Open on SAS](${buildSasUrl(d.from, d.to, d.date)})`;
       });
     return `*${routeKey}*\n${dateLines.join("\n")}`;
   });
 
   return sections.join("\n\n");
+}
+
+export function buildMessages(matches, test = false) {
+  const format = (batch) => `${test ? "🧪 *TEST — sample availability*\n\n" : ""}✈️ *${batch.length} new match${batch.length === 1 ? "" : "es"}*\n\n${buildMessageBody(batch)}`;
+  const messages = [];
+  let batch = [];
+  for (const match of matches) {
+    if (batch.length && format([...batch, match]).length > 3900) {
+      messages.push(format(batch));
+      batch = [];
+    }
+    batch.push(match);
+  }
+  if (batch.length) messages.push(format(batch));
+  return messages;
+}
+
+export function sampleMatches() {
+  return [
+    { source: "sas", comboId: "cph-jfk", home: "CPH", nyc: "JFK", direction: "inbound", date: "2027-05-14", cabin: "AB", count: 2 },
+    { source: "sas", comboId: "cph-jfk", home: "CPH", nyc: "JFK", direction: "inbound", date: "2027-05-14", cabin: "AP", count: 4 },
+    { source: "roamsnap", comboId: "arn-ewr", home: "ARN", nyc: "EWR", direction: "inbound", date: "2027-05-16", cabin: "AB", count: 1 },
+  ];
 }
 
 async function sendTelegramMessage(text) {
@@ -154,6 +184,14 @@ async function sendTelegramMessage(text) {
 }
 
 async function main() {
+  if (process.argv.includes("--test")) {
+    const messages = buildMessages(sampleMatches(), true);
+    for (const text of messages) {
+      if (process.argv.includes("--preview")) console.log(text);
+      else await sendTelegramMessage(text);
+    }
+    return; // Never read or modify the real notification state for a test.
+  }
   const config = await readJsonIfExists(CONFIG_PATH);
   if (!config) {
     console.error(`Missing ${CONFIG_PATH.pathname} — nothing to check.`);
@@ -181,14 +219,7 @@ async function main() {
     return;
   }
 
-  const header = `\u2708\ufe0f *${newMatches.length} new match${newMatches.length === 1 ? "" : "es"}*`;
-  let text = `${header}\n\n${buildMessageBody(newMatches)}`;
-  const MAX_CHARS = 3900; // Telegram's sendMessage limit is 4096 chars.
-  if (text.length > MAX_CHARS) {
-    text = `${text.slice(0, MAX_CHARS)}\n\n\u2026(truncated, see the full list on the site)`;
-  }
-
-  await sendTelegramMessage(text);
+  for (const text of buildMessages(newMatches)) await sendTelegramMessage(text);
   console.log(`Sent Telegram notification for ${newMatches.length} new match(es).`);
 
   // Only persist state once the message actually sent, so a delivery
@@ -196,7 +227,7 @@ async function main() {
   await writeAtomic(STATE_PATH, JSON.stringify(state, null, 2) + "\n");
 }
 
-main().catch((err) => {
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch((err) => {
   console.error("Unexpected failure:", err && err.message ? err.message : err);
   process.exitCode = 1;
 });
