@@ -42,7 +42,9 @@
   const calendarWeekStart = (
     calendarLocale.getWeekInfo?.() ?? calendarLocale.weekInfo ?? { firstDay: 1 }
   ).firstDay % 7;
-  const AUTH_PASSWORD = "pizza12";
+  // Cosmetic static-site gate, not server-side access control.
+  const AUTH_PASSWORD_SALT = "acdeb67dcfc1ae0ed0afbe2dbb000106";
+  const AUTH_PASSWORD_HASH = "8716c1c327e7a16b737d8a48eed7b3f9e81f8a1f9d9f6fc4a9a8f9878c5351a0";
   const AUTH_STORAGE_KEY = "awards:dashboardUnlocked";
   const MONTHLY_ACTIVITY_STORAGE_KEY = "awards:monthlyAvailabilityActivity";
 
@@ -1531,17 +1533,42 @@
     els.loginPassword.focus();
   }
 
-  function handleLoginSubmit(e) {
+  async function verifyPassword(password) {
+    const key = await crypto.subtle.importKey(
+      "raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]
+    );
+    const salt = Uint8Array.from(AUTH_PASSWORD_SALT.match(/../g), (byte) => Number.parseInt(byte, 16));
+    const bits = await crypto.subtle.deriveBits(
+      { name: "PBKDF2", hash: "SHA-256", salt, iterations: 600000 }, key, 256
+    );
+    const hash = Array.from(new Uint8Array(bits), (byte) => byte.toString(16).padStart(2, "0")).join("");
+    return hash === AUTH_PASSWORD_HASH;
+  }
+
+  async function handleLoginSubmit(e) {
     e.preventDefault();
-    if (els.loginPassword.value === AUTH_PASSWORD) {
-      rememberUnlocked();
-      els.loginPassword.value = "";
-      els.loginError.hidden = true;
-      unlockDashboard();
-      return;
+    const submit = els.loginForm.querySelector('button[type="submit"]');
+    if (submit.disabled) return;
+    submit.disabled = true;
+    els.loginForm.setAttribute("aria-busy", "true");
+    els.loginError.hidden = true;
+    try {
+      if (await verifyPassword(els.loginPassword.value)) {
+        rememberUnlocked();
+        els.loginPassword.value = "";
+        unlockDashboard();
+        return;
+      }
+      els.loginError.textContent = "Wrong password.";
+      els.loginError.hidden = false;
+      els.loginPassword.select();
+    } catch {
+      els.loginError.textContent = "Password verification is unavailable. Open this page over HTTPS in a current browser.";
+      els.loginError.hidden = false;
+    } finally {
+      submit.disabled = false;
+      els.loginForm.removeAttribute("aria-busy");
     }
-    els.loginError.hidden = false;
-    els.loginPassword.select();
   }
 
   [
