@@ -1545,10 +1545,12 @@
     return hash === AUTH_PASSWORD_HASH;
   }
 
+  let failedLoginAttempts = 0; // In-memory only: refreshing starts a new session.
+
   async function handleLoginSubmit(e) {
     e.preventDefault();
     const submit = els.loginForm.querySelector('button[type="submit"]');
-    if (submit.disabled) return;
+    if (submit.disabled || failedLoginAttempts >= 2) return;
     submit.disabled = true;
     els.loginForm.setAttribute("aria-busy", "true");
     els.loginError.hidden = true;
@@ -1559,14 +1561,22 @@
         unlockDashboard();
         return;
       }
-      els.loginError.textContent = "Wrong password.";
+      failedLoginAttempts += 1;
+      els.loginError.textContent = failedLoginAttempts >= 2
+        ? "Access denied. This session is locked."
+        : "Wrong password. 1 attempt remaining.";
       els.loginError.hidden = false;
-      els.loginPassword.select();
+      if (failedLoginAttempts >= 2) {
+        els.loginPassword.value = "";
+        els.loginPassword.disabled = true;
+      } else {
+        els.loginPassword.select();
+      }
     } catch {
       els.loginError.textContent = "Password verification is unavailable. Open this page over HTTPS in a current browser.";
       els.loginError.hidden = false;
     } finally {
-      submit.disabled = false;
+      submit.disabled = failedLoginAttempts >= 2;
       els.loginForm.removeAttribute("aria-busy");
     }
   }
