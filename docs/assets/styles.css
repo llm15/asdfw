@@ -413,6 +413,17 @@ body.auth-locked > footer {
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.78), 0 1px 2px rgba(17, 24, 39, 0.04);
 }
 
+/* Native desktop popups need an opaque background paired with their text. */
+.filter-group select {
+  color-scheme: light;
+}
+
+.filter-group select option,
+.filter-group select optgroup {
+  color: var(--fg);
+  background-color: var(--bg);
+}
+
 .filter-group select:focus,
 .filter-group input:focus {
   border-color: rgba(10, 132, 255, 0.5);
@@ -420,6 +431,9 @@ body.auth-locked > footer {
 }
 
 @media (prefers-color-scheme: dark) {
+  .filter-group select {
+    color-scheme: dark;
+  }
   .filter-group select,
   .filter-group input[type="month"],
   .filter-group input[type="date"],
