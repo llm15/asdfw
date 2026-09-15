@@ -142,6 +142,9 @@ body.auth-locked > footer {
 /* ---------- Header ---------- */
 
 .site-header {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background:
     radial-gradient(circle at 78% 14%, rgba(214, 169, 80, 0.34), transparent 18rem),
     radial-gradient(circle at 14% 0%, rgba(10, 132, 255, 0.24), transparent 24rem),
@@ -153,12 +156,32 @@ body.auth-locked > footer {
 }
 
 .site-header__inner {
+  position: relative;
   max-width: 72rem;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 27rem;
   align-items: center;
   gap: 2rem;
+}
+
+/* A quiet sense of place, without adding height above the availability data. */
+.site-header__destination {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(42%, 24rem);
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.24;
+  filter: saturate(0.35);
+  mask-image: linear-gradient(to right, transparent, #000 65%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.site-header__destination[hidden] {
+  display: none;
 }
 
 .site-header h1 {
