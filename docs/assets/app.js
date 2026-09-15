@@ -46,6 +46,8 @@
   const AUTH_PASSWORD_SALT = "acdeb67dcfc1ae0ed0afbe2dbb000106";
   const AUTH_PASSWORD_HASH = "8716c1c327e7a16b737d8a48eed7b3f9e81f8a1f9d9f6fc4a9a8f9878c5351a0";
   const AUTH_STORAGE_KEY = "awards:dashboardUnlocked";
+  const AUTH_LOCK_KEY = "awards:loginLockedUntil";
+  const AUTH_LOCK_MS = 30 * 60 * 1000;
   const MONTHLY_ACTIVITY_STORAGE_KEY = "awards:monthlyAvailabilityActivity";
 
   // All sources publish the exact same JSON shape (see fetch-sas-data.mjs /
@@ -1500,6 +1502,7 @@
   }
 
   function isUnlocked() {
+    if (loginLockedUntil() > Date.now()) return false;
     try {
       return localStorage.getItem(AUTH_STORAGE_KEY) === "1";
     } catch {
@@ -1530,7 +1533,8 @@
     } else {
       els.loginDialog.setAttribute("open", "");
     }
-    els.loginPassword.focus();
+    updateLoginLock();
+    if (!els.loginPassword.disabled) els.loginPassword.focus();
   }
 
   async function verifyPassword(password) {
@@ -1545,38 +1549,76 @@
     return hash === AUTH_PASSWORD_HASH;
   }
 
-  let failedLoginAttempts = 0; // In-memory only: refreshing starts a new session.
+  let failedLoginAttempts = 0;
+  let lockedUntil = 0;
+  let lockTimer;
+
+  function loginLockedUntil() {
+    try {
+      const stored = Number(localStorage.getItem(AUTH_LOCK_KEY));
+      if (Number.isFinite(stored)) lockedUntil = Math.max(lockedUntil, stored);
+    } catch { /* Retain the in-memory lock if storage is unavailable. */ }
+    return lockedUntil;
+  }
+
+  function updateLoginLock() {
+    clearTimeout(lockTimer);
+    const remaining = loginLockedUntil() - Date.now();
+    const locked = remaining > 0;
+    els.loginPassword.disabled = locked;
+    els.loginForm.querySelector('button[type="submit"]').disabled = locked;
+    if (locked) {
+      els.loginError.hidden = true;
+      els.loginError.textContent = "";
+      lockTimer = setTimeout(updateLoginLock, Math.min(remaining, AUTH_LOCK_MS));
+    } else if (lockedUntil) {
+      lockedUntil = 0;
+      failedLoginAttempts = 0;
+      try { localStorage.removeItem(AUTH_LOCK_KEY); } catch { /* Optional storage. */ }
+    }
+    return locked;
+  }
+
+  window.addEventListener("storage", (event) => {
+    if (event.key === AUTH_LOCK_KEY && els.loginDialog.open) updateLoginLock();
+  });
 
   async function handleLoginSubmit(e) {
     e.preventDefault();
     const submit = els.loginForm.querySelector('button[type="submit"]');
-    if (submit.disabled || failedLoginAttempts >= 2) return;
+    if (submit.disabled) return;
+    if (updateLoginLock()) return;
     submit.disabled = true;
     els.loginForm.setAttribute("aria-busy", "true");
     els.loginError.hidden = true;
     try {
-      if (await verifyPassword(els.loginPassword.value)) {
+      const valid = await verifyPassword(els.loginPassword.value);
+      if (loginLockedUntil() > Date.now()) return;
+      if (valid) {
+        failedLoginAttempts = 0;
         rememberUnlocked();
         els.loginPassword.value = "";
         unlockDashboard();
         return;
       }
       failedLoginAttempts += 1;
-      els.loginError.textContent = failedLoginAttempts >= 2
-        ? "Access denied. This session is locked."
-        : "Wrong password. 1 attempt remaining.";
-      els.loginError.hidden = false;
       if (failedLoginAttempts >= 2) {
+        lockedUntil = Date.now() + AUTH_LOCK_MS;
+        try {
+          localStorage.setItem(AUTH_LOCK_KEY, String(lockedUntil));
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+        } catch { /* The current page remains locked if storage is unavailable. */ }
         els.loginPassword.value = "";
-        els.loginPassword.disabled = true;
       } else {
+        els.loginError.textContent = "Wrong password. 1 attempt remaining.";
+        els.loginError.hidden = false;
         els.loginPassword.select();
       }
     } catch {
       els.loginError.textContent = "Password verification is unavailable. Open this page over HTTPS in a current browser.";
       els.loginError.hidden = false;
     } finally {
-      submit.disabled = failedLoginAttempts >= 2;
+      updateLoginLock();
       els.loginForm.removeAttribute("aria-busy");
     }
   }
