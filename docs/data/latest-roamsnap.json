@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-09-11T03:47:50.428Z",
+  "updatedAt": "2026-09-15T13:02:50.756Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
       "destination": "JFK",
       "source": "roamsnap.com",
-      "endpoint": "https://roamsnap.com/awards?hub=ARN%2COSL%2CCPH&cabin=BUSINESS&dest=JFK&m=from",
+      "endpoint": "https://roamsnap.com/sas/jfk?sdir=in",
       "status": "ok",
       "response": [
         {
@@ -21,7 +21,7 @@
       "origin": "ARN",
       "destination": "EWR",
       "source": "roamsnap.com",
-      "endpoint": "https://roamsnap.com/awards?hub=ARN%2COSL%2CCPH&cabin=BUSINESS&dest=EWR&m=from",
+      "endpoint": "https://roamsnap.com/sas/ewr?sdir=in",
       "status": "ok",
       "response": [
         {
@@ -30,11 +30,11 @@
             "outbound": [],
             "inbound": [
               {
-                "date": "2026-09-21",
+                "date": "2026-09-28",
                 "AG": 0,
                 "AP": 0,
-                "AB": 3,
-                "availableSeatsTotal": 3,
+                "AB": 1,
+                "availableSeatsTotal": 1,
                 "flightNumbers": [
                   "SK904"
                 ]
@@ -48,7 +48,7 @@
       "origin": "OSL",
       "destination": "JFK",
       "source": "roamsnap.com",
-      "endpoint": "https://roamsnap.com/awards?hub=ARN%2COSL%2CCPH&cabin=BUSINESS&dest=JFK&m=from",
+      "endpoint": "https://roamsnap.com/sas/jfk?sdir=in",
       "status": "ok",
       "response": [
         {
@@ -56,16 +56,6 @@
           "availability": {
             "outbound": [],
             "inbound": [
-              {
-                "date": "2026-09-12",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK924"
-                ]
-              },
               {
                 "date": "2027-04-22",
                 "AG": 0,
@@ -85,7 +75,7 @@
       "origin": "OSL",
       "destination": "EWR",
       "source": "roamsnap.com",
-      "endpoint": "https://roamsnap.com/awards?hub=ARN%2COSL%2CCPH&cabin=BUSINESS&dest=EWR&m=from",
+      "endpoint": "https://roamsnap.com/sas/ewr?sdir=in",
       "status": "ok",
       "response": [
         {
@@ -101,7 +91,7 @@
       "origin": "CPH",
       "destination": "JFK",
       "source": "roamsnap.com",
-      "endpoint": "https://roamsnap.com/awards?hub=ARN%2COSL%2CCPH&cabin=BUSINESS&dest=JFK&m=from",
+      "endpoint": "https://roamsnap.com/sas/jfk?sdir=in",
       "status": "ok",
       "response": [
         {
@@ -110,21 +100,11 @@
             "outbound": [],
             "inbound": [
               {
-                "date": "2026-09-15",
+                "date": "2026-10-10",
                 "AG": 0,
                 "AP": 0,
-                "AB": 9,
-                "availableSeatsTotal": 9,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              },
-              {
-                "date": "2026-09-29",
-                "AG": 0,
-                "AP": 0,
-                "AB": 3,
-                "availableSeatsTotal": 3,
+                "AB": 1,
+                "availableSeatsTotal": 1,
                 "flightNumbers": [
                   "SK916"
                 ]
@@ -140,11 +120,21 @@
                 ]
               },
               {
-                "date": "2027-01-11",
+                "date": "2026-11-28",
                 "AG": 0,
                 "AP": 0,
                 "AB": 2,
                 "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ]
+              },
+              {
+                "date": "2026-12-04",
+                "AG": 0,
+                "AP": 0,
+                "AB": 6,
+                "availableSeatsTotal": 6,
                 "flightNumbers": [
                   "SK916"
                 ]
@@ -160,17 +150,7 @@
                 ]
               },
               {
-                "date": "2027-01-23",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              },
-              {
-                "date": "2027-04-07",
+                "date": "2027-01-17",
                 "AG": 0,
                 "AP": 0,
                 "AB": 2,
@@ -198,7 +178,7 @@
       "origin": "CPH",
       "destination": "EWR",
       "source": "roamsnap.com",
-      "endpoint": "https://roamsnap.com/awards?hub=ARN%2COSL%2CCPH&cabin=BUSINESS&dest=EWR&m=from",
+      "endpoint": "https://roamsnap.com/sas/ewr?sdir=in",
       "status": "ok",
       "response": [
         {
@@ -207,21 +187,11 @@
             "outbound": [],
             "inbound": [
               {
-                "date": "2026-09-14",
+                "date": "2026-09-21",
                 "AG": 0,
                 "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK910"
-                ]
-              },
-              {
-                "date": "2026-11-08",
-                "AG": 0,
-                "AP": 0,
-                "AB": 4,
-                "availableSeatsTotal": 4,
+                "AB": 5,
+                "availableSeatsTotal": 5,
                 "flightNumbers": [
                   "SK910"
                 ]
@@ -242,6 +212,16 @@
                 "AP": 0,
                 "AB": 1,
                 "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK910"
+                ]
+              },
+              {
+                "date": "2027-01-17",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
                 "flightNumbers": [
                   "SK910"
                 ]
