@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-16T00:59:27.414Z",
+  "updatedAt": "2026-09-16T03:58:08.403Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -21,7 +21,7 @@
                 "flightNumbers": [
                   "DL205"
                 ],
-                "checkedAt": "2026-09-15T18:37:07.444Z"
+                "checkedAt": "2026-09-16T02:29:12.216Z"
               },
               {
                 "date": "2026-10-05",
@@ -163,17 +163,6 @@
                 "checkedAt": "2026-09-15T21:43:24.187Z"
               },
               {
-                "date": "2026-10-03",
-                "AG": 0,
-                "AP": 1,
-                "AB": 0,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK903"
-                ],
-                "checkedAt": "2026-09-15T18:43:10.871Z"
-              },
-              {
                 "date": "2026-10-14",
                 "AG": 3,
                 "AP": 1,
@@ -194,6 +183,17 @@
                   "SK903"
                 ],
                 "checkedAt": "2026-09-15T23:59:31.016Z"
+              },
+              {
+                "date": "2027-04-11",
+                "AG": 1,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-16T03:13:41.057Z"
               }
             ],
             "inbound": [
@@ -430,6 +430,17 @@
                 "checkedAt": "2026-09-15T19:46:00.694Z"
               },
               {
+                "date": "2026-10-11",
+                "AG": 9,
+                "AP": 0,
+                "AB": 0,
+                "availableSeatsTotal": 9,
+                "flightNumbers": [
+                  "SK907"
+                ],
+                "checkedAt": "2026-09-16T01:20:03.645Z"
+              },
+              {
                 "date": "2026-10-17",
                 "AG": 9,
                 "AP": 0,
@@ -438,18 +449,7 @@
                 "flightNumbers": [
                   "SK907"
                 ],
-                "checkedAt": "2026-09-15T21:26:49.695Z"
-              },
-              {
-                "date": "2026-10-18",
-                "AG": 1,
-                "AP": 0,
-                "AB": 0,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK907"
-                ],
-                "checkedAt": "2026-09-15T06:23:04.987Z"
+                "checkedAt": "2026-09-16T01:22:41.832Z"
               }
             ],
             "inbound": [
@@ -577,7 +577,7 @@
                 "flightNumbers": [
                   "DL219"
                 ],
-                "checkedAt": "2026-09-15T22:07:18.814Z"
+                "checkedAt": "2026-09-16T03:35:10.629Z"
               }
             ],
             "inbound": [
@@ -661,7 +661,7 @@
                 "flightNumbers": [
                   "SK909"
                 ],
-                "checkedAt": "2026-09-15T21:46:03.831Z"
+                "checkedAt": "2026-09-16T02:50:00.869Z"
               },
               {
                 "date": "2026-09-18",
@@ -672,7 +672,7 @@
                 "flightNumbers": [
                   "SK909"
                 ],
-                "checkedAt": "2026-09-15T16:38:31.635Z"
+                "checkedAt": "2026-09-16T03:04:44.257Z"
               },
               {
                 "date": "2026-09-22",
@@ -718,7 +718,7 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-15T19:32:32.557Z"
+                "checkedAt": "2026-09-16T01:17:34.457Z"
               },
               {
                 "date": "2026-11-05",
@@ -729,7 +729,7 @@
                 "flightNumbers": [
                   "SK910"
                 ],
-                "checkedAt": "2026-09-16T00:11:32.798Z"
+                "checkedAt": "2026-09-16T01:10:30.150Z"
               },
               {
                 "date": "2026-11-06",
