@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-16T21:47:28.071Z",
+  "updatedAt": "2026-09-17T00:51:47.722Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -28,18 +28,7 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [],
-            "inbound": [
-              {
-                "date": "2026-09-28",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK904"
-                ]
-              }
-            ]
+            "inbound": []
           }
         }
       ]
@@ -198,6 +187,16 @@
                 "flightNumbers": [
                   "SK916"
                 ]
+              },
+              {
+                "date": "2027-03-07",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK916"
+                ]
               }
             ]
           }
@@ -230,8 +229,8 @@
                 "date": "2027-01-11",
                 "AG": 0,
                 "AP": 0,
-                "AB": 3,
-                "availableSeatsTotal": 3,
+                "AB": 5,
+                "availableSeatsTotal": 5,
                 "flightNumbers": [
                   "SK910"
                 ]
@@ -258,6 +257,26 @@
               },
               {
                 "date": "2027-01-18",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK910"
+                ]
+              },
+              {
+                "date": "2027-02-21",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK910"
+                ]
+              },
+              {
+                "date": "2027-03-06",
                 "AG": 0,
                 "AP": 0,
                 "AB": 2,
