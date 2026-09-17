@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-17T12:51:30.515Z",
+  "updatedAt": "2026-09-17T15:47:59.185Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -133,16 +133,6 @@
                 "date": "2026-12-25",
                 "AG": 0,
                 "AP": 0,
-                "AB": 4,
-                "availableSeatsTotal": 4,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              },
-              {
-                "date": "2026-12-27",
-                "AG": 0,
-                "AP": 0,
                 "AB": 3,
                 "availableSeatsTotal": 3,
                 "flightNumbers": [
@@ -153,8 +143,8 @@
                 "date": "2026-12-28",
                 "AG": 0,
                 "AP": 0,
-                "AB": 6,
-                "availableSeatsTotal": 6,
+                "AB": 2,
+                "availableSeatsTotal": 2,
                 "flightNumbers": [
                   "SK916"
                 ]
@@ -163,8 +153,8 @@
                 "date": "2026-12-29",
                 "AG": 0,
                 "AP": 0,
-                "AB": 6,
-                "availableSeatsTotal": 6,
+                "AB": 4,
+                "availableSeatsTotal": 4,
                 "flightNumbers": [
                   "SK916"
                 ]
@@ -236,36 +226,6 @@
           "availability": {
             "outbound": [],
             "inbound": [
-              {
-                "date": "2026-12-25",
-                "AG": 0,
-                "AP": 0,
-                "AB": 4,
-                "availableSeatsTotal": 4,
-                "flightNumbers": [
-                  "SK910"
-                ]
-              },
-              {
-                "date": "2027-01-06",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK910"
-                ]
-              },
-              {
-                "date": "2027-01-07",
-                "AG": 0,
-                "AP": 0,
-                "AB": 2,
-                "availableSeatsTotal": 2,
-                "flightNumbers": [
-                  "SK910"
-                ]
-              },
               {
                 "date": "2027-01-11",
                 "AG": 0,
