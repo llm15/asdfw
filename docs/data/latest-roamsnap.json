@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T09:45:05.016Z",
+  "updatedAt": "2026-09-19T12:48:36.957Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -33,8 +33,8 @@
                 "date": "2026-10-23",
                 "AG": 0,
                 "AP": 0,
-                "AB": 2,
-                "availableSeatsTotal": 2,
+                "AB": 3,
+                "availableSeatsTotal": 3,
                 "flightNumbers": [
                   "SK904"
                 ]
@@ -60,17 +60,17 @@
                 ]
               },
               {
-                "date": "2027-02-13",
+                "date": "2027-04-19",
                 "AG": 0,
                 "AP": 0,
-                "AB": 2,
-                "availableSeatsTotal": 2,
+                "AB": 1,
+                "availableSeatsTotal": 1,
                 "flightNumbers": [
                   "SK904"
                 ]
               },
               {
-                "date": "2027-04-19",
+                "date": "2027-04-22",
                 "AG": 0,
                 "AP": 0,
                 "AB": 1,
@@ -108,16 +108,6 @@
               },
               {
                 "date": "2026-10-20",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK924"
-                ]
-              },
-              {
-                "date": "2027-04-22",
                 "AG": 0,
                 "AP": 0,
                 "AB": 1,
@@ -183,18 +173,8 @@
                 "date": "2026-11-09",
                 "AG": 0,
                 "AP": 0,
-                "AB": 2,
-                "availableSeatsTotal": 2,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              },
-              {
-                "date": "2026-11-16",
-                "AG": 0,
-                "AP": 0,
-                "AB": 2,
-                "availableSeatsTotal": 2,
+                "AB": 1,
+                "availableSeatsTotal": 1,
                 "flightNumbers": [
                   "SK916"
                 ]
@@ -223,8 +203,8 @@
                 "date": "2026-12-28",
                 "AG": 0,
                 "AP": 0,
-                "AB": 4,
-                "availableSeatsTotal": 4,
+                "AB": 3,
+                "availableSeatsTotal": 3,
                 "flightNumbers": [
                   "SK916"
                 ]
@@ -290,8 +270,8 @@
                 "date": "2026-11-17",
                 "AG": 0,
                 "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
+                "AB": 3,
+                "availableSeatsTotal": 3,
                 "flightNumbers": [
                   "SK910"
                 ]
@@ -400,8 +380,8 @@
                 "date": "2027-02-01",
                 "AG": 0,
                 "AP": 0,
-                "AB": 4,
-                "availableSeatsTotal": 4,
+                "AB": 2,
+                "availableSeatsTotal": 2,
                 "flightNumbers": [
                   "SK910"
                 ]
@@ -412,16 +392,6 @@
                 "AP": 0,
                 "AB": 2,
                 "availableSeatsTotal": 2,
-                "flightNumbers": [
-                  "SK910"
-                ]
-              },
-              {
-                "date": "2027-02-06",
-                "AG": 0,
-                "AP": 0,
-                "AB": 4,
-                "availableSeatsTotal": 4,
                 "flightNumbers": [
                   "SK910"
                 ]
