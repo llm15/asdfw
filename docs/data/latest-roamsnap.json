@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-21T18:50:12.652Z",
+  "updatedAt": "2026-09-21T21:44:42.476Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -128,26 +128,6 @@
                 "flightNumbers": [
                   "SK916"
                 ]
-              },
-              {
-                "date": "2026-12-29",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              },
-              {
-                "date": "2027-04-12",
-                "AG": 0,
-                "AP": 0,
-                "AB": 2,
-                "availableSeatsTotal": 2,
-                "flightNumbers": [
-                  "SK916"
-                ]
               }
             ]
           }
@@ -182,16 +162,6 @@
                 "AP": 0,
                 "AB": 2,
                 "availableSeatsTotal": 2,
-                "flightNumbers": [
-                  "SK910"
-                ]
-              },
-              {
-                "date": "2027-02-21",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
                 "flightNumbers": [
                   "SK910"
                 ]
