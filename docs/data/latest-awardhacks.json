@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-22T09:28:13.409Z",
+  "updatedAt": "2026-09-22T12:34:06.354Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -749,17 +749,6 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [
-              {
-                "date": "2026-09-22",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK909"
-                ],
-                "checkedAt": "2026-09-18T18:06:09Z"
-              },
               {
                 "date": "2026-09-28",
                 "AG": 0,
