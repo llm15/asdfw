@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T06:52:33.828Z",
+  "updatedAt": "2026-09-25T09:48:14.101Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -128,18 +128,7 @@
           "airportCode": "JFK",
           "availability": {
             "outbound": [],
-            "inbound": [
-              {
-                "date": "2026-10-06",
-                "AG": 0,
-                "AP": 0,
-                "AB": 1,
-                "availableSeatsTotal": 1,
-                "flightNumbers": [
-                  "SK916"
-                ]
-              }
-            ]
+            "inbound": []
           }
         }
       ]
