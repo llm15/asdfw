@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T18:31:02.421Z",
+  "updatedAt": "2026-09-25T21:28:20.750Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -391,6 +391,17 @@
           "airportCode": "JFK",
           "availability": {
             "outbound": [
+              {
+                "date": "2026-09-30",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK915"
+                ],
+                "checkedAt": "2026-09-25T21:22:25Z"
+              },
               {
                 "date": "2027-05-08",
                 "AG": 0,
