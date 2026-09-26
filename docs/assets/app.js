@@ -918,14 +918,30 @@
     dl.appendChild(dd);
   }
 
-  function buildSasFlightSearchUrl(origin, destination, dateStr) {
+  function buildSasSearchUrl(searchToken) {
     const url = new URL("https://www.sas.se/book/flights/");
-    url.searchParams.set("search", `OW_${origin}-${destination}-${dateStr.replaceAll("-", "")}_a1c0i0y0`);
+    url.searchParams.set("search", searchToken);
     url.searchParams.set("view", "upsell");
     url.searchParams.set("bookingFlow", "points");
     url.searchParams.set("sortBy", "rec");
     url.searchParams.set("filterBy", "all");
     return url.toString();
+  }
+
+  function compactDate(dateStr) {
+    return dateStr.replaceAll("-", "");
+  }
+
+  function buildSasFlightSearchUrl(origin, destination, dateStr) {
+    return buildSasSearchUrl(`OW_${origin}-${destination}-${compactDate(dateStr)}_a1c0i0y0`);
+  }
+
+  /** "Tur och retur": SAS derives the return leg from the same airport
+   * pair, so a round trip is the outbound route plus both dates. */
+  function buildSasRoundTripSearchUrl(origin, destination, outboundDate, returnDate) {
+    return buildSasSearchUrl(
+      `RT_${origin}-${destination}-${compactDate(outboundDate)}-${compactDate(returnDate)}_a1c0i0y0`
+    );
   }
 
   /** Builds the detailed breakdown shown in the day-detail dialog: every
@@ -1169,17 +1185,19 @@
   }
 
   /** One leg of a suggested trip, rendered as a direct link into the SAS
-   * points search for that exact route and date — the same interaction the
-   * day-detail dialog already uses. */
-  function renderTripLeg(leg, label) {
+   * points search — the same interaction the day-detail dialog already
+   * uses. `booking.href` is a single return search when the trip really is
+   * a round trip, so it opens as one booking instead of two one-ways. */
+  function renderTripLeg(leg, label, booking) {
     const el = document.createElement("a");
     el.className = "trip-leg";
-    el.href = buildSasFlightSearchUrl(leg.from, leg.to, leg.date);
+    el.href = booking.href;
     el.target = "_blank";
     el.rel = "noreferrer";
     el.title =
       `${leg.from} → ${leg.to} on ${formatDateDisplay(leg.date)} — ` +
-      `Economy ${leg.counts.AG}, Premium Economy ${leg.counts.AP}, Business ${leg.counts.AB}`;
+      `Economy ${leg.counts.AG}, Premium Economy ${leg.counts.AP}, Business ${leg.counts.AB}` +
+      (booking.roundTrip ? " — opens as one return trip on SAS" : "");
 
     const direction = document.createElement("p");
     direction.className = "trip-leg__direction";
@@ -1215,10 +1233,19 @@
     const article = document.createElement("article");
     article.className = `trip trip--${trip.cabinKey}`;
 
+    const roundTrip = !trip.openJaw.any;
+    const returnHref = roundTrip
+      ? buildSasRoundTripSearchUrl(trip.outbound.from, trip.outbound.to, trip.outbound.date, trip.inbound.date)
+      : null;
+    const bookingFor = (leg) => ({
+      roundTrip,
+      href: returnHref || buildSasFlightSearchUrl(leg.from, leg.to, leg.date),
+    });
+
     const legs = document.createElement("div");
     legs.className = "trip__legs";
-    legs.appendChild(renderTripLeg(trip.outbound, "Out"));
-    legs.appendChild(renderTripLeg(trip.inbound, "Back"));
+    legs.appendChild(renderTripLeg(trip.outbound, "Out", bookingFor(trip.outbound)));
+    legs.appendChild(renderTripLeg(trip.inbound, "Back", bookingFor(trip.inbound)));
     article.appendChild(legs);
 
     const meta = document.createElement("div");
