@@ -1204,14 +1204,12 @@
     direction.textContent = label;
     el.appendChild(direction);
 
-    const cities = document.createElement("p");
-    cities.className = "trip-leg__cities";
-    cities.textContent = `${globalThis.TripSuggestions.cityName(leg.from)} → ${globalThis.TripSuggestions.cityName(leg.to)}`;
-    el.appendChild(cities);
-
     const route = document.createElement("p");
     route.className = "trip-leg__route";
-    route.textContent = `${leg.from} → ${leg.to}`;
+    const arrow = document.createElement("span");
+    arrow.className = "trip-leg__arrow";
+    arrow.textContent = "→";
+    route.append(leg.from, arrow, leg.to);
     el.appendChild(route);
 
     const meta = document.createElement("p");

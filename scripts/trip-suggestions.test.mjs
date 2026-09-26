@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 // globalThis instead of exporting — importing it for its side effect keeps
 // the browser and the test suite on exactly the same code.
 await import("../docs/assets/trip-suggestions.js");
-const { buildTripSuggestions, addDays, nightsBetween, cityName } = globalThis.TripSuggestions;
+const { buildTripSuggestions, addDays, nightsBetween } = globalThis.TripSuggestions;
 
 /** Builds a route in the same shape mergeCombo() produces in app.js. */
 function route(homeCode, nycCode, outbound, inbound) {
@@ -196,13 +196,6 @@ test("ranking is deterministic regardless of route order", () => {
       earliestDate: "2027-01-01",
     }).suggestions.map((trip) => trip.id);
   assert.deepEqual(build([["ARN", "JFK"], ["CPH", "EWR"]]), build([["CPH", "EWR"], ["ARN", "JFK"]]));
-});
-
-test("city names cover every supported airport", () => {
-  assert.deepEqual(
-    ["ARN", "CPH", "OSL", "JFK", "EWR"].map(cityName),
-    ["Stockholm", "Copenhagen", "Oslo", "New York", "New York"]
-  );
 });
 
 test("the real published SAS payload produces bookable, in-range trips", async () => {

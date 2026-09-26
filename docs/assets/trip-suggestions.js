@@ -33,14 +33,6 @@
   };
   const CABIN_ORDER = ["AB", "AP", "AG"];
 
-  const AIRPORT_CITIES = {
-    ARN: "Stockholm",
-    CPH: "Copenhagen",
-    OSL: "Oslo",
-    JFK: "New York",
-    EWR: "New York",
-  };
-
   const DEFAULTS = {
     minNights: 5,
     maxNights: 10,
@@ -245,17 +237,11 @@
     return { suggestions, totalCandidates: candidates.length };
   }
 
-  function cityName(code) {
-    return AIRPORT_CITIES[code] || code;
-  }
-
   root.TripSuggestions = {
-    AIRPORT_CITIES,
     CABINS,
     DEFAULTS,
     addDays,
     buildTripSuggestions,
-    cityName,
     nightsBetween,
   };
 })(globalThis);

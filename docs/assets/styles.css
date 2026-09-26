@@ -1391,21 +1391,20 @@ body.auth-locked > footer {
   text-transform: uppercase;
 }
 
-.trip-leg__cities {
-  margin: 0.2rem 0 0;
+.trip-leg__route {
+  margin: 0.15rem 0 0;
   color: var(--fg);
-  font-size: 1rem;
-  font-weight: 650;
-  line-height: 1.25;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
-.trip-leg__route {
-  margin: 0.05rem 0 0;
+.trip-leg__arrow {
+  margin: 0 0.4rem;
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
+  font-weight: 400;
 }
 
 .trip-leg__meta {
