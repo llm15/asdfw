@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NYC → Nordics Award Finder</title>
   <meta name="description" content="SAS award availability from JFK or EWR to ARN, OSL, or CPH." />
-  <!-- Bump ?v= on both asset URLs below whenever app.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=43" />
+  <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
+  <link rel="stylesheet" href="assets/styles.css?v=44" />
 </head>
 <body class="auth-locked">
   <header class="site-header">
@@ -112,6 +112,14 @@
       <div id="monthly-activity" class="monthly-activity"></div>
     </section>
 
+    <section class="trip-suggestions-section">
+      <div class="trip-suggestions-heading">
+        <h2>Trip suggestions</h2>
+        <p id="trip-suggestions-meta" class="trip-suggestions__meta"></p>
+      </div>
+      <div id="trip-suggestions" class="trip-suggestions" aria-live="polite"></div>
+    </section>
+
     <section class="table-section">
       <div class="table-toolbar">
         <h2>Available dates</h2>
@@ -175,7 +183,8 @@
     </p>
   </footer>
 
-  <script src="assets/app.js?v=43"></script>
+  <script src="assets/trip-suggestions.js?v=44"></script>
+  <script src="assets/app.js?v=44"></script>
 </body>
 </html>
 

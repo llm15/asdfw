@@ -102,6 +102,11 @@
   // Priority order for picking which cabin "best" represents a mixed result.
   const CABIN_PRIORITY = ["AB", "AP", "AG"];
 
+  // Trip suggestions start as a short, scannable shortlist; the rest are one
+  // click away rather than dumped on the page.
+  const TRIP_SUGGESTIONS_VISIBLE = 4;
+  const TRIP_SUGGESTIONS_LIMIT = 12;
+
   const els = {
     fetchBtn: document.getElementById("fetch-btn"),
     fetchBtnLabel: document.getElementById("fetch-btn-label"),
@@ -132,6 +137,8 @@
     tableBody: document.getElementById("dates-table-body"),
     technical: document.getElementById("technical-details"),
     monthlyActivity: document.getElementById("monthly-activity"),
+    tripSuggestions: document.getElementById("trip-suggestions"),
+    tripSuggestionsMeta: document.getElementById("trip-suggestions-meta"),
     dayDetailDialog: document.getElementById("day-detail-dialog"),
     dayDetailContent: document.getElementById("day-detail-content"),
     dayDetailClose: document.getElementById("day-detail-close"),
@@ -165,6 +172,8 @@
   // dates whose merged total changed since the last time this browser
   // fetched each source (see computeAvailabilityChanges()).
   let availabilityChanges = new Map();
+  // Whether the trip-suggestions list is showing more than its shortlist.
+  let tripSuggestionsExpanded = false;
 
   function isPlainObject(value) {
     return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -1122,6 +1131,184 @@
     els.monthlyActivity.appendChild(grid);
   }
 
+  /** Today as a plain UTC calendar date, matching how every other date in
+   * this app is handled — past availability can't be booked, so it never
+   * belongs in a trip suggestion. */
+  function todayIsoDate() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  /** Feeds the currently enabled routes and filters into the pure
+   * trip-suggestion engine (assets/trip-suggestions.js). Deliberately not
+   * scoped to the selected month: a trip spans two dates that often fall in
+   * different months, so it reads every fetched date instead. */
+  function buildTripSuggestionList() {
+    const engine = globalThis.TripSuggestions;
+    if (!engine || !lastGood) return null;
+    const routes = enabledCombos()
+      .map((combo) => {
+        const meta = lastGood.routesData[combo.id];
+        if (!meta || !meta.ok) return null;
+        return {
+          homeCode: combo.home.code,
+          nycCode: combo.nyc.code,
+          outboundMap: meta.outboundMap,
+          inboundMap: meta.inboundMap,
+        };
+      })
+      .filter(Boolean);
+    if (routes.length === 0) return { suggestions: [], totalCandidates: 0, routes: 0 };
+    const result = engine.buildTripSuggestions({
+      routes,
+      minSeats: Math.max(1, state.minSeats),
+      cabin: state.cabin,
+      earliestDate: todayIsoDate(),
+      limit: TRIP_SUGGESTIONS_LIMIT,
+    });
+    return { ...result, routes: routes.length };
+  }
+
+  /** One leg of a suggested trip, rendered as a direct link into the SAS
+   * points search for that exact route and date — the same interaction the
+   * day-detail dialog already uses. */
+  function renderTripLeg(leg, label) {
+    const el = document.createElement("a");
+    el.className = "trip-leg";
+    el.href = buildSasFlightSearchUrl(leg.from, leg.to, leg.date);
+    el.target = "_blank";
+    el.rel = "noreferrer";
+    el.title =
+      `${leg.from} → ${leg.to} on ${formatDateDisplay(leg.date)} — ` +
+      `Economy ${leg.counts.AG}, Premium Economy ${leg.counts.AP}, Business ${leg.counts.AB}`;
+
+    const direction = document.createElement("p");
+    direction.className = "trip-leg__direction";
+    direction.textContent = label;
+    el.appendChild(direction);
+
+    const cities = document.createElement("p");
+    cities.className = "trip-leg__cities";
+    cities.textContent = `${globalThis.TripSuggestions.cityName(leg.from)} → ${globalThis.TripSuggestions.cityName(leg.to)}`;
+    el.appendChild(cities);
+
+    const route = document.createElement("p");
+    route.className = "trip-leg__route";
+    route.textContent = `${leg.from} → ${leg.to}`;
+    el.appendChild(route);
+
+    const meta = document.createElement("p");
+    meta.className = "trip-leg__meta";
+    const when = document.createElement("time");
+    when.dateTime = leg.date;
+    when.textContent = `${formatWeekday(leg.date)} ${formatDateDisplay(leg.date)}`;
+    meta.appendChild(when);
+    const cabin = document.createElement("span");
+    cabin.className = `trip-leg__cabin trip-leg__cabin--${leg.cabin.code.toLowerCase()}`;
+    cabin.textContent = leg.cabin.label;
+    meta.appendChild(cabin);
+    el.appendChild(meta);
+
+    return el;
+  }
+
+  function renderTripSuggestion(trip) {
+    const article = document.createElement("article");
+    article.className = `trip trip--${trip.cabinKey}`;
+
+    const legs = document.createElement("div");
+    legs.className = "trip__legs";
+    legs.appendChild(renderTripLeg(trip.outbound, "Out"));
+    legs.appendChild(renderTripLeg(trip.inbound, "Back"));
+    article.appendChild(legs);
+
+    const meta = document.createElement("div");
+    meta.className = "trip__meta";
+
+    const nights = document.createElement("p");
+    nights.className = "trip__nights";
+    const nightsValue = document.createElement("strong");
+    nightsValue.textContent = String(trip.nights);
+    nights.appendChild(nightsValue);
+    nights.append(` night${trip.nights === 1 ? "" : "s"}`);
+    meta.appendChild(nights);
+
+    // Each leg already states its own cabin, so only a split cabin is worth
+    // repeating at trip level — anything else would just be noise.
+    if (trip.cabinKey === "mixed") {
+      const cabin = document.createElement("p");
+      cabin.className = "trip__cabin";
+      cabin.textContent = trip.cabinLabel;
+      cabin.title = `${trip.outbound.cabin.label} out, ${trip.inbound.cabin.label} back.`;
+      meta.appendChild(cabin);
+    }
+
+    if (trip.openJaw.any) {
+      const jaw = document.createElement("p");
+      jaw.className = "trip__open-jaw";
+      jaw.textContent = "Open jaw";
+      jaw.title = trip.openJaw.description;
+      meta.appendChild(jaw);
+    }
+
+    article.appendChild(meta);
+    return article;
+  }
+
+  function renderTripSuggestionsEmpty(message) {
+    const p = document.createElement("p");
+    p.className = "trip-suggestions__empty";
+    p.textContent = message;
+    els.tripSuggestions.appendChild(p);
+  }
+
+  function renderTripSuggestions() {
+    els.tripSuggestions.replaceChildren();
+    els.tripSuggestionsMeta.textContent = "";
+
+    const result = buildTripSuggestionList();
+    if (!result) {
+      renderTripSuggestionsEmpty('Press "Fetch latest availability" to build trip suggestions.');
+      return;
+    }
+    if (result.routes === 0) {
+      renderTripSuggestionsEmpty("Enable at least one New York and one home airport to see trip suggestions.");
+      return;
+    }
+    if (result.suggestions.length === 0) {
+      renderTripSuggestionsEmpty(
+        "No 5–10 night trips can be built from the current availability and filters. Try lowering the minimum seats, allowing every cabin, or enabling more airports."
+      );
+      return;
+    }
+
+    const cabinFilterLabel =
+      state.cabin === "all" ? "any cabin" : state.cabin === "AB" ? "Business only" : state.cabin === "AP" ? "Premium Economy only" : "Economy only";
+    els.tripSuggestionsMeta.textContent =
+      `Complete 5–10 night trips built from every fetched date · ${Math.max(1, state.minSeats)}+ seat${Math.max(1, state.minSeats) === 1 ? "" : "s"} · ${cabinFilterLabel}`;
+
+    const list = document.createElement("div");
+    list.className = "trip-list";
+    const visible = tripSuggestionsExpanded
+      ? result.suggestions
+      : result.suggestions.slice(0, TRIP_SUGGESTIONS_VISIBLE);
+    for (const trip of visible) list.appendChild(renderTripSuggestion(trip));
+    els.tripSuggestions.appendChild(list);
+
+    const hidden = result.suggestions.length - visible.length;
+    if (result.suggestions.length > TRIP_SUGGESTIONS_VISIBLE) {
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "trip-suggestions__toggle";
+      toggle.textContent = tripSuggestionsExpanded ? "Show fewer" : `Show ${hidden} more`;
+      toggle.setAttribute("aria-expanded", String(tripSuggestionsExpanded));
+      toggle.addEventListener("click", () => {
+        tripSuggestionsExpanded = !tripSuggestionsExpanded;
+        renderTripSuggestions();
+      });
+      els.tripSuggestions.appendChild(toggle);
+    }
+  }
+
   function appendTableMessage(message) {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
@@ -1301,6 +1488,7 @@
     renderTable();
     renderTechnicalDetails();
     renderMonthlyActivity();
+    renderTripSuggestions();
     updateSortIndicators();
   }
 

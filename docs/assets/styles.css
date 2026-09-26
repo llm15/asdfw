@@ -142,9 +142,6 @@ body.auth-locked > footer {
 /* ---------- Header ---------- */
 
 .site-header {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   background:
     radial-gradient(circle at 78% 14%, rgba(214, 169, 80, 0.34), transparent 18rem),
     radial-gradient(circle at 14% 0%, rgba(10, 132, 255, 0.24), transparent 24rem),
@@ -156,32 +153,13 @@ body.auth-locked > footer {
 }
 
 .site-header__inner {
-  position: relative;
   max-width: 72rem;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 27rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 2rem;
-}
-
-/* A quiet sense of place, without adding height above the availability data. */
-.site-header__destination {
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: min(42%, 24rem);
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0.24;
-  filter: saturate(0.35);
-  mask-image: linear-gradient(to right, transparent, #000 65%);
-  pointer-events: none;
-  user-select: none;
-}
-
-.site-header__destination[hidden] {
-  display: none;
+  justify-content: space-between;
+  gap: 1.5rem;
 }
 
 .site-header h1 {
@@ -202,38 +180,25 @@ body.auth-locked > footer {
 .site-header__actions {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 0.75rem;
-  min-width: 0;
+  align-items: flex-end;
+  gap: 0.65rem;
 }
 
 .header-button-row {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 0.75rem;
-}
-
-.header-button-row button {
-  justify-content: center;
-  min-height: 3rem;
-  padding: 0.75rem;
-  border-radius: 12px;
-  font-family: inherit;
-  font-size: 0.9rem;
-  line-height: 1.35;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .last-fetched {
   margin: 0;
   font-size: 0.85rem;
   color: rgba(247, 248, 251, 0.68);
-  text-align: right;
-}
-
-.last-fetched time {
-  display: inline-block;
-  color: rgba(247, 248, 251, 0.9);
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .fetch-btn {
@@ -282,7 +247,6 @@ body.auth-locked > footer {
 }
 
 .spinner {
-  flex-shrink: 0;
   width: 0.9rem;
   height: 0.9rem;
   border-radius: 50%;
@@ -413,17 +377,6 @@ body.auth-locked > footer {
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.78), 0 1px 2px rgba(17, 24, 39, 0.04);
 }
 
-/* Native desktop popups need an opaque background paired with their text. */
-.filter-group select {
-  color-scheme: light;
-}
-
-.filter-group select option,
-.filter-group select optgroup {
-  color: var(--fg);
-  background-color: var(--bg);
-}
-
 .filter-group select:focus,
 .filter-group input:focus {
   border-color: rgba(10, 132, 255, 0.5);
@@ -431,9 +384,6 @@ body.auth-locked > footer {
 }
 
 @media (prefers-color-scheme: dark) {
-  .filter-group select {
-    color-scheme: dark;
-  }
   .filter-group select,
   .filter-group input[type="month"],
   .filter-group input[type="date"],
@@ -622,14 +572,16 @@ body.auth-locked > footer {
 .calendar-section,
 .table-section,
 .technical-section,
-.monthly-activity-section {
+.monthly-activity-section,
+.trip-suggestions-section {
   margin-bottom: 1.75rem;
 }
 
 .calendar-section h2,
 .table-section h2,
 .technical-section h2,
-.monthly-activity-section h2 {
+.monthly-activity-section h2,
+.trip-suggestions-section h2 {
   font-size: 1.15rem;
   color: var(--fg);
   letter-spacing: 0;
@@ -639,7 +591,8 @@ body.auth-locked > footer {
   .calendar-section h2,
   .table-section h2,
   .technical-section h2,
-  .monthly-activity-section h2 {
+  .monthly-activity-section h2,
+  .trip-suggestions-section h2 {
     color: var(--fg);
   }
 }
@@ -692,9 +645,9 @@ body.auth-locked > footer {
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(7.5rem, 1fr));
   gap: 0.5rem;
-  overflow-x: visible;
+  overflow-x: auto;
 }
 
 .calendar-weekday {
@@ -788,21 +741,10 @@ body.auth-locked > footer {
 
 .calendar-day__airport {
   display: flex;
-  flex-wrap: nowrap;
-  white-space: nowrap;
+  flex-wrap: wrap;
   align-items: center;
-  min-width: 0;
-  gap: 0.2em;
-  font-size: 0.62rem;
-}
-
-.calendar-day__airport-code {
-  flex-shrink: 0;
-}
-
-.calendar-day__airport .calendar-badge {
-  flex: 0 0 auto;
-  padding-inline: 0.2em;
+  gap: 0.25rem;
+  font-size: 0.72rem;
 }
 
 .calendar-day__airport-code {
@@ -1324,6 +1266,213 @@ body.auth-locked > footer {
   }
 }
 
+/* ---------- Trip suggestions ---------- */
+
+.trip-suggestions-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.trip-suggestions-heading h2 {
+  margin: 0;
+}
+
+.trip-suggestions__meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.trip-suggestions {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 1rem 1rem;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.18);
+}
+
+.trip-suggestions__empty {
+  margin: 0.9rem 0 0.35rem;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.trip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
+  padding: 0.95rem 0.6rem;
+  border-top: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.trip:first-child {
+  border-top: none;
+}
+
+/* Cabin quality reads as three levels of the same gold the calendar uses:
+   Business both ways, one Business leg, then nothing for Economy. */
+.trip--business {
+  background: linear-gradient(90deg, rgba(184, 135, 47, 0.09), rgba(184, 135, 47, 0) 62%);
+}
+
+.trip--mixed {
+  background: linear-gradient(90deg, rgba(184, 135, 47, 0.045), rgba(184, 135, 47, 0) 52%);
+}
+
+.trip__legs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem 1.5rem;
+}
+
+.trip-leg {
+  display: block;
+  margin: -0.45rem -0.55rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.16s ease;
+}
+
+.trip-leg:hover,
+.trip-leg:focus-visible {
+  background: rgba(10, 132, 255, 0.07);
+  outline-offset: 0;
+}
+
+.trip-leg__direction {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.trip-leg__cities {
+  margin: 0.2rem 0 0;
+  color: var(--fg);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.trip-leg__route {
+  margin: 0.05rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.trip-leg__meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.3rem 0 0;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.trip-leg__cabin::before {
+  content: "·";
+  margin-right: 0.45rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.trip-leg__cabin--ab {
+  color: var(--gold);
+  font-weight: 750;
+}
+
+.trip-leg__cabin--ap {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.trip-leg__cabin--ag {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.trip__meta {
+  text-align: right;
+  min-width: 6.5rem;
+}
+
+.trip__nights {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.trip__nights strong {
+  margin-right: 0.22rem;
+  color: var(--fg);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.trip__cabin {
+  margin: 0.15rem 0 0;
+  color: var(--fg);
+  font-size: 0.71rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: help;
+}
+
+.trip__open-jaw {
+  margin: 0.12rem 0 0;
+  color: var(--muted);
+  font-size: 0.71rem;
+  font-weight: 600;
+  cursor: help;
+}
+
+.trip-suggestions__toggle {
+  margin: 0.9rem 0 0;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.trip-suggestions__toggle:hover,
+.trip-suggestions__toggle:focus-visible {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+@media (prefers-color-scheme: dark) {
+  .trip--mixed {
+    background: linear-gradient(90deg, rgba(214, 169, 80, 0.06), rgba(214, 169, 80, 0) 52%);
+  }
+  .trip--business {
+    background: linear-gradient(90deg, rgba(214, 169, 80, 0.12), rgba(214, 169, 80, 0) 62%);
+  }
+  .trip-leg:hover,
+  .trip-leg:focus-visible {
+    background: rgba(100, 169, 255, 0.1);
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
@@ -1342,20 +1491,35 @@ a {
   outline-offset: 2px;
 }
 
-@media (max-width: 60rem) {
-  .site-header__inner {
+@media (max-width: 40rem) {
+  .trip-suggestions {
+    padding: 0.25rem 0.7rem 0.85rem;
+  }
+  .trip {
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
+    gap: 0.5rem;
+    padding: 0.85rem 0.35rem;
   }
-  .site-header__actions {
-    width: min(100%, 27rem);
+  .trip__legs {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
   }
-  .last-fetched {
+  /* Trip length and cabin lead on small screens, where the two legs stack. */
+  .trip__meta {
+    order: -1;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
     text-align: left;
   }
-}
-
-@media (max-width: 40rem) {
+  .trip__nights strong {
+    font-size: 1.1rem;
+  }
+  .trip__cabin,
+  .trip__open-jaw {
+    margin: 0;
+  }
   .container {
     padding: 0.8rem 0.55rem 2.2rem;
   }
@@ -1369,11 +1533,23 @@ a {
     margin-top: 0.6rem;
     font-size: 0.98rem;
   }
+  .site-header__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .site-header__actions {
+    align-items: flex-start;
     width: 100%;
   }
   .header-button-row {
-    grid-template-columns: minmax(0, 1fr);
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .fetch-btn,
+  .refresh-page-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 2.75rem;
   }
   .last-fetched {
     width: 100%;
