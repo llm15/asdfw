@@ -1336,6 +1336,19 @@ body.auth-locked > footer {
   font-size: 0.9rem;
 }
 
+.trip-group__label {
+  margin: 0.85rem 0 0.1rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.trip-group--all .trip-group__label {
+  margin-top: 1.6rem;
+}
+
 .trip {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1489,6 +1502,7 @@ body.auth-locked > footer {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  width: 100%;
 }
 
 .trip-pager__status {
@@ -1500,29 +1514,18 @@ body.auth-locked > footer {
   text-align: center;
 }
 
+.trip-pager__pages {
+  margin: 0 0 0 auto;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .trip-pager .month-nav-btn:disabled {
   opacity: 0.35;
   cursor: default;
   border-color: var(--border);
   color: var(--fg);
-}
-
-.trip-suggestions__toggle {
-  margin-left: auto;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--fg);
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.trip-suggestions__toggle:hover,
-.trip-suggestions__toggle:focus-visible {
-  border-color: var(--blue);
-  color: var(--blue);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1563,12 +1566,12 @@ a {
   .trip-suggestions__footer {
     gap: 0.6rem;
   }
-  .trip-suggestions__toggle {
-    margin-left: 0;
+  .trip-pager__pages {
     width: 100%;
+    margin: 0;
+    text-align: center;
   }
   .trip-pager {
-    width: 100%;
     justify-content: space-between;
   }
   .trip {

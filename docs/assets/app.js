@@ -102,10 +102,10 @@
   // Priority order for picking which cabin "best" represents a mixed result.
   const CABIN_PRIORITY = ["AB", "AP", "AG"];
 
-  // Trip suggestions open as a short, scannable shortlist; every remaining
-  // combination is one click away, then paged rather than dumped on the page.
-  const TRIP_SUGGESTIONS_VISIBLE = 4;
-  const TRIP_SUGGESTIONS_PAGE_SIZE = 20;
+  // Trip suggestions lead with a short, varied shortlist; everything else is
+  // paged rather than dumped on the page.
+  const TRIP_SUGGESTIONS_BEST = 4;
+  const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
 
   const els = {
     fetchBtn: document.getElementById("fetch-btn"),
@@ -172,8 +172,6 @@
   // dates whose merged total changed since the last time this browser
   // fetched each source (see computeAvailabilityChanges()).
   let availabilityChanges = new Map();
-  // Whether the trip-suggestions list is showing more than its shortlist.
-  let tripSuggestionsExpanded = false;
   let tripSuggestionsPage = 0;
 
   function isPlainObject(value) {
@@ -1197,13 +1195,14 @@
         };
       })
       .filter(Boolean);
-    if (routes.length === 0) return { suggestions: [], all: [], totalCandidates: 0, routes: 0 };
+    if (routes.length === 0) return { best: [], trips: [], total: 0, routes: 0 };
     const result = engine.buildTripSuggestions({
       routes,
       minSeats: Math.max(1, state.minSeats),
       cabin: state.cabin,
       earliestDate: todayIsoDate(),
       departureMonth: state.month,
+      bestLimit: TRIP_SUGGESTIONS_BEST,
     });
     return { ...result, routes: routes.length };
   }
@@ -1323,7 +1322,7 @@
       renderTripSuggestionsEmpty("Enable at least one New York and one home airport to see trip suggestions.");
       return;
     }
-    if (result.suggestions.length === 0) {
+    if (result.total === 0) {
       renderTripSuggestionsEmpty(
         `No 5–10 night trips depart in ${formatMonthHeading(state.month)} with the current filters. ` +
           "Try another month, fewer minimum seats, every cabin, or more airports."
@@ -1334,57 +1333,54 @@
     const cabinFilterLabel =
       state.cabin === "all" ? "any cabin" : state.cabin === "AB" ? "Business only" : state.cabin === "AP" ? "Premium Economy only" : "Economy only";
     const seats = Math.max(1, state.minSeats);
-    const total = result.all.length;
+    const total = result.total;
     els.tripSuggestionsMeta.textContent =
       `${formatCount(total)} possible trip${total === 1 ? "" : "s"} departing in ${formatMonthHeading(state.month)} · ` +
       `5–10 nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}`;
 
-    const list = document.createElement("div");
-    list.className = "trip-list";
-    // Collapsed shows the deduplicated pick of the best trips; expanded
-    // pages through every airport/date combination, still in ranked order.
     const pageCount = Math.max(1, Math.ceil(total / TRIP_SUGGESTIONS_PAGE_SIZE));
     if (tripSuggestionsPage >= pageCount) tripSuggestionsPage = 0;
     const start = tripSuggestionsPage * TRIP_SUGGESTIONS_PAGE_SIZE;
-    const visible = tripSuggestionsExpanded
-      ? result.all.slice(start, start + TRIP_SUGGESTIONS_PAGE_SIZE)
-      : result.suggestions.slice(0, TRIP_SUGGESTIONS_VISIBLE);
-    for (const trip of visible) list.appendChild(renderTripSuggestion(trip));
-    els.tripSuggestions.appendChild(list);
+    const visible = result.trips.slice(start, start + TRIP_SUGGESTIONS_PAGE_SIZE);
 
-    if (total <= TRIP_SUGGESTIONS_VISIBLE) return;
+    // The shortlist only earns its space once paging actually hides things.
+    const showBest = total > TRIP_SUGGESTIONS_PAGE_SIZE;
+    if (showBest) {
+      els.tripSuggestions.appendChild(renderTripGroup("best", "Best trips", result.best));
+    }
+    els.tripSuggestions.appendChild(
+      renderTripGroup("all", showBest ? `All ${formatCount(total)}` : null, visible)
+    );
 
     const footer = document.createElement("div");
     footer.className = "trip-suggestions__footer";
-    if (tripSuggestionsExpanded) {
-      footer.appendChild(renderTripPager(start, visible.length, total, pageCount));
-    }
-
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "trip-suggestions__toggle";
-    toggle.textContent = tripSuggestionsExpanded
-      ? `Show the best ${TRIP_SUGGESTIONS_VISIBLE} only`
-      : `Show all ${formatCount(total)}`;
-    toggle.setAttribute("aria-expanded", String(tripSuggestionsExpanded));
-    toggle.addEventListener("click", () => {
-      tripSuggestionsExpanded = !tripSuggestionsExpanded;
-      tripSuggestionsPage = 0;
-      renderTripSuggestions();
-      scrollTripSuggestionsIntoView();
-    });
-    footer.appendChild(toggle);
+    footer.appendChild(renderTripPager(start, visible.length, total, pageCount));
     els.tripSuggestions.appendChild(footer);
   }
 
-  function scrollTripSuggestionsIntoView() {
-    els.tripSuggestions.parentElement.scrollIntoView({ block: "start" });
+  function renderTripGroup(name, label, trips) {
+    const group = document.createElement("section");
+    group.className = `trip-group trip-group--${name}`;
+    if (label) {
+      const heading = document.createElement("p");
+      heading.className = "trip-group__label";
+      heading.textContent = label;
+      group.appendChild(heading);
+    }
+    const list = document.createElement("div");
+    list.className = "trip-list";
+    for (const trip of trips) list.appendChild(renderTripSuggestion(trip));
+    group.appendChild(list);
+    return group;
   }
 
   function goToTripSuggestionsPage(page) {
     tripSuggestionsPage = page;
     renderTripSuggestions();
-    scrollTripSuggestionsIntoView();
+    // Land on the paged list, not back up at the unchanged shortlist.
+    (els.tripSuggestions.querySelector(".trip-group--all") || els.tripSuggestions.parentElement).scrollIntoView({
+      block: "start",
+    });
   }
 
   function renderTripPager(start, shown, total, pageCount) {
@@ -1415,6 +1411,11 @@
     next.disabled = tripSuggestionsPage >= pageCount - 1;
     next.addEventListener("click", () => goToTripSuggestionsPage(tripSuggestionsPage + 1));
     nav.appendChild(next);
+
+    const pages = document.createElement("p");
+    pages.className = "trip-pager__pages";
+    pages.textContent = `Page ${formatCount(tripSuggestionsPage + 1)} of ${formatCount(pageCount)}`;
+    nav.appendChild(pages);
 
     return nav;
   }

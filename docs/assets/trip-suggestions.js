@@ -37,10 +37,10 @@
   const DEFAULTS = {
     minNights: 5,
     maxNights: 10,
-    limit: 12,
+    bestLimit: 4,
     // Several return dates usually work for the same outbound date; keeping
-    // a couple of the strongest per date avoids a combinatorial wall of
-    // near-identical itineraries without collapsing sparse data to one row.
+    // a couple of the strongest per date stops the shortlist collapsing into
+    // near-identical itineraries.
     maxPerDate: 2,
   };
 
@@ -162,11 +162,10 @@
    * @param {string|null} [options.earliestDate] Ignore legs before this date.
    * @param {string|null} [options.departureMonth] "YYYY-MM". Restricts the
    *   OUTBOUND leg only, so a trip may still return in the following month.
-   * @param {number} [options.limit=12] Size of the deduplicated shortlist.
-   * @returns {{suggestions: Array, all: Array, totalCandidates: number}}
-   *   `suggestions` is the shortlist; `all` is every valid combination of
-   *   the allowed airports across every fetched date, in the same ranked
-   *   order and with nothing deduplicated away.
+   * @param {number} [options.bestLimit=4] Size of the deduplicated shortlist.
+   * @returns {{best: Array, trips: Array, total: number}} `trips` is every
+   *   valid combination of the allowed airports across every matching date,
+   *   in ranked order; `best` is a short, varied pick from the same ranking.
    */
   function buildTripSuggestions(options) {
     const opts = options || {};
@@ -175,7 +174,7 @@
     const cabin = CABINS[opts.cabin] ? opts.cabin : "all";
     const minNights = Number.isFinite(opts.minNights) ? opts.minNights : DEFAULTS.minNights;
     const maxNights = Number.isFinite(opts.maxNights) ? opts.maxNights : DEFAULTS.maxNights;
-    const limit = Number.isFinite(opts.limit) ? opts.limit : DEFAULTS.limit;
+    const bestLimit = Number.isFinite(opts.bestLimit) ? opts.bestLimit : DEFAULTS.bestLimit;
     const maxPerDate = Number.isFinite(opts.maxPerDate) ? opts.maxPerDate : DEFAULTS.maxPerDate;
     const earliestDate =
       typeof opts.earliestDate === "string" && ISO_DATE.test(opts.earliestDate) ? opts.earliestDate : null;
@@ -223,14 +222,15 @@
 
     candidates.sort(compareTrips);
 
-    // Deduplicate: two itineraries on the same pair of dates are, for the
+    // Shortlist: two itineraries on the same pair of dates are, for the
     // purpose of "which trip should I book", the same trip — only the
     // strongest airport/cabin combination for those dates is worth showing.
-    const suggestions = [];
+    const best = [];
     const seenDatePairs = new Set();
     const perOutboundDate = new Map();
     const perInboundDate = new Map();
     for (const candidate of candidates) {
+      if (best.length >= bestLimit) break;
       const outDate = candidate.outbound.date;
       const inDate = candidate.inbound.date;
       const pairKey = `${outDate}|${inDate}`;
@@ -240,11 +240,10 @@
       seenDatePairs.add(pairKey);
       perOutboundDate.set(outDate, (perOutboundDate.get(outDate) || 0) + 1);
       perInboundDate.set(inDate, (perInboundDate.get(inDate) || 0) + 1);
-      suggestions.push(candidate);
-      if (suggestions.length >= limit) break;
+      best.push(candidate);
     }
 
-    return { suggestions, all: candidates, totalCandidates: candidates.length };
+    return { best, trips: candidates, total: candidates.length };
   }
 
   root.TripSuggestions = {

@@ -28,36 +28,36 @@ test("trip length is counted in whole calendar days across month and year bounda
 test("exactly 5 and exactly 10 nights are accepted, 4 and 11 are rejected", () => {
   for (const [nights, expected] of [[4, false], [5, true], [10, true], [11, false]]) {
     const returnDate = addDays("2027-05-01", nights);
-    const { suggestions } = buildTripSuggestions({
+    const { trips } = buildTripSuggestions({
       routes: [route("ARN", "JFK", { "2027-05-01": economy }, { [returnDate]: economy })],
       earliestDate: "2027-01-01",
     });
-    assert.equal(suggestions.length === 1, expected, `${nights} nights should be ${expected ? "accepted" : "rejected"}`);
-    if (expected) assert.equal(suggestions[0].nights, nights);
+    assert.equal(trips.length === 1, expected, `${nights} nights should be ${expected ? "accepted" : "rejected"}`);
+    if (expected) assert.equal(trips[0].nights, nights);
   }
 });
 
 test("month-boundary trips keep an accurate night count", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [route("CPH", "EWR", { "2027-01-28": business }, { "2027-02-04": business })],
     earliestDate: "2027-01-01",
   });
-  assert.equal(suggestions.length, 1);
-  assert.equal(suggestions[0].nights, 7);
-  assert.equal(suggestions[0].outbound.date, "2027-01-28");
-  assert.equal(suggestions[0].inbound.date, "2027-02-04");
+  assert.equal(trips.length, 1);
+  assert.equal(trips[0].nights, 7);
+  assert.equal(trips[0].outbound.date, "2027-01-28");
+  assert.equal(trips[0].inbound.date, "2027-02-04");
 });
 
 test("Nordic open jaws are proposed and described", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [
       route("ARN", "JFK", { "2027-05-01": business }, {}),
       route("CPH", "JFK", {}, { "2027-05-08": business }),
     ],
     earliestDate: "2027-01-01",
   });
-  assert.equal(suggestions.length, 1);
-  const [trip] = suggestions;
+  assert.equal(trips.length, 1);
+  const [trip] = trips;
   assert.equal(trip.outbound.from, "ARN");
   assert.equal(trip.inbound.to, "CPH");
   assert.deepEqual({ nordic: trip.openJaw.nordic, nyc: trip.openJaw.nyc }, { nordic: true, nyc: false });
@@ -65,50 +65,49 @@ test("Nordic open jaws are proposed and described", () => {
 });
 
 test("JFK/EWR open jaws are proposed and described", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [
       route("OSL", "JFK", { "2027-05-01": business }, {}),
       route("OSL", "EWR", {}, { "2027-05-08": business }),
     ],
     earliestDate: "2027-01-01",
   });
-  assert.equal(suggestions.length, 1);
-  const [trip] = suggestions;
+  assert.equal(trips.length, 1);
+  const [trip] = trips;
   assert.equal(trip.outbound.to, "JFK");
   assert.equal(trip.inbound.from, "EWR");
   assert.deepEqual({ nordic: trip.openJaw.nordic, nyc: trip.openJaw.nyc }, { nordic: false, nyc: true });
 });
 
 test("open jaws at both ends are supported and labelled as such", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [
       route("ARN", "JFK", { "2027-05-01": business }, {}),
       route("CPH", "EWR", {}, { "2027-05-08": business }),
     ],
     earliestDate: "2027-01-01",
   });
-  assert.equal(suggestions.length, 1);
-  const [trip] = suggestions;
+  assert.equal(trips.length, 1);
+  const [trip] = trips;
   assert.equal(trip.openJawCount, 2);
   assert.match(trip.openJaw.description, /both ends/);
 });
 
 test("a plain round trip is preferred over an equally good open jaw", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [
       route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
       route("CPH", "EWR", {}, { "2027-05-08": business }),
     ],
     earliestDate: "2027-01-01",
-    maxPerDate: 5,
   });
-  assert.equal(suggestions[0].openJaw.any, false);
-  assert.equal(suggestions[0].outbound.from, "ARN");
-  assert.equal(suggestions[0].inbound.to, "ARN");
+  assert.equal(trips[0].openJaw.any, false);
+  assert.equal(trips[0].outbound.from, "ARN");
+  assert.equal(trips[0].inbound.to, "ARN");
 });
 
 test("cabins rank Business+Business above mixed above Economy+Economy", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [
       route(
         "ARN",
@@ -119,34 +118,34 @@ test("cabins rank Business+Business above mixed above Economy+Economy", () => {
     ],
     earliestDate: "2027-01-01",
   });
-  assert.deepEqual(
-    suggestions.map((trip) => trip.cabinKey),
-    ["business", "business", "mixed", "mixed", "economy"]
-  );
-  assert.equal(suggestions[0].cabinLabel, "Business");
-  assert.equal(suggestions.find((trip) => trip.cabinKey === "mixed").cabinLabel, "Mixed cabin");
-  assert.equal(suggestions.at(-1).cabinLabel, "Economy");
+  const ranks = trips.map((trip) => trip.cabinRank);
+  assert.deepEqual(ranks, [...ranks].sort((a, b) => a - b));
+  assert.equal(trips[0].cabinKey, "business");
+  assert.equal(trips[0].cabinLabel, "Business");
+  assert.equal(trips.find((trip) => trip.cabinKey === "mixed").cabinLabel, "Mixed cabin");
+  assert.equal(trips.at(-1).cabinKey, "economy");
+  assert.equal(trips.at(-1).cabinLabel, "Economy");
 });
 
 test("mixed cabin keeps each leg's own cabin", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": economy })],
     earliestDate: "2027-01-01",
   });
-  const [trip] = suggestions;
+  const [trip] = trips;
   assert.equal(trip.cabinKey, "mixed");
   assert.equal(trip.outbound.cabin.code, "AB");
   assert.equal(trip.inbound.cabin.code, "AG");
 });
 
 test("Economy-only availability still produces suggestions", () => {
-  const { suggestions } = buildTripSuggestions({
+  const { trips } = buildTripSuggestions({
     routes: [route("OSL", "EWR", { "2027-05-01": economy }, { "2027-05-07": economy })],
     earliestDate: "2027-01-01",
   });
-  assert.equal(suggestions.length, 1);
-  assert.equal(suggestions[0].cabinKey, "economy");
-  assert.equal(suggestions[0].nights, 6);
+  assert.equal(trips.length, 1);
+  assert.equal(trips[0].cabinKey, "economy");
+  assert.equal(trips[0].nights, 6);
 });
 
 test("no valid pair yields an empty list rather than a partial trip", () => {
@@ -156,24 +155,25 @@ test("no valid pair yields an empty list rather than a partial trip", () => {
     [route("ARN", "JFK", {}, { "2027-05-08": economy })],
     [route("ARN", "JFK", { "2027-05-01": economy }, { "2027-05-03": economy })],
   ]) {
-    const { suggestions } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
-    assert.deepEqual(suggestions, []);
+    const { trips, total } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
+    assert.deepEqual(trips, []);
+    assert.equal(total, 0);
   }
 });
 
 test("legs without enough seats, or in a filtered-out cabin, are ignored", () => {
   const routes = [route("ARN", "JFK", { "2027-05-01": { AG: 1, AB: 1 } }, { "2027-05-08": { AG: 3 } })];
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", minSeats: 2 }).suggestions.length, 0);
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", cabin: "AB" }).suggestions.length, 0);
-  const filtered = buildTripSuggestions({ routes, earliestDate: "2027-01-01", cabin: "AG" }).suggestions;
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", minSeats: 2 }).total, 0);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", cabin: "AB" }).total, 0);
+  const filtered = buildTripSuggestions({ routes, earliestDate: "2027-01-01", cabin: "AG" }).trips;
   assert.equal(filtered.length, 1);
   assert.equal(filtered[0].cabinKey, "economy");
 });
 
 test("dates before earliestDate are never suggested", () => {
   const routes = [route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business })];
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-05-02" }).suggestions.length, 0);
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-05-01" }).suggestions.length, 1);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-05-02" }).total, 0);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-05-01" }).total, 1);
 });
 
 test("departureMonth restricts the outbound leg but lets the trip return later", () => {
@@ -185,67 +185,76 @@ test("departureMonth restricts the outbound leg but lets the trip return later",
       { "2027-05-05": business, "2027-06-04": business, "2027-06-09": business }
     ),
   ];
-  const may = buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-05" }).all;
+  const may = buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-05" }).trips;
   assert.deepEqual(
     may.map((trip) => [trip.outbound.date, trip.inbound.date]),
     [["2027-05-28", "2027-06-04"]]
   );
 
-  const april = buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-04" }).all;
+  const april = buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-04" }).trips;
   assert.deepEqual(
     april.map((trip) => [trip.outbound.date, trip.inbound.date]),
     [["2027-04-28", "2027-05-05"]]
   );
 
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-03" }).all.length, 0);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-03" }).total, 0);
   // An absent or malformed month keeps every departure.
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01" }).all.length, 3);
-  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "nope" }).all.length, 3);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01" }).total, 3);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "nope" }).total, 3);
 });
 
-test("identical date pairs are deduplicated and per-date output stays bounded", () => {
-  const routes = [
-    route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
-    route("ARN", "EWR", { "2027-05-01": business }, { "2027-05-08": business }),
-    route("CPH", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
-  ];
-  const { suggestions, totalCandidates } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
-  assert.ok(totalCandidates > 1);
-  assert.equal(suggestions.length, 1);
-});
-
-test("`all` keeps every airport combination, ranked and uncapped", () => {
+test("every airport combination is kept, ranked and uncapped", () => {
   const routes = [
     route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
     route("ARN", "EWR", { "2027-05-01": business }, { "2027-05-08": business }),
     route("CPH", "JFK", { "2027-05-01": economy }, { "2027-05-08": economy }),
   ];
-  const { suggestions, all, totalCandidates } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
-  assert.equal(all.length, totalCandidates);
-  assert.ok(all.length > suggestions.length);
+  const { trips, total } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
+  assert.equal(trips.length, total);
   // 3 outbound legs × 3 inbound legs on the same dates, including open jaws.
-  assert.equal(all.length, 9);
-  assert.equal(new Set(all.map((trip) => trip.id)).size, 9);
-  assert.equal(all[0].cabinKey, "business");
-  assert.equal(all.at(-1).cabinKey, "economy");
+  assert.equal(total, 9);
+  assert.equal(new Set(trips.map((trip) => trip.id)).size, 9);
+  assert.equal(trips[0].cabinKey, "business");
+  assert.equal(trips.at(-1).cabinKey, "economy");
   assert.deepEqual(
-    all.map((trip) => trip.cabinRank),
-    [...all.map((trip) => trip.cabinRank)].sort((a, b) => a - b)
+    trips.map((trip) => trip.cabinRank),
+    [...trips.map((trip) => trip.cabinRank)].sort((a, b) => a - b)
   );
 });
 
-test("the shortlist is always a subset of the complete list", () => {
+test("the shortlist deduplicates date pairs and stays a subset of the full list", () => {
+  const routes = [
+    route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
+    route("ARN", "EWR", { "2027-05-01": business }, { "2027-05-08": business }),
+    route("CPH", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
+  ];
+  const { best, trips, total } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
+  assert.ok(total > 1);
+  // Every combination shares one departure/return date pair, so the
+  // shortlist keeps only the strongest of them.
+  assert.equal(best.length, 1);
+  const ids = new Set(trips.map((trip) => trip.id));
+  for (const trip of best) assert.ok(ids.has(trip.id));
+  assert.equal(best[0].id, trips[0].id);
+});
+
+test("the shortlist spreads across dates rather than repeating one departure", () => {
   const routes = [
     route(
       "OSL",
       "JFK",
-      { "2027-05-01": business, "2027-05-02": economy, "2027-05-03": business },
-      { "2027-05-08": business, "2027-05-09": economy, "2027-05-11": business }
+      { "2027-05-01": business, "2027-05-02": business, "2027-05-03": business },
+      { "2027-05-08": business, "2027-05-09": business, "2027-05-10": business }
     ),
   ];
-  const { suggestions, all } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
-  const allIds = new Set(all.map((trip) => trip.id));
-  for (const trip of suggestions) assert.ok(allIds.has(trip.id));
+  const { best } = buildTripSuggestions({ routes, earliestDate: "2027-01-01", bestLimit: 4 });
+  assert.equal(best.length, 4);
+  const perDeparture = new Map();
+  for (const trip of best) {
+    perDeparture.set(trip.outbound.date, (perDeparture.get(trip.outbound.date) || 0) + 1);
+  }
+  for (const count of perDeparture.values()) assert.ok(count <= 2);
+  assert.equal(new Set(best.map((trip) => `${trip.outbound.date}|${trip.inbound.date}`)).size, 4);
 });
 
 test("ranking is deterministic regardless of route order", () => {
@@ -255,7 +264,7 @@ test("ranking is deterministic regardless of route order", () => {
         route(home, nyc, { "2027-05-01": business, "2027-05-04": economy }, { "2027-05-08": economy, "2027-05-11": business })
       ),
       earliestDate: "2027-01-01",
-    }).suggestions.map((trip) => trip.id);
+    }).trips.map((trip) => trip.id);
   assert.deepEqual(build([["ARN", "JFK"], ["CPH", "EWR"]]), build([["CPH", "EWR"], ["ARN", "JFK"]]));
 });
 
@@ -273,9 +282,9 @@ test("the real published SAS payload produces bookable, in-range trips", async (
       inboundMap: toMap(availability.inbound),
     };
   });
-  const { suggestions } = buildTripSuggestions({ routes, earliestDate: "2000-01-01" });
-  assert.ok(suggestions.length > 0);
-  for (const trip of suggestions) {
+  const { trips } = buildTripSuggestions({ routes, earliestDate: "2000-01-01" });
+  assert.ok(trips.length > 0);
+  for (const trip of trips) {
     assert.ok(trip.nights >= 5 && trip.nights <= 10);
     assert.equal(nightsBetween(trip.outbound.date, trip.inbound.date), trip.nights);
     assert.ok(["ARN", "CPH", "OSL"].includes(trip.outbound.from));
