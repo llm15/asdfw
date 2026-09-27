@@ -6,7 +6,7 @@
  *
  * This script only ever reads static, already-published JSON files (one per
  * data source — see SOURCES below) using relative URLs — automatically on
- * page load, and again whenever "Fetch latest availability" is pressed. It
+ * page load, and again whenever "Refresh availability" is pressed. It
  * never calls SAS, awardhacks.se, roamsnap.com, awardfares.com or
  * seats.aero directly, and never handles any token/secret. Each published
  * file is produced by a separate CI job (see scripts/fetch-*.mjs). Every
@@ -108,10 +108,9 @@
   const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
 
   const els = {
-    fetchBtn: document.getElementById("fetch-btn"),
-    fetchBtnLabel: document.getElementById("fetch-btn-label"),
-    fetchBtnSpinner: document.getElementById("fetch-btn-spinner"),
-    refreshPageBtn: document.getElementById("refresh-page-btn"),
+    refreshBtn: document.getElementById("refresh-btn"),
+    refreshBtnLabel: document.getElementById("refresh-btn-label"),
+    refreshBtnSpinner: document.getElementById("refresh-btn-spinner"),
     lastFetched: document.getElementById("last-fetched-value"),
     status: document.getElementById("status-message"),
     directionSelect: document.getElementById("direction-select"),
@@ -692,7 +691,7 @@
     if (!summary) {
       const p = document.createElement("p");
       p.className = "summary-empty";
-      p.textContent = 'Press "Fetch latest availability" to see a summary.';
+      p.textContent = 'Press "Refresh availability" to see a summary.';
       els.summary.appendChild(p);
       return;
     }
@@ -787,7 +786,7 @@
     if (!lastGood) {
       const p = document.createElement("p");
       p.className = "calendar-empty";
-      p.textContent = 'Press "Fetch latest availability" to load the calendar.';
+      p.textContent = 'Press "Refresh availability" to load the calendar.';
       els.calendar.appendChild(p);
       return;
     }
@@ -1083,7 +1082,7 @@
     renderTableMeta(rows);
 
     if (!lastGood) {
-      appendTableMessage('Press "Fetch latest availability" to load data.');
+      appendTableMessage('Press "Refresh availability" to load data.');
       return;
     }
     if (rows.length === 0) {
@@ -1388,7 +1387,7 @@
 
     const result = buildTripSuggestionList();
     if (!result) {
-      renderTripSuggestionsEmpty('Press "Fetch latest availability" to build trip suggestions.');
+      renderTripSuggestionsEmpty('Press "Refresh availability" to build trip suggestions.');
       return;
     }
     if (result.routes === 0) {
@@ -1511,7 +1510,7 @@
     if (!sourcesData) {
       const p = document.createElement("p");
       p.className = "technical-empty";
-      p.textContent = 'Press "Fetch latest availability" to load technical details.';
+      p.textContent = 'Press "Refresh availability" to load technical details.';
       els.technical.appendChild(p);
       return;
     }
@@ -1605,7 +1604,7 @@
       els.lastFetched.textContent = formatTimestamp(lastGood.fetchedAt);
       els.lastFetched.setAttribute("datetime", lastGood.fetchedAt);
     } else {
-      els.lastFetched.textContent = "Not yet fetched";
+      els.lastFetched.textContent = "—";
       els.lastFetched.removeAttribute("datetime");
     }
   }
@@ -1688,10 +1687,10 @@
   }
 
   async function handleFetchClick() {
-    els.fetchBtn.disabled = true;
-    els.fetchBtn.setAttribute("aria-busy", "true");
-    els.fetchBtnSpinner.hidden = false;
-    els.fetchBtnLabel.textContent = "Fetching availability…";
+    els.refreshBtn.disabled = true;
+    els.refreshBtn.setAttribute("aria-busy", "true");
+    els.refreshBtnSpinner.hidden = false;
+    els.refreshBtnLabel.textContent = "Fetching availability…";
     setStatus("Fetching availability…");
 
     const results = await Promise.all(SOURCE_KEYS.map((key) => fetchOneSource(key)));
@@ -1728,10 +1727,10 @@
       setStatus("All sources failed to load, and no cached data is available.", "error");
     }
 
-    els.fetchBtn.disabled = false;
-    els.fetchBtn.removeAttribute("aria-busy");
-    els.fetchBtnSpinner.hidden = true;
-    els.fetchBtnLabel.textContent = "Fetch latest availability";
+    els.refreshBtn.disabled = false;
+    els.refreshBtn.removeAttribute("aria-busy");
+    els.refreshBtnSpinner.hidden = true;
+    els.refreshBtnLabel.textContent = "Refresh availability";
     renderAll();
   }
 
@@ -1851,7 +1850,13 @@
     history.replaceState(null, "", `${location.pathname}${qs ? `?${qs}` : ""}${location.hash}`);
   }
 
-  function handleRefreshPageClick() {
+  /** The one header action: a full reload, which re-reads app.js/styles.css
+   * and then re-fetches every source from unlockDashboard(). */
+  function handleRefreshClick() {
+    els.refreshBtn.disabled = true;
+    els.refreshBtn.setAttribute("aria-busy", "true");
+    els.refreshBtnSpinner.hidden = false;
+    els.refreshBtnLabel.textContent = "Refreshing…";
     syncStateToUrl();
     const url = new URL(location.href);
     url.searchParams.set("reload", String(Date.now()));
@@ -2031,8 +2036,7 @@
     });
   });
 
-  els.fetchBtn.addEventListener("click", handleFetchClick);
-  els.refreshPageBtn.addEventListener("click", handleRefreshPageClick);
+  els.refreshBtn.addEventListener("click", handleRefreshClick);
   els.loginForm.addEventListener("submit", handleLoginSubmit);
   els.loginDialog.addEventListener("cancel", (e) => e.preventDefault());
 

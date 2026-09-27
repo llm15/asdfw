@@ -6,7 +6,7 @@
   <title>NYC → Nordics Award Finder</title>
   <meta name="description" content="SAS award availability from JFK or EWR to ARN, OSL, or CPH." />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=56" />
+  <link rel="stylesheet" href="assets/styles.css?v=57" />
 </head>
 <body class="auth-locked">
   <header class="site-header">
@@ -17,16 +17,12 @@
         <p class="subtitle">SAS award availability from JFK or EWR to ARN, OSL, or CPH</p>
       </div>
       <div class="site-header__actions">
-        <div class="header-button-row">
-          <button id="fetch-btn" type="button" class="fetch-btn">
-            <span id="fetch-btn-spinner" class="spinner" hidden aria-hidden="true"></span>
-            <span id="fetch-btn-label">Fetch latest availability</span>
-          </button>
-          <button id="refresh-page-btn" type="button" class="refresh-page-btn">Refresh page + data</button>
-        </div>
+        <button id="refresh-btn" type="button" class="fetch-btn">
+          <span id="refresh-btn-spinner" class="spinner" hidden aria-hidden="true"></span>
+          <span id="refresh-btn-label">Refresh availability</span>
+        </button>
         <p class="last-fetched">
-          Last successful fetch:
-          <time id="last-fetched-value">Not yet fetched</time>
+          Updated <time id="last-fetched-value">—</time>
         </p>
       </div>
     </div>
@@ -184,8 +180,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=56"></script>
-  <script src="assets/app.js?v=56"></script>
+  <script src="assets/trip-suggestions.js?v=57"></script>
+  <script src="assets/app.js?v=57"></script>
 </body>
 </html>
 
