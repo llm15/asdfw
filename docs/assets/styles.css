@@ -1336,17 +1336,57 @@ body.auth-locked > footer {
   font-size: 0.9rem;
 }
 
-.trip-group__label {
-  margin: 0.85rem 0 0.1rem;
-  color: var(--muted);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.trip-suggestions-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin-bottom: 0.65rem;
 }
 
-.trip-group--all .trip-group__label {
-  margin-top: 1.6rem;
+.trip-filter-group {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.trip-filter {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.28rem 0.72rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.trip-filter:hover {
+  border-color: var(--border-strong);
+  color: var(--fg);
+}
+
+.trip-filter[aria-pressed="true"] {
+  border-color: transparent;
+  background: rgba(10, 132, 255, 0.12);
+  color: var(--blue);
+}
+
+.trip-filter--primary[aria-pressed="true"] {
+  background: var(--blue);
+  color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .trip-filter[aria-pressed="true"] {
+    background: rgba(100, 169, 255, 0.18);
+  }
+  .trip-filter--primary[aria-pressed="true"] {
+    background: var(--blue);
+    color: #0b0d11;
+  }
 }
 
 .trip {
