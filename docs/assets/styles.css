@@ -1324,7 +1324,7 @@ body.auth-locked > footer {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 0.35rem 1rem 1rem;
+  padding: 0.5rem 1.15rem 1.15rem;
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(18px) saturate(1.18);
 }
@@ -1393,10 +1393,11 @@ body.auth-locked > footer {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.75rem 1.75rem;
-  padding: 0.95rem 0.6rem;
+  gap: 1rem 2.25rem;
+  padding: 1.4rem 0.9rem;
   border-top: 1px solid var(--border);
   border-radius: 14px;
+  transition: background-color 0.16s ease;
 }
 
 .trip:first-child {
@@ -1404,25 +1405,37 @@ body.auth-locked > footer {
 }
 
 /* Cabin quality reads as three levels of the same gold the calendar uses:
-   Business both ways, one Business leg, then nothing for Economy. */
+   Business both ways, one Business leg, then nothing for Economy. Kept in
+   background-image so a hover background-color can sit underneath it. */
 .trip--business {
-  background: linear-gradient(90deg, rgba(184, 135, 47, 0.09), rgba(184, 135, 47, 0) 62%);
+  background-image: linear-gradient(90deg, rgba(184, 135, 47, 0.09), rgba(184, 135, 47, 0) 62%);
 }
 
 .trip--mixed {
-  background: linear-gradient(90deg, rgba(184, 135, 47, 0.045), rgba(184, 135, 47, 0) 52%);
+  background-image: linear-gradient(90deg, rgba(184, 135, 47, 0.045), rgba(184, 135, 47, 0) 52%);
+}
+
+/* One booking, so the whole row responds as one target. */
+.trip--round-trip:has(.trip-leg:hover),
+.trip--round-trip:has(.trip-leg:focus-visible) {
+  background-color: rgba(10, 132, 255, 0.07);
+}
+
+.trip--round-trip .trip-leg:hover,
+.trip--round-trip .trip-leg:focus-visible {
+  background: transparent;
 }
 
 .trip__legs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem 1.5rem;
+  gap: 0.9rem 2.5rem;
 }
 
 .trip-leg {
   display: block;
-  margin: -0.45rem -0.55rem;
-  padding: 0.45rem 0.55rem;
+  margin: -0.55rem -0.7rem;
+  padding: 0.55rem 0.7rem;
   border-radius: 12px;
   color: inherit;
   text-decoration: none;
@@ -1445,7 +1458,7 @@ body.auth-locked > footer {
 }
 
 .trip-leg__route {
-  margin: 0.15rem 0 0;
+  margin: 0.28rem 0 0;
   color: var(--fg);
   font-size: 1.3rem;
   font-weight: 700;
@@ -1465,7 +1478,7 @@ body.auth-locked > footer {
   align-items: baseline;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: 0.3rem 0 0;
+  margin: 0.42rem 0 0;
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
 }
@@ -1570,14 +1583,22 @@ body.auth-locked > footer {
 
 @media (prefers-color-scheme: dark) {
   .trip--mixed {
-    background: linear-gradient(90deg, rgba(214, 169, 80, 0.06), rgba(214, 169, 80, 0) 52%);
+    background-image: linear-gradient(90deg, rgba(214, 169, 80, 0.06), rgba(214, 169, 80, 0) 52%);
   }
   .trip--business {
-    background: linear-gradient(90deg, rgba(214, 169, 80, 0.12), rgba(214, 169, 80, 0) 62%);
+    background-image: linear-gradient(90deg, rgba(214, 169, 80, 0.12), rgba(214, 169, 80, 0) 62%);
+  }
+  .trip--round-trip:has(.trip-leg:hover),
+  .trip--round-trip:has(.trip-leg:focus-visible) {
+    background-color: rgba(100, 169, 255, 0.1);
   }
   .trip-leg:hover,
   .trip-leg:focus-visible {
     background: rgba(100, 169, 255, 0.1);
+  }
+  .trip--round-trip .trip-leg:hover,
+  .trip--round-trip .trip-leg:focus-visible {
+    background: transparent;
   }
 }
 
@@ -1601,7 +1622,7 @@ a {
 
 @media (max-width: 40rem) {
   .trip-suggestions {
-    padding: 0.25rem 0.7rem 0.85rem;
+    padding: 0.35rem 0.85rem 1rem;
   }
   .trip-suggestions__footer {
     gap: 0.6rem;
@@ -1616,12 +1637,12 @@ a {
   }
   .trip {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.5rem;
-    padding: 0.85rem 0.35rem;
+    gap: 0.7rem;
+    padding: 1.15rem 0.5rem;
   }
   .trip__legs {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.75rem;
+    gap: 1.1rem;
   }
   /* Trip length and cabin lead on small screens, where the two legs stack. */
   .trip__meta {

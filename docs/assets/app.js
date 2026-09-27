@@ -1262,9 +1262,11 @@
 
   function renderTripSuggestion(trip) {
     const article = document.createElement("article");
-    article.className = `trip trip--${trip.cabinKey}`;
-
     const roundTrip = !trip.openJaw.any;
+    // A round trip is one booking, so the whole row highlights together;
+    // an open jaw is two, so its legs stay individually hoverable.
+    article.className = `trip trip--${trip.cabinKey}${roundTrip ? " trip--round-trip" : ""}`;
+
     const returnHref = roundTrip
       ? buildSasRoundTripSearchUrl(trip.outbound.from, trip.outbound.to, trip.outbound.date, trip.inbound.date)
       : null;
