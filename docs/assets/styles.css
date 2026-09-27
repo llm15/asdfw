@@ -1475,8 +1475,40 @@ body.auth-locked > footer {
   cursor: help;
 }
 
+.trip-suggestions__footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+
+.trip-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.trip-pager__status {
+  margin: 0;
+  min-width: 8.5rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.trip-pager .month-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  border-color: var(--border);
+  color: var(--fg);
+}
+
 .trip-suggestions__toggle {
-  margin: 0.9rem 0 0;
+  margin-left: auto;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--fg);
@@ -1527,6 +1559,17 @@ a {
 @media (max-width: 40rem) {
   .trip-suggestions {
     padding: 0.25rem 0.7rem 0.85rem;
+  }
+  .trip-suggestions__footer {
+    gap: 0.6rem;
+  }
+  .trip-suggestions__toggle {
+    margin-left: 0;
+    width: 100%;
+  }
+  .trip-pager {
+    width: 100%;
+    justify-content: space-between;
   }
   .trip {
     grid-template-columns: minmax(0, 1fr);

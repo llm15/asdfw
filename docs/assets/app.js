@@ -102,10 +102,10 @@
   // Priority order for picking which cabin "best" represents a mixed result.
   const CABIN_PRIORITY = ["AB", "AP", "AG"];
 
-  // Trip suggestions start as a short, scannable shortlist; the rest are one
-  // click away rather than dumped on the page.
+  // Trip suggestions open as a short, scannable shortlist; every remaining
+  // combination is one click away, then paged rather than dumped on the page.
   const TRIP_SUGGESTIONS_VISIBLE = 4;
-  const TRIP_SUGGESTIONS_LIMIT = 12;
+  const TRIP_SUGGESTIONS_PAGE_SIZE = 20;
 
   const els = {
     fetchBtn: document.getElementById("fetch-btn"),
@@ -174,6 +174,7 @@
   let availabilityChanges = new Map();
   // Whether the trip-suggestions list is showing more than its shortlist.
   let tripSuggestionsExpanded = false;
+  let tripSuggestionsPage = 0;
 
   function isPlainObject(value) {
     return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -191,24 +192,47 @@
     return new Date(Date.UTC(year, month, 0)).getUTCDate();
   }
 
+  // Constructing an Intl formatter is expensive, and these are called per
+  // table row and per trip suggestion — build each one once, and memoize
+  // per date since the same dates recur thousands of times.
+  const dateDisplayFormat = new Intl.DateTimeFormat(CALENDAR_LOCALE, {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+  const weekdayFormat = new Intl.DateTimeFormat(CALENDAR_LOCALE, { timeZone: "UTC", weekday: "short" });
+  const dateDisplayCache = new Map();
+  const weekdayCache = new Map();
+
+  function utcDateFrom(dateStr) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    return new Date(Date.UTC(y, m - 1, d));
+  }
+
   /** Formats a "YYYY-MM-DD" string with no timezone-driven date shift. */
   function formatDateDisplay(dateStr) {
     if (!isIsoDateOnly(dateStr)) return String(dateStr);
-    const [y, m, d] = dateStr.split("-").map(Number);
-    return new Intl.DateTimeFormat(CALENDAR_LOCALE, {
-      timeZone: "UTC",
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }).format(new Date(Date.UTC(y, m - 1, d)));
+    let formatted = dateDisplayCache.get(dateStr);
+    if (formatted === undefined) {
+      formatted = dateDisplayFormat.format(utcDateFrom(dateStr));
+      dateDisplayCache.set(dateStr, formatted);
+    }
+    return formatted;
   }
 
   function formatWeekday(dateStr) {
     if (!isIsoDateOnly(dateStr)) return "—";
-    const [y, m, d] = dateStr.split("-").map(Number);
-    return new Intl.DateTimeFormat(CALENDAR_LOCALE, { timeZone: "UTC", weekday: "short" }).format(
-      new Date(Date.UTC(y, m - 1, d))
-    );
+    let formatted = weekdayCache.get(dateStr);
+    if (formatted === undefined) {
+      formatted = weekdayFormat.format(utcDateFrom(dateStr));
+      weekdayCache.set(dateStr, formatted);
+    }
+    return formatted;
+  }
+
+  function formatCount(value) {
+    return new Intl.NumberFormat(CALENDAR_LOCALE).format(value);
   }
 
   function formatMonthHeading(monthStr) {
@@ -1155,9 +1179,9 @@
   }
 
   /** Feeds the currently enabled routes and filters into the pure
-   * trip-suggestion engine (assets/trip-suggestions.js). Deliberately not
-   * scoped to the selected month: a trip spans two dates that often fall in
-   * different months, so it reads every fetched date instead. */
+   * trip-suggestion engine (assets/trip-suggestions.js). Scoped to the
+   * selected month by DEPARTURE date only, so a trip that leaves late in
+   * the month can still return in the next one. */
   function buildTripSuggestionList() {
     const engine = globalThis.TripSuggestions;
     if (!engine || !lastGood) return null;
@@ -1173,13 +1197,13 @@
         };
       })
       .filter(Boolean);
-    if (routes.length === 0) return { suggestions: [], totalCandidates: 0, routes: 0 };
+    if (routes.length === 0) return { suggestions: [], all: [], totalCandidates: 0, routes: 0 };
     const result = engine.buildTripSuggestions({
       routes,
       minSeats: Math.max(1, state.minSeats),
       cabin: state.cabin,
       earliestDate: todayIsoDate(),
-      limit: TRIP_SUGGESTIONS_LIMIT,
+      departureMonth: state.month,
     });
     return { ...result, routes: routes.length };
   }
@@ -1301,37 +1325,98 @@
     }
     if (result.suggestions.length === 0) {
       renderTripSuggestionsEmpty(
-        "No 5–10 night trips can be built from the current availability and filters. Try lowering the minimum seats, allowing every cabin, or enabling more airports."
+        `No 5–10 night trips depart in ${formatMonthHeading(state.month)} with the current filters. ` +
+          "Try another month, fewer minimum seats, every cabin, or more airports."
       );
       return;
     }
 
     const cabinFilterLabel =
       state.cabin === "all" ? "any cabin" : state.cabin === "AB" ? "Business only" : state.cabin === "AP" ? "Premium Economy only" : "Economy only";
+    const seats = Math.max(1, state.minSeats);
+    const total = result.all.length;
     els.tripSuggestionsMeta.textContent =
-      `Complete 5–10 night trips built from every fetched date · ${Math.max(1, state.minSeats)}+ seat${Math.max(1, state.minSeats) === 1 ? "" : "s"} · ${cabinFilterLabel}`;
+      `${formatCount(total)} possible trip${total === 1 ? "" : "s"} departing in ${formatMonthHeading(state.month)} · ` +
+      `5–10 nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}`;
 
     const list = document.createElement("div");
     list.className = "trip-list";
+    // Collapsed shows the deduplicated pick of the best trips; expanded
+    // pages through every airport/date combination, still in ranked order.
+    const pageCount = Math.max(1, Math.ceil(total / TRIP_SUGGESTIONS_PAGE_SIZE));
+    if (tripSuggestionsPage >= pageCount) tripSuggestionsPage = 0;
+    const start = tripSuggestionsPage * TRIP_SUGGESTIONS_PAGE_SIZE;
     const visible = tripSuggestionsExpanded
-      ? result.suggestions
+      ? result.all.slice(start, start + TRIP_SUGGESTIONS_PAGE_SIZE)
       : result.suggestions.slice(0, TRIP_SUGGESTIONS_VISIBLE);
     for (const trip of visible) list.appendChild(renderTripSuggestion(trip));
     els.tripSuggestions.appendChild(list);
 
-    const hidden = result.suggestions.length - visible.length;
-    if (result.suggestions.length > TRIP_SUGGESTIONS_VISIBLE) {
-      const toggle = document.createElement("button");
-      toggle.type = "button";
-      toggle.className = "trip-suggestions__toggle";
-      toggle.textContent = tripSuggestionsExpanded ? "Show fewer" : `Show ${hidden} more`;
-      toggle.setAttribute("aria-expanded", String(tripSuggestionsExpanded));
-      toggle.addEventListener("click", () => {
-        tripSuggestionsExpanded = !tripSuggestionsExpanded;
-        renderTripSuggestions();
-      });
-      els.tripSuggestions.appendChild(toggle);
+    if (total <= TRIP_SUGGESTIONS_VISIBLE) return;
+
+    const footer = document.createElement("div");
+    footer.className = "trip-suggestions__footer";
+    if (tripSuggestionsExpanded) {
+      footer.appendChild(renderTripPager(start, visible.length, total, pageCount));
     }
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "trip-suggestions__toggle";
+    toggle.textContent = tripSuggestionsExpanded
+      ? `Show the best ${TRIP_SUGGESTIONS_VISIBLE} only`
+      : `Show all ${formatCount(total)}`;
+    toggle.setAttribute("aria-expanded", String(tripSuggestionsExpanded));
+    toggle.addEventListener("click", () => {
+      tripSuggestionsExpanded = !tripSuggestionsExpanded;
+      tripSuggestionsPage = 0;
+      renderTripSuggestions();
+      scrollTripSuggestionsIntoView();
+    });
+    footer.appendChild(toggle);
+    els.tripSuggestions.appendChild(footer);
+  }
+
+  function scrollTripSuggestionsIntoView() {
+    els.tripSuggestions.parentElement.scrollIntoView({ block: "start" });
+  }
+
+  function goToTripSuggestionsPage(page) {
+    tripSuggestionsPage = page;
+    renderTripSuggestions();
+    scrollTripSuggestionsIntoView();
+  }
+
+  function renderTripPager(start, shown, total, pageCount) {
+    const nav = document.createElement("nav");
+    nav.className = "trip-pager";
+    nav.setAttribute("aria-label", "Trip suggestion pages");
+
+    const prev = document.createElement("button");
+    prev.type = "button";
+    prev.className = "month-nav-btn";
+    prev.textContent = "‹";
+    prev.setAttribute("aria-label", "Previous page of trips");
+    prev.disabled = tripSuggestionsPage === 0;
+    prev.addEventListener("click", () => goToTripSuggestionsPage(tripSuggestionsPage - 1));
+    nav.appendChild(prev);
+
+    const status = document.createElement("p");
+    status.className = "trip-pager__status";
+    status.setAttribute("role", "status");
+    status.textContent = `${formatCount(start + 1)}–${formatCount(start + shown)} of ${formatCount(total)}`;
+    nav.appendChild(status);
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "month-nav-btn";
+    next.textContent = "›";
+    next.setAttribute("aria-label", "Next page of trips");
+    next.disabled = tripSuggestionsPage >= pageCount - 1;
+    next.addEventListener("click", () => goToTripSuggestionsPage(tripSuggestionsPage + 1));
+    nav.appendChild(next);
+
+    return nav;
   }
 
   function appendTableMessage(message) {
@@ -1513,6 +1598,7 @@
     renderTable();
     renderTechnicalDetails();
     renderMonthlyActivity();
+    tripSuggestionsPage = 0; // a filter change makes the old page number meaningless
     renderTripSuggestions();
     updateSortIndicators();
   }

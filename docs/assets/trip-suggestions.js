@@ -24,6 +24,7 @@
 
   const DAY_MS = 86400000;
   const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+  const ISO_MONTH = /^\d{4}-\d{2}$/;
 
   /** Cabin codes as the API reports them, best first. */
   const CABINS = {
@@ -84,6 +85,7 @@
     for (const [date, counts] of map) {
       if (Number.isNaN(toUtcMs(date))) continue;
       if (options.earliestDate && date < options.earliestDate) continue;
+      if (options.month && !date.startsWith(options.month)) continue;
       const picked = pickCabin(counts, options.minSeats, options.cabin);
       if (!picked) continue;
       legs.push({
@@ -158,8 +160,13 @@
    * @param {number} [options.minNights=5]
    * @param {number} [options.maxNights=10]
    * @param {string|null} [options.earliestDate] Ignore legs before this date.
-   * @param {number} [options.limit=12]
-   * @returns {{suggestions: Array, totalCandidates: number}}
+   * @param {string|null} [options.departureMonth] "YYYY-MM". Restricts the
+   *   OUTBOUND leg only, so a trip may still return in the following month.
+   * @param {number} [options.limit=12] Size of the deduplicated shortlist.
+   * @returns {{suggestions: Array, all: Array, totalCandidates: number}}
+   *   `suggestions` is the shortlist; `all` is every valid combination of
+   *   the allowed airports across every fetched date, in the same ranked
+   *   order and with nothing deduplicated away.
    */
   function buildTripSuggestions(options) {
     const opts = options || {};
@@ -172,13 +179,16 @@
     const maxPerDate = Number.isFinite(opts.maxPerDate) ? opts.maxPerDate : DEFAULTS.maxPerDate;
     const earliestDate =
       typeof opts.earliestDate === "string" && ISO_DATE.test(opts.earliestDate) ? opts.earliestDate : null;
+    const departureMonth =
+      typeof opts.departureMonth === "string" && ISO_MONTH.test(opts.departureMonth) ? opts.departureMonth : null;
     const legOptions = { minSeats, cabin, earliestDate };
+    const outboundOptions = departureMonth ? { ...legOptions, month: departureMonth } : legOptions;
 
     const outboundLegs = [];
     const inboundByDate = new Map();
     for (const route of routes) {
       if (!route || typeof route.homeCode !== "string" || typeof route.nycCode !== "string") continue;
-      outboundLegs.push(...collectLegs(route.outboundMap, route.homeCode, route.nycCode, legOptions));
+      outboundLegs.push(...collectLegs(route.outboundMap, route.homeCode, route.nycCode, outboundOptions));
       for (const leg of collectLegs(route.inboundMap, route.nycCode, route.homeCode, legOptions)) {
         const bucket = inboundByDate.get(leg.date);
         if (bucket) bucket.push(leg);
@@ -234,7 +244,7 @@
       if (suggestions.length >= limit) break;
     }
 
-    return { suggestions, totalCandidates: candidates.length };
+    return { suggestions, all: candidates, totalCandidates: candidates.length };
   }
 
   root.TripSuggestions = {

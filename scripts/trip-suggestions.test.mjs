@@ -176,6 +176,33 @@ test("dates before earliestDate are never suggested", () => {
   assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-05-01" }).suggestions.length, 1);
 });
 
+test("departureMonth restricts the outbound leg but lets the trip return later", () => {
+  const routes = [
+    route(
+      "ARN",
+      "JFK",
+      { "2027-04-28": business, "2027-05-28": business, "2027-06-02": business },
+      { "2027-05-05": business, "2027-06-04": business, "2027-06-09": business }
+    ),
+  ];
+  const may = buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-05" }).all;
+  assert.deepEqual(
+    may.map((trip) => [trip.outbound.date, trip.inbound.date]),
+    [["2027-05-28", "2027-06-04"]]
+  );
+
+  const april = buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-04" }).all;
+  assert.deepEqual(
+    april.map((trip) => [trip.outbound.date, trip.inbound.date]),
+    [["2027-04-28", "2027-05-05"]]
+  );
+
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "2027-03" }).all.length, 0);
+  // An absent or malformed month keeps every departure.
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01" }).all.length, 3);
+  assert.equal(buildTripSuggestions({ routes, earliestDate: "2027-01-01", departureMonth: "nope" }).all.length, 3);
+});
+
 test("identical date pairs are deduplicated and per-date output stays bounded", () => {
   const routes = [
     route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
@@ -185,6 +212,40 @@ test("identical date pairs are deduplicated and per-date output stays bounded", 
   const { suggestions, totalCandidates } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
   assert.ok(totalCandidates > 1);
   assert.equal(suggestions.length, 1);
+});
+
+test("`all` keeps every airport combination, ranked and uncapped", () => {
+  const routes = [
+    route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
+    route("ARN", "EWR", { "2027-05-01": business }, { "2027-05-08": business }),
+    route("CPH", "JFK", { "2027-05-01": economy }, { "2027-05-08": economy }),
+  ];
+  const { suggestions, all, totalCandidates } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
+  assert.equal(all.length, totalCandidates);
+  assert.ok(all.length > suggestions.length);
+  // 3 outbound legs × 3 inbound legs on the same dates, including open jaws.
+  assert.equal(all.length, 9);
+  assert.equal(new Set(all.map((trip) => trip.id)).size, 9);
+  assert.equal(all[0].cabinKey, "business");
+  assert.equal(all.at(-1).cabinKey, "economy");
+  assert.deepEqual(
+    all.map((trip) => trip.cabinRank),
+    [...all.map((trip) => trip.cabinRank)].sort((a, b) => a - b)
+  );
+});
+
+test("the shortlist is always a subset of the complete list", () => {
+  const routes = [
+    route(
+      "OSL",
+      "JFK",
+      { "2027-05-01": business, "2027-05-02": economy, "2027-05-03": business },
+      { "2027-05-08": business, "2027-05-09": economy, "2027-05-11": business }
+    ),
+  ];
+  const { suggestions, all } = buildTripSuggestions({ routes, earliestDate: "2027-01-01" });
+  const allIds = new Set(all.map((trip) => trip.id));
+  for (const trip of suggestions) assert.ok(allIds.has(trip.id));
 });
 
 test("ranking is deterministic regardless of route order", () => {
