@@ -1582,6 +1582,22 @@ body.auth-locked > footer {
 }
 
 @media (prefers-color-scheme: dark) {
+  /* Light text on a dark ground reads heavier and the hairlines nearly
+     vanish, so rows need more air and a firmer divider to stay separate. */
+  .trip {
+    padding-block: 1.75rem;
+    border-top-color: rgba(245, 247, 250, 0.15);
+  }
+  .trip-leg__route {
+    font-weight: 640;
+  }
+  .trip__cabin {
+    color: rgba(244, 245, 247, 0.78);
+  }
+  .trip__cabin,
+  .trip__open-jaw {
+    margin-top: 0.3rem;
+  }
   .trip--mixed {
     background-image: linear-gradient(90deg, rgba(214, 169, 80, 0.06), rgba(214, 169, 80, 0) 52%);
   }
