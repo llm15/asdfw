@@ -1775,13 +1775,14 @@ a {
   .filters {
     padding: 0.85rem;
     gap: 0.75rem 0.7rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* The native month control reserves a fixed ~178px whatever the value,
+       so give it exactly that and let the short field beside it take the
+       rest, rather than stretching it across a whole empty row. */
+    grid-template-columns: auto minmax(0, 1fr);
     border-radius: 17px;
   }
-  /* The native month control has a fixed ~146px intrinsic width that
-     width:100% cannot shrink, so it needs a full row below ~390px. */
   .filter-group--wide,
-  .filter-group--month,
+  .filter-group--cabin,
   .filter-group--chips {
     grid-column: span 2;
   }
@@ -1897,5 +1898,18 @@ a {
   .login-dialog {
     width: calc(100vw - 1.5rem);
     max-height: 88vh;
+  }
+}
+
+/* Below this the month control's fixed 178px leaves too little beside it,
+   so every filter takes its own row. */
+@media (max-width: 21rem) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .filter-group--wide,
+  .filter-group--cabin,
+  .filter-group--chips {
+    grid-column: span 1;
   }
 }
