@@ -257,6 +257,42 @@ test("the shortlist spreads across dates rather than repeating one departure", (
   assert.equal(new Set(best.map((trip) => `${trip.outbound.date}|${trip.inbound.date}`)).size, 4);
 });
 
+test("allowRoundTrip and allowOpenJaw select which trip shapes are generated", () => {
+  const routes = [
+    route("ARN", "JFK", { "2027-05-01": business }, { "2027-05-08": business }),
+    route("CPH", "EWR", {}, { "2027-05-08": business }),
+  ];
+  const shapes = (opts) =>
+    buildTripSuggestions({ routes, earliestDate: "2027-01-01", ...opts }).trips.map((trip) => trip.openJaw.any);
+
+  // ARN→JFK on the 1st pairs with JFK→ARN (round trip) and EWR→CPH (open jaw).
+  assert.deepEqual(shapes({}).sort(), [false, true]);
+  assert.deepEqual(shapes({ allowOpenJaw: false }), [false]);
+  assert.deepEqual(shapes({ allowRoundTrip: false }), [true]);
+  assert.deepEqual(shapes({ allowRoundTrip: false, allowOpenJaw: false }), []);
+});
+
+test("the shortlist is rebuilt from the filtered shapes, not filtered afterwards", () => {
+  const routes = [
+    route(
+      "ARN",
+      "JFK",
+      { "2027-05-01": business, "2027-05-02": business },
+      { "2027-05-08": business, "2027-05-09": business }
+    ),
+    route("CPH", "EWR", {}, { "2027-05-08": business, "2027-05-09": business }),
+  ];
+  const openJawsOnly = buildTripSuggestions({
+    routes,
+    earliestDate: "2027-01-01",
+    allowRoundTrip: false,
+    bestLimit: 5,
+  });
+  assert.ok(openJawsOnly.best.length > 0);
+  for (const trip of openJawsOnly.best) assert.equal(trip.openJaw.any, true);
+  assert.ok(openJawsOnly.best.length <= openJawsOnly.total);
+});
+
 test("ranking is deterministic regardless of route order", () => {
   const build = (order) =>
     buildTripSuggestions({

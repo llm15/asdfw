@@ -160,6 +160,9 @@
     sort: { key: "date", dir: "asc" },
     // Trip-suggestion-only filters, layered on top of the airport filters above.
     tripBestOnly: true,
+    tripBusinessOnly: false,
+    tripRoundTrip: true,
+    tripOpenJaw: true,
     tripAirports: { arn: true, osl: true, cph: true, jfk: true, ewr: true },
   };
 
@@ -1208,9 +1211,13 @@
     const result = engine.buildTripSuggestions({
       routes,
       minSeats: Math.max(1, state.minSeats),
-      cabin: state.cabin,
+      // The Business chip is the more specific control, so it wins over the
+      // page-wide Cabin filter while it is on.
+      cabin: state.tripBusinessOnly ? "AB" : state.cabin,
       earliestDate: todayIsoDate(),
       departureMonth: state.month,
+      allowRoundTrip: state.tripRoundTrip,
+      allowOpenJaw: state.tripOpenJaw,
       bestLimit: TRIP_SUGGESTIONS_BEST,
     });
     return { ...result, routes: routes.length };
@@ -1376,6 +1383,44 @@
       }
     );
     best.classList.add("trip-filter--primary");
+
+    addTripFilterButton(
+      els.tripSuggestionsFilters,
+      "business",
+      "Business",
+      state.tripBusinessOnly,
+      "Only trips with Business availability on both legs",
+      () => {
+        state.tripBusinessOnly = !state.tripBusinessOnly;
+      }
+    );
+
+    const tripType = document.createElement("div");
+    tripType.className = "trip-filter-group";
+    tripType.setAttribute("role", "group");
+    tripType.setAttribute("aria-label", "Trip type");
+    addTripFilterButton(
+      tripType,
+      "roundtrip",
+      "Round trip",
+      state.tripRoundTrip,
+      "Return from the same New York airport to the same home airport — one booking",
+      () => {
+        state.tripRoundTrip = !state.tripRoundTrip;
+      }
+    );
+    addTripFilterButton(
+      tripType,
+      "openjaw",
+      "Open jaw",
+      state.tripOpenJaw,
+      "Fly home to a different airport, or back from the other New York airport — two bookings",
+      () => {
+        state.tripOpenJaw = !state.tripOpenJaw;
+      }
+    );
+    els.tripSuggestionsFilters.appendChild(tripType);
+
     addTripAirportGroup("Home airport", HOME_AIRPORTS, state.homeAirports);
     addTripAirportGroup("New York airport", NYC_AIRPORTS, state.nycAirports);
   }
@@ -1394,16 +1439,28 @@
       renderTripSuggestionsEmpty("Select at least one home and one New York airport above to see trip suggestions.");
       return;
     }
+    if (!state.tripRoundTrip && !state.tripOpenJaw) {
+      renderTripSuggestionsEmpty("Select a trip type above — round trip, open jaw, or both.");
+      return;
+    }
     if (result.total === 0) {
       renderTripSuggestionsEmpty(
         `No 5–10 night trips depart in ${formatMonthHeading(state.month)} with the current filters. ` +
-          "Try another month, fewer minimum seats, every cabin, or more airports."
+          "Try another month, fewer minimum seats, more airports, or turning off Business."
       );
       return;
     }
 
+    const effectiveCabin = state.tripBusinessOnly ? "AB" : state.cabin;
     const cabinFilterLabel =
-      state.cabin === "all" ? "any cabin" : state.cabin === "AB" ? "Business only" : state.cabin === "AP" ? "Premium Economy only" : "Economy only";
+      effectiveCabin === "all"
+        ? "any cabin"
+        : effectiveCabin === "AB"
+        ? "Business only"
+        : effectiveCabin === "AP"
+        ? "Premium Economy only"
+        : "Economy only";
+    const tripTypeLabel = state.tripRoundTrip && state.tripOpenJaw ? null : state.tripRoundTrip ? "round trips" : "open jaws";
     const seats = Math.max(1, state.minSeats);
     const total = result.total;
     const scope = state.tripBestOnly
@@ -1411,7 +1468,8 @@
       : `${formatCount(total)} possible trip${total === 1 ? "" : "s"}`;
     els.tripSuggestionsMeta.textContent =
       `${scope} departing in ${formatMonthHeading(state.month)} · ` +
-      `5–10 nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}`;
+      `5–10 nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}` +
+      (tripTypeLabel ? ` · ${tripTypeLabel} only` : "");
 
     const pageCount = Math.max(1, Math.ceil(total / TRIP_SUGGESTIONS_PAGE_SIZE));
     if (tripSuggestionsPage >= pageCount) tripSuggestionsPage = 0;

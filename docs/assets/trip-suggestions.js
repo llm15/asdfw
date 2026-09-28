@@ -162,6 +162,10 @@
    * @param {string|null} [options.earliestDate] Ignore legs before this date.
    * @param {string|null} [options.departureMonth] "YYYY-MM". Restricts the
    *   OUTBOUND leg only, so a trip may still return in the following month.
+   * @param {boolean} [options.allowRoundTrip=true] Keep trips that return
+   *   from the same New York airport to the same home airport.
+   * @param {boolean} [options.allowOpenJaw=true] Keep trips where either end
+   *   uses a different airport.
    * @param {number} [options.bestLimit=4] Size of the deduplicated shortlist.
    * @returns {{best: Array, trips: Array, total: number}} `trips` is every
    *   valid combination of the allowed airports across every matching date,
@@ -180,6 +184,8 @@
       typeof opts.earliestDate === "string" && ISO_DATE.test(opts.earliestDate) ? opts.earliestDate : null;
     const departureMonth =
       typeof opts.departureMonth === "string" && ISO_MONTH.test(opts.departureMonth) ? opts.departureMonth : null;
+    const allowRoundTrip = opts.allowRoundTrip !== false;
+    const allowOpenJaw = opts.allowOpenJaw !== false;
     const legOptions = { minSeats, cabin, earliestDate };
     const outboundOptions = departureMonth ? { ...legOptions, month: departureMonth } : legOptions;
 
@@ -203,6 +209,7 @@
         if (!bucket) continue;
         for (const inbound of bucket) {
           const openJaw = describeOpenJaw(outbound, inbound);
+          if (openJaw.any ? !allowOpenJaw : !allowRoundTrip) continue;
           const cabins = describeCabins(outbound.cabin, inbound.cabin);
           candidates.push({
             id: `${outbound.from}${outbound.to}${outbound.date}-${inbound.from}${inbound.to}${inbound.date}`,

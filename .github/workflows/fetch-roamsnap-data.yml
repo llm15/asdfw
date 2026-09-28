@@ -3,7 +3,7 @@ name: Fetch RoamSnap availability data
 on:
   schedule:
     # Fires every 3 hours, offset from the awardhacks job.
-    - cron: "35 */3 * * *"
+    #- cron: "35 */3 * * *"
   workflow_dispatch: {}
 
 # Least privilege: only contents write is needed to commit the data file.
