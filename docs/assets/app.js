@@ -113,6 +113,8 @@
     refreshBtnSpinner: document.getElementById("refresh-btn-spinner"),
     lastFetched: document.getElementById("last-fetched-value"),
     status: document.getElementById("status-message"),
+    filtersPanel: document.getElementById("filters-panel"),
+    filtersSummary: document.getElementById("filters-summary"),
     directionSelect: document.getElementById("direction-select"),
     monthInput: document.getElementById("month-input"),
     nycJfk: document.getElementById("nyc-jfk"),
@@ -1667,6 +1669,22 @@
     }
   }
 
+  /** Describes the active filters for the collapsed filter panel, so the
+   * summary line stays useful when the controls themselves are hidden. */
+  function renderFiltersSummary() {
+    const codes = (airports, enabled) => airports.filter((a) => enabled[a.id]).map((a) => a.code);
+    const nyc = codes(NYC_AIRPORTS, state.nycAirports);
+    const home = codes(HOME_AIRPORTS, state.homeAirports);
+    const cabin =
+      state.cabin === "all" ? "All cabins" : state.cabin === "AB" ? "Business" : state.cabin === "AP" ? "Premium" : "Economy";
+    els.filtersSummary.textContent = [
+      formatMonthHeading(state.month),
+      state.direction === "inbound" ? "Return" : "Outbound",
+      `${nyc.join("/") || "none"} ↔ ${home.join("/") || "none"}`,
+      cabin,
+    ].join(" · ");
+  }
+
   function updateSortIndicators() {
     els.table.querySelectorAll("th[data-sort]").forEach((th) => {
       th.removeAttribute("data-sort-dir");
@@ -1708,6 +1726,7 @@
   function renderAll() {
     renderDestinationImage();
     updateLastFetchedDisplay();
+    renderFiltersSummary();
     renderSummary();
     renderCalendar();
     renderTable();
@@ -2079,6 +2098,15 @@
   els.nextMonthBtn.addEventListener("click", () => shiftMonth(1));
   els.jumpEarliestBtn.addEventListener("click", jumpToEarliestMatch);
   els.jumpLatestBtn.addEventListener("click", jumpToLatestMatch);
+
+  // The filter panel is a disclosure only on narrow screens; keep it forced
+  // open elsewhere so it can never end up collapsed with its summary hidden.
+  const compactFilters = window.matchMedia("(max-width: 40rem)");
+  const syncFiltersPanel = () => {
+    els.filtersPanel.open = !compactFilters.matches;
+  };
+  syncFiltersPanel();
+  compactFilters.addEventListener("change", syncFiltersPanel);
 
   els.table.querySelectorAll("th[data-sort]").forEach((th) => {
     th.addEventListener("click", () => {
