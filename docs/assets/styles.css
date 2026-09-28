@@ -1807,8 +1807,11 @@ a {
   .jump-match-btn--earliest {
     grid-area: earliest;
   }
+  /* Both arrows are fixed-width, so without this the trailing one sits at the
+     start of its column and the row looks lopsided. */
   #prev-month-btn {
     grid-area: prev;
+    justify-self: start;
   }
   .calendar-heading-row h2 {
     grid-area: title;
@@ -1817,6 +1820,7 @@ a {
   }
   #next-month-btn {
     grid-area: next;
+    justify-self: end;
   }
   .jump-match-btn--latest {
     grid-area: latest;
