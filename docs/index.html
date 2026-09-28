@@ -6,7 +6,7 @@
   <title>NYC → Nordics Award Finder</title>
   <meta name="description" content="SAS award availability from JFK or EWR to ARN, OSL, or CPH." />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=60" />
+  <link rel="stylesheet" href="assets/styles.css?v=61" />
 </head>
 <body class="auth-locked">
   <header class="site-header">
@@ -49,7 +49,7 @@
               <option value="outbound">Outbound: home → New York</option>
             </select>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group--month">
             <label for="month-input">Month</label>
             <input type="month" id="month-input" value="2027-05" />
           </div>
@@ -62,7 +62,7 @@
               <option value="AB">Business</option>
             </select>
           </div>
-          <div class="filter-group filter-group--narrow">
+          <div class="filter-group">
             <label for="min-seats-input">Min. seats</label>
             <input type="number" id="min-seats-input" min="0" step="1" value="1" />
           </div>
@@ -192,8 +192,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=60"></script>
-  <script src="assets/app.js?v=60"></script>
+  <script src="assets/trip-suggestions.js?v=61"></script>
+  <script src="assets/app.js?v=61"></script>
 </body>
 </html>
 

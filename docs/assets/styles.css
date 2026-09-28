@@ -1778,7 +1778,10 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     border-radius: 17px;
   }
+  /* The native month control has a fixed ~146px intrinsic width that
+     width:100% cannot shrink, so it needs a full row below ~390px. */
   .filter-group--wide,
+  .filter-group--month,
   .filter-group--chips {
     grid-column: span 2;
   }
