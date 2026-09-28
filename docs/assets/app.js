@@ -159,7 +159,7 @@
     allMonths: false, // when true, the table shows matches across every fetched month, not just `month`
     sort: { key: "date", dir: "asc" },
     // Trip-suggestion-only filters, layered on top of the airport filters above.
-    tripBestOnly: true,
+    tripBestOnly: false,
     tripBusinessOnly: false,
     tripRoundTrip: true,
     tripOpenJaw: true,
