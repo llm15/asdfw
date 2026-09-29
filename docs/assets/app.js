@@ -107,7 +107,7 @@
   const TRIP_SUGGESTIONS_BEST = 5;
   const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
 
-  const TABLE_PAGE_SIZE = 25;
+  const TABLE_PAGE_SIZE = 10;
 
   // Beyond a handful of seats per cabin SAS never returns anything, so the
   // stepper stops there instead of offering values that only ever match none.
