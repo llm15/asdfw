@@ -49,6 +49,7 @@
   const AUTH_LOCK_KEY = "awards:loginLockedUntil";
   const AUTH_LOCK_MS = 30 * 60 * 1000;
   const MONTHLY_ACTIVITY_STORAGE_KEY = "awards:monthlyAvailabilityActivity";
+  const THEME_STORAGE_KEY = "awards:theme";
 
   // All sources publish the exact same JSON shape (see fetch-sas-data.mjs /
   // fetch-awardhacks-data.mjs / fetch-roamsnap-data.mjs / fetch-awardfares-
@@ -117,6 +118,9 @@
     refreshBtn: document.getElementById("refresh-btn"),
     refreshBtnLabel: document.getElementById("refresh-btn-label"),
     refreshBtnSpinner: document.getElementById("refresh-btn-spinner"),
+    themeBtn: document.getElementById("theme-btn"),
+    themeBtnIcon: document.getElementById("theme-btn-icon"),
+    themeBtnLabel: document.getElementById("theme-btn-label"),
     lastFetched: document.getElementById("last-fetched-value"),
     status: document.getElementById("status-message"),
     filtersPanel: document.getElementById("filters-panel"),
@@ -2526,6 +2530,45 @@
   els.refreshBtn.addEventListener("click", handleRefreshClick);
   els.loginForm.addEventListener("submit", handleLoginSubmit);
   els.loginDialog.addEventListener("cancel", (e) => e.preventDefault());
+
+  // The theme class itself is applied by the inline script in index.html,
+  // before first paint; this only keeps the button and the stored choice in
+  // sync, and keeps following the OS until the visitor picks a side.
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function applyTheme(dark) {
+    document.documentElement.classList.toggle("theme-dark", dark);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#0b0d11" : "#f6f7f4");
+    els.themeBtnIcon.textContent = dark ? "☀" : "☾";
+    els.themeBtnLabel.textContent = dark ? "Light" : "Dark";
+    const action = `Switch to ${dark ? "light" : "dark"} theme`;
+    els.themeBtn.title = action;
+    els.themeBtn.setAttribute("aria-label", action);
+  }
+
+  function storedTheme() {
+    try {
+      return localStorage.getItem(THEME_STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  applyTheme(storedTheme() ? storedTheme() === "dark" : darkQuery.matches);
+
+  els.themeBtn.addEventListener("click", () => {
+    const dark = !document.documentElement.classList.contains("theme-dark");
+    applyTheme(dark);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, dark ? "dark" : "light");
+    } catch {
+      // The choice still applies to this page load without storage.
+    }
+  });
+
+  darkQuery.addEventListener("change", (e) => {
+    if (!storedTheme()) applyTheme(e.matches);
+  });
 
   els.dayDetailClose.addEventListener("click", () => els.dayDetailDialog.close());
   // Native <dialog> has no built-in "click outside to close" — treat a
