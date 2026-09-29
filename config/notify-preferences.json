@@ -1,5 +1,6 @@
 {
-  "sources": ["sas", "awardhacks", "roamsnap", "awardfares", "seatsaero"],
+  "sources": ["sas", "awardhacks"],
+  "_disabledSources": ["roamsnap", "awardfares", "seatsaero"],
   "directions": ["inbound"],
   "cabins": ["AG", "AP", "AB"],
   "minSeats": 1,
