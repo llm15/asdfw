@@ -38,9 +38,9 @@ jobs:
       - name: Install Camoufox browser
         run: npx camoufox fetch
 
-      - name: Random delay (avoid predictable request timing)
-        if: github.event_name == 'schedule'
-        run: sleep $((RANDOM % 10800))
+      # - name: Random delay (avoid predictable request timing)
+      #   if: github.event_name == 'schedule'
+      #   run: sleep $((RANDOM % 10800))
 
       - name: Fetch latest SAS availability
         run: npm run fetch:data
