@@ -1474,7 +1474,7 @@
   function renderTripSuggestion(trip) {
     const article = document.createElement("article");
     const roundTrip = !trip.openJaw.any;
-    // A round trip is one booking, so the whole row highlights together;
+    // A round trip is one booking, so the whole card highlights together;
     // an open jaw is two, so its legs stay individually hoverable.
     article.className = `trip trip--${trip.cabinKey}${roundTrip ? " trip--round-trip" : ""}`;
 
@@ -1486,43 +1486,57 @@
       href: returnHref || buildSasFlightSearchUrl(leg.from, leg.to, leg.date),
     });
 
+    // Each leg already states its own cabin, so only a split cabin is worth
+    // repeating at trip level — anything else would just be noise.
+    const tags = [];
+    if (trip.cabinKey === "mixed") {
+      tags.push({ label: trip.cabinLabel, title: `${trip.outbound.cabin.label} out, ${trip.inbound.cabin.label} back.` });
+    }
+    if (trip.openJaw.any) tags.push({ label: "Open jaw", title: trip.openJaw.description });
+
     const legs = document.createElement("div");
     legs.className = "trip__legs";
     legs.appendChild(renderTripLeg(trip.outbound, "Out", bookingFor(trip.outbound)));
+    legs.appendChild(renderTripJourney(trip, tags));
     legs.appendChild(renderTripLeg(trip.inbound, "Back", bookingFor(trip.inbound)));
     article.appendChild(legs);
 
-    const meta = document.createElement("div");
-    meta.className = "trip__meta";
+    return article;
+  }
+
+  /** The stay between the two legs, drawn as a connector so the card reads
+   * as one journey rather than two unrelated flights. Trip-shape tags live
+   * here too, in the column that has room for them. */
+  function renderTripJourney(trip, tags) {
+    const el = document.createElement("div");
+    el.className = "trip__journey";
+
+    const rail = document.createElement("span");
+    rail.className = "trip__rail";
+    rail.setAttribute("aria-hidden", "true");
+    el.appendChild(rail);
 
     const nights = document.createElement("p");
     nights.className = "trip__nights";
-    const nightsValue = document.createElement("strong");
-    nightsValue.textContent = String(trip.nights);
-    nights.appendChild(nightsValue);
-    nights.append(` night${trip.nights === 1 ? "" : "s"}`);
-    meta.appendChild(nights);
+    const value = document.createElement("strong");
+    value.textContent = String(trip.nights);
+    nights.append(value, ` night${trip.nights === 1 ? "" : "s"}`);
+    el.appendChild(nights);
 
-    // Each leg already states its own cabin, so only a split cabin is worth
-    // repeating at trip level — anything else would just be noise.
-    if (trip.cabinKey === "mixed") {
-      const cabin = document.createElement("p");
-      cabin.className = "trip__cabin";
-      cabin.textContent = trip.cabinLabel;
-      cabin.title = `${trip.outbound.cabin.label} out, ${trip.inbound.cabin.label} back.`;
-      meta.appendChild(cabin);
+    if (tags.length > 0) {
+      const tagRow = document.createElement("div");
+      tagRow.className = "trip__tags";
+      for (const tag of tags) {
+        const chip = document.createElement("span");
+        chip.className = "trip__tag";
+        chip.textContent = tag.label;
+        chip.title = tag.title;
+        tagRow.appendChild(chip);
+      }
+      el.appendChild(tagRow);
     }
 
-    if (trip.openJaw.any) {
-      const jaw = document.createElement("p");
-      jaw.className = "trip__open-jaw";
-      jaw.textContent = "Open jaw";
-      jaw.title = trip.openJaw.description;
-      meta.appendChild(jaw);
-    }
-
-    article.appendChild(meta);
-    return article;
+    return el;
   }
 
   function renderTripSuggestionsEmpty(message) {
