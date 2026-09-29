@@ -1,7 +1,7 @@
 name: Fetch RoamSnap availability data
 
 on:
-  schedule:
+  #schedule:
     # Fires every 3 hours, offset from the awardhacks job.
     #- cron: "35 */3 * * *"
   workflow_dispatch: {}

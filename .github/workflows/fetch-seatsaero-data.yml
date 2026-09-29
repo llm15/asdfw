@@ -1,7 +1,7 @@
 name: Fetch seats.aero availability data
 
 on:
-  schedule:
+  #schedule:
     # Fires every 3 hours, offset from the awardhacks/roamsnap/awardfares jobs.
     #- cron: "5 */3 * * *"
   workflow_dispatch: {}
