@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T09:32:57.297Z",
+  "updatedAt": "2026-09-29T15:33:49.019Z",
   "sourceUrl": "https://awardhacks.se/List",
   "routes": {
     "arn-jfk": {
@@ -29,6 +29,39 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [
+              {
+                "date": "2026-12-04",
+                "AG": 0,
+                "AP": 0,
+                "AB": 1,
+                "availableSeatsTotal": 1,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-29T13:55:36Z"
+              },
+              {
+                "date": "2026-12-17",
+                "AG": 0,
+                "AP": 0,
+                "AB": 2,
+                "availableSeatsTotal": 2,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-29T13:58:08Z"
+              },
+              {
+                "date": "2027-01-05",
+                "AG": 0,
+                "AP": 0,
+                "AB": 4,
+                "availableSeatsTotal": 4,
+                "flightNumbers": [
+                  "SK903"
+                ],
+                "checkedAt": "2026-09-29T14:01:48Z"
+              },
               {
                 "date": "2027-05-07",
                 "AG": 0,
@@ -118,6 +151,28 @@
                   "SK904"
                 ],
                 "checkedAt": "2026-09-29T07:02:54Z"
+              },
+              {
+                "date": "2026-10-26",
+                "AG": 0,
+                "AP": 0,
+                "AB": 3,
+                "availableSeatsTotal": 3,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-29T14:11:30Z"
+              },
+              {
+                "date": "2026-10-27",
+                "AG": 0,
+                "AP": 0,
+                "AB": 3,
+                "availableSeatsTotal": 3,
+                "flightNumbers": [
+                  "SK904"
+                ],
+                "checkedAt": "2026-09-29T14:11:42Z"
               }
             ]
           }
@@ -717,17 +772,6 @@
           "airportCode": "EWR",
           "availability": {
             "outbound": [
-              {
-                "date": "2026-09-29",
-                "AG": 0,
-                "AP": 0,
-                "AB": 3,
-                "availableSeatsTotal": 3,
-                "flightNumbers": [
-                  "SK909"
-                ],
-                "checkedAt": "2026-09-25T15:57:42Z"
-              },
               {
                 "date": "2026-11-14",
                 "AG": 0,
