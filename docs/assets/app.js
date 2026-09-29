@@ -1710,7 +1710,7 @@
 
     const footer = document.createElement("div");
     footer.className = "trip-suggestions__footer";
-    footer.appendChild(renderTripPager(start, visible.length, total, pageCount));
+    footer.appendChild(renderTripPager(start, visible.length, total, pageCount, result.trips));
     els.tripSuggestions.appendChild(footer);
   }
 
@@ -1720,10 +1720,42 @@
     els.tripSuggestions.parentElement.scrollIntoView({ block: "start" });
   }
 
-  function renderTripPager(start, shown, total, pageCount) {
+  /** Where the earliest and latest departures sit in the ranked list. The
+   * ranking is by cabin and seats rather than date, so neither is reliably
+   * on the first or last page. */
+  function tripDepartureBounds(trips) {
+    let earliest = 0;
+    let latest = 0;
+    for (let i = 1; i < trips.length; i++) {
+      if (trips[i].outbound.date < trips[earliest].outbound.date) earliest = i;
+      if (trips[i].outbound.date > trips[latest].outbound.date) latest = i;
+    }
+    return {
+      earliest: { page: Math.floor(earliest / TRIP_SUGGESTIONS_PAGE_SIZE), date: trips[earliest].outbound.date },
+      latest: { page: Math.floor(latest / TRIP_SUGGESTIONS_PAGE_SIZE), date: trips[latest].outbound.date },
+    };
+  }
+
+  function addTripJumpButton(nav, label, bound) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "jump-match-btn";
+    btn.textContent = label;
+    btn.title =
+      `Jump to the page holding the ${label.toLowerCase()} departure (${formatDateDisplay(bound.date)}) — ` +
+      "suggestions are ranked by cabin and seats, not by date";
+    btn.disabled = bound.page === tripSuggestionsPage;
+    btn.addEventListener("click", () => goToTripSuggestionsPage(bound.page));
+    nav.appendChild(btn);
+  }
+
+  function renderTripPager(start, shown, total, pageCount, trips) {
     const nav = document.createElement("nav");
     nav.className = "trip-pager";
     nav.setAttribute("aria-label", "Trip suggestion pages");
+
+    const bounds = tripDepartureBounds(trips);
+    addTripJumpButton(nav, "Earliest", bounds.earliest);
 
     const prev = document.createElement("button");
     prev.type = "button";
@@ -1748,6 +1780,8 @@
     next.disabled = tripSuggestionsPage >= pageCount - 1;
     next.addEventListener("click", () => goToTripSuggestionsPage(tripSuggestionsPage + 1));
     nav.appendChild(next);
+
+    addTripJumpButton(nav, "Latest", bounds.latest);
 
     const pages = document.createElement("p");
     pages.className = "trip-pager__pages";

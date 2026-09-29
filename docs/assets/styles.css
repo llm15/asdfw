@@ -2112,6 +2112,20 @@ body.auth-locked > footer {
   color: var(--fg);
 }
 
+.trip-pager .jump-match-btn {
+  flex: 0 0 auto;
+  padding: 0.32rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.trip-pager .jump-match-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  border-color: var(--border);
+  color: var(--fg);
+}
+
   /* Light text on a dark ground reads heavier, so the routes need slightly
    less weight to keep the cards calm. */
 .theme-dark .trip-leg__route {
