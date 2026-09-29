@@ -685,6 +685,16 @@ body.auth-locked > footer {
   color: var(--fg);
 }
 
+.chip:has(input:disabled) {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.chip:has(input:disabled):hover {
+  border-color: var(--border);
+  color: var(--muted);
+}
+
 .chip:has(input:checked),
 .chip[aria-checked="true"],
 .chip[aria-pressed="true"] {
@@ -1257,37 +1267,92 @@ body.auth-locked > footer {
 .table-toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 0.75rem;
 }
 
-.include-missing-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
-  color: var(--muted);
+.table-toolbar__heading {
+  min-width: 0;
 }
 
-.include-missing-toggle:has(input:disabled) {
-  opacity: 0.5;
+.table-toolbar__heading h2 {
+  margin: 0 0 0.4rem;
 }
 
-.all-months-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
-  color: var(--muted);
+.table-toolbar__toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.4rem;
 }
 
 .table-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.55rem;
   margin: 0;
-  color: var(--muted);
   font-size: 0.86rem;
+}
+
+.table-meta__scope {
+  padding: 0.12rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--fg);
+  font-size: 0.76rem;
   font-weight: 650;
-  flex: 1 1 18rem;
+}
+
+.table-meta__empty {
+  color: var(--muted);
+}
+
+.table-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.26rem;
+  color: var(--muted);
+}
+
+.table-stat + .table-stat::before {
+  content: "·";
+  margin-right: 0.26rem;
+  color: var(--border-strong);
+}
+
+.table-stat__value {
+  color: var(--fg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-delta {
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-delta--new {
+  background: rgba(22, 131, 58, 0.12);
+  color: var(--ok);
+}
+
+.table-delta--lost {
+  background: rgba(192, 34, 47, 0.12);
+  color: var(--error);
+}
+
+@media (prefers-color-scheme: dark) {
+  .table-delta--new {
+    background: rgba(82, 200, 120, 0.16);
+  }
+  .table-delta--lost {
+    background: rgba(255, 123, 134, 0.16);
+  }
 }
 
 .table-scroll {

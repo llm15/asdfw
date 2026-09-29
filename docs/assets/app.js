@@ -1144,19 +1144,60 @@
   }
 
   function renderTableMeta(rows) {
-    if (!lastGood) {
-      els.tableMeta.textContent = "";
-      return;
-    }
+    els.tableMeta.replaceChildren();
+    if (!lastGood) return;
+
     const availableRows = rows.filter((row) => !row.isNoResult);
     const dates = new Set(availableRows.map((row) => row.date));
     const routes = new Set(availableRows.map((row) => `${row.nyc}-${row.home}`));
     const newCount = availableRows.filter((row) => row.isNew).length;
     const lostCount = rows.filter((row) => row.isLost).length;
-    const scope = state.allMonths ? "all fetched months" : formatMonthHeading(state.month);
-    els.tableMeta.textContent =
-      `${availableRows.length} matching rows · ${dates.size} dates · ${routes.size} routes · ${scope}` +
-      (newCount || lostCount ? ` · ${newCount} new / ${lostCount} decreased` : "");
+
+    const scope = document.createElement("span");
+    scope.className = "table-meta__scope";
+    scope.textContent = state.allMonths ? "All fetched months" : formatMonthHeading(state.month);
+    els.tableMeta.appendChild(scope);
+
+    if (availableRows.length === 0) {
+      const empty = document.createElement("span");
+      empty.className = "table-meta__empty";
+      empty.textContent = "No matching dates";
+      els.tableMeta.appendChild(empty);
+      return;
+    }
+
+    const stats = [
+      { value: dates.size, label: dates.size === 1 ? "date" : "dates" },
+      { value: routes.size, label: routes.size === 1 ? "route" : "routes" },
+      { value: availableRows.length, label: availableRows.length === 1 ? "row" : "rows" },
+    ];
+    for (const stat of stats) {
+      const el = document.createElement("span");
+      el.className = "table-stat";
+      const value = document.createElement("span");
+      value.className = "table-stat__value";
+      value.textContent = formatCount(stat.value);
+      const label = document.createElement("span");
+      label.className = "table-stat__label";
+      label.textContent = stat.label;
+      el.append(value, label);
+      els.tableMeta.appendChild(el);
+    }
+
+    const deltas = [
+      { count: newCount, tone: "new", symbol: "↑", label: "new" },
+      { count: lostCount, tone: "lost", symbol: "↓", label: "gone" },
+    ];
+    for (const delta of deltas) {
+      if (delta.count === 0) continue;
+      const el = document.createElement("span");
+      el.className = `table-delta table-delta--${delta.tone}`;
+      el.title = delta.tone === "new"
+        ? "Availability increased since your last visit"
+        : "Availability decreased since your last visit";
+      el.textContent = `${delta.symbol} ${formatCount(delta.count)} ${delta.label}`;
+      els.tableMeta.appendChild(el);
+    }
   }
 
   function renderMonthlyActivity() {
