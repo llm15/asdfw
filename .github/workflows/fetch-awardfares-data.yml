@@ -1,7 +1,7 @@
 name: Fetch AwardFares availability data
 
 on:
-  schedule:
+  #schedule:
     # Fires every 3 hours, offset from the awardhacks/roamsnap jobs.
     #- cron: "50 */3 * * *"
   workflow_dispatch: {}
