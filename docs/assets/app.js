@@ -107,6 +107,8 @@
   const TRIP_SUGGESTIONS_BEST = 5;
   const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
 
+  const TABLE_PAGE_SIZE = 25;
+
   // Beyond a handful of seats per cabin SAS never returns anything, so the
   // stepper stops there instead of offering values that only ever match none.
   const MAX_MIN_SEATS = 9;
@@ -143,6 +145,8 @@
     table: document.getElementById("dates-table"),
     tableMeta: document.getElementById("table-meta"),
     tableBody: document.getElementById("dates-table-body"),
+    tableScroll: document.getElementById("table-scroll"),
+    tablePager: document.getElementById("table-pager"),
     technical: document.getElementById("technical-details"),
     monthlyActivity: document.getElementById("monthly-activity"),
     tripSuggestions: document.getElementById("trip-suggestions"),
@@ -188,6 +192,7 @@
   // fetched each source (see computeAvailabilityChanges()).
   let availabilityChanges = new Map();
   let tripSuggestionsPage = 0;
+  let tablePage = 0;
   // The rail scrolls the selected month into view, but jumping on the very
   // first render would look like the page moved on its own.
   let monthRailRendered = false;
@@ -1098,6 +1103,7 @@
 
   function renderTable() {
     els.tableBody.replaceChildren();
+    els.tablePager.replaceChildren();
     const rows = sortRows(buildTableRows());
     renderTableMeta(rows);
 
@@ -1110,7 +1116,13 @@
       return;
     }
 
-    for (const row of rows) {
+    // A filter can shrink the result set under the page being viewed.
+    const pageCount = Math.ceil(rows.length / TABLE_PAGE_SIZE);
+    tablePage = Math.min(Math.max(tablePage, 0), pageCount - 1);
+    const start = tablePage * TABLE_PAGE_SIZE;
+    const visible = rows.slice(start, start + TABLE_PAGE_SIZE);
+
+    for (const row of visible) {
       const tr = document.createElement("tr");
       if (row.isNoResult) tr.classList.add("row--no-result");
       if (row.isNew) {
@@ -1141,6 +1153,53 @@
       }
       els.tableBody.appendChild(tr);
     }
+
+    if (pageCount > 1) {
+      els.tablePager.appendChild(renderTablePager(start, visible.length, rows.length, pageCount));
+    }
+  }
+
+  function goToTablePage(page) {
+    tablePage = page;
+    renderTable();
+    els.tableScroll.scrollIntoView({ block: "start" });
+  }
+
+  function renderTablePager(start, shown, total, pageCount) {
+    const nav = document.createElement("nav");
+    nav.className = "table-pager";
+    nav.setAttribute("aria-label", "Available date pages");
+
+    const prev = document.createElement("button");
+    prev.type = "button";
+    prev.className = "month-nav-btn";
+    prev.textContent = "‹";
+    prev.setAttribute("aria-label", "Previous page of dates");
+    prev.disabled = tablePage === 0;
+    prev.addEventListener("click", () => goToTablePage(tablePage - 1));
+    nav.appendChild(prev);
+
+    const status = document.createElement("p");
+    status.className = "table-pager__status";
+    status.setAttribute("role", "status");
+    status.textContent = `${formatCount(start + 1)}–${formatCount(start + shown)} of ${formatCount(total)}`;
+    nav.appendChild(status);
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "month-nav-btn";
+    next.textContent = "›";
+    next.setAttribute("aria-label", "Next page of dates");
+    next.disabled = tablePage >= pageCount - 1;
+    next.addEventListener("click", () => goToTablePage(tablePage + 1));
+    nav.appendChild(next);
+
+    const pages = document.createElement("p");
+    pages.className = "table-pager__pages";
+    pages.textContent = `Page ${formatCount(tablePage + 1)} of ${formatCount(pageCount)}`;
+    nav.appendChild(pages);
+
+    return nav;
   }
 
   function renderTableMeta(rows) {
@@ -1910,10 +1969,11 @@
     renderFiltersSummary();
     renderSummary();
     renderCalendar();
+    tablePage = 0; // a filter change makes the old page number meaningless
     renderTable();
     renderTechnicalDetails();
     renderMonthlyActivity();
-    tripSuggestionsPage = 0; // a filter change makes the old page number meaningless
+    tripSuggestionsPage = 0;
     renderTripSuggestions();
     updateSortIndicators();
   }
@@ -2354,6 +2414,7 @@
       } else {
         state.sort = { key, dir: "asc" };
       }
+      tablePage = 0;
       renderTable();
       updateSortIndicators();
       syncStateToUrl();

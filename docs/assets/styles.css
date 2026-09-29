@@ -1364,6 +1364,11 @@ body.auth-locked > footer {
   backdrop-filter: blur(18px) saturate(1.18);
 }
 
+.table-pager-slot:not(:empty) {
+  margin-top: 0.75rem;
+  padding: 0 0.2rem;
+}
+
 #dates-table {
   width: 100%;
   border-collapse: collapse;
@@ -1902,14 +1907,16 @@ body.auth-locked > footer {
   border-top: 1px solid var(--border);
 }
 
-.trip-pager {
+.trip-pager,
+.table-pager {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   width: 100%;
 }
 
-.trip-pager__status {
+.trip-pager__status,
+.table-pager__status {
   margin: 0;
   min-width: 8.5rem;
   color: var(--muted);
@@ -1918,14 +1925,16 @@ body.auth-locked > footer {
   text-align: center;
 }
 
-.trip-pager__pages {
+.trip-pager__pages,
+.table-pager__pages {
   margin: 0 0 0 auto;
   color: var(--muted);
   font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
 }
 
-.trip-pager .month-nav-btn:disabled {
+.trip-pager .month-nav-btn:disabled,
+.table-pager .month-nav-btn:disabled {
   opacity: 0.35;
   cursor: default;
   border-color: var(--border);
