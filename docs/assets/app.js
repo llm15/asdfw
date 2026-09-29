@@ -107,6 +107,10 @@
   const TRIP_SUGGESTIONS_BEST = 5;
   const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
 
+  // Beyond a handful of seats per cabin SAS never returns anything, so the
+  // stepper stops there instead of offering values that only ever match none.
+  const MAX_MIN_SEATS = 9;
+
   const els = {
     refreshBtn: document.getElementById("refresh-btn"),
     refreshBtnLabel: document.getElementById("refresh-btn-label"),
@@ -115,15 +119,18 @@
     status: document.getElementById("status-message"),
     filtersPanel: document.getElementById("filters-panel"),
     filtersSummary: document.getElementById("filters-summary"),
-    directionSelect: document.getElementById("direction-select"),
-    monthInput: document.getElementById("month-input"),
+    filtersSticky: document.getElementById("filters-sticky"),
+    filtersStickySummary: document.getElementById("filters-sticky-summary"),
+    directionSegmented: document.getElementById("direction-segmented"),
+    monthRail: document.getElementById("month-rail"),
     nycJfk: document.getElementById("nyc-jfk"),
     nycEwr: document.getElementById("nyc-ewr"),
     homeArn: document.getElementById("home-arn"),
     homeOsl: document.getElementById("home-osl"),
     homeCph: document.getElementById("home-cph"),
-    cabinSelect: document.getElementById("cabin-select"),
-    minSeatsInput: document.getElementById("min-seats-input"),
+    cabinChips: document.getElementById("cabin-chips"),
+    minSeatsValue: document.getElementById("min-seats-value"),
+    minSeatsUnit: document.getElementById("min-seats-unit"),
     includeMissingToggle: document.getElementById("include-missing-toggle"),
     allMonthsToggle: document.getElementById("all-months-toggle"),
     summary: document.getElementById("summary-cards"),
@@ -181,6 +188,14 @@
   // fetched each source (see computeAvailabilityChanges()).
   let availabilityChanges = new Map();
   let tripSuggestionsPage = 0;
+  // The rail scrolls the selected month into view, but jumping on the very
+  // first render would look like the page moved on its own.
+  let monthRailRendered = false;
+
+  const CHECKBOX_GROUPS = {
+    nyc: [els.nycJfk, els.nycEwr],
+    home: [els.homeArn, els.homeOsl, els.homeCph],
+  };
 
   function isPlainObject(value) {
     return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -1669,20 +1684,144 @@
     }
   }
 
-  /** Describes the active filters for the collapsed filter panel, so the
-   * summary line stays useful when the controls themselves are hidden. */
+  /** Describes the active filters for the collapsed filter panel and the
+   * sticky bar, so the summary line stays useful when the controls
+   * themselves are off screen. */
   function renderFiltersSummary() {
     const codes = (airports, enabled) => airports.filter((a) => enabled[a.id]).map((a) => a.code);
     const nyc = codes(NYC_AIRPORTS, state.nycAirports);
     const home = codes(HOME_AIRPORTS, state.homeAirports);
     const cabin =
       state.cabin === "all" ? "All cabins" : state.cabin === "AB" ? "Business" : state.cabin === "AP" ? "Premium" : "Economy";
-    els.filtersSummary.textContent = [
+    const text = [
       formatMonthHeading(state.month),
       state.direction === "inbound" ? "Return" : "Outbound",
       `${nyc.join("/") || "none"} ↔ ${home.join("/") || "none"}`,
       cabin,
     ].join(" · ");
+    els.filtersSummary.textContent = text;
+    els.filtersStickySummary.textContent = text;
+  }
+
+  /** Pushes `state` back into the custom controls (which, unlike native
+   * inputs, hold no value of their own). */
+  function renderFilterControls() {
+    els.directionSegmented.dataset.active = state.direction;
+    for (const option of els.directionSegmented.querySelectorAll("[data-direction]")) {
+      const selected = option.dataset.direction === state.direction;
+      option.setAttribute("aria-checked", String(selected));
+      option.tabIndex = selected ? 0 : -1;
+    }
+
+    for (const chip of els.cabinChips.querySelectorAll("[data-cabin]")) {
+      const selected = chip.dataset.cabin === state.cabin;
+      chip.setAttribute("aria-checked", String(selected));
+      chip.tabIndex = selected ? 0 : -1;
+    }
+
+    els.minSeatsValue.textContent = formatCount(state.minSeats);
+    els.minSeatsUnit.textContent = state.minSeats === 1 ? "seat" : "seats";
+    for (const btn of document.querySelectorAll("[data-seats-step]")) {
+      const next = state.minSeats + Number(btn.dataset.seatsStep);
+      btn.disabled = next < 0 || next > MAX_MIN_SEATS;
+    }
+
+    for (const btn of document.querySelectorAll(".chip--all")) {
+      btn.setAttribute("aria-pressed", String(isWholeGroupSelected(btn.dataset.group)));
+    }
+
+    renderMonthRail();
+  }
+
+  function isWholeGroupSelected(group) {
+    return CHECKBOX_GROUPS[group] ? CHECKBOX_GROUPS[group].every((box) => box.checked) : false;
+  }
+
+  /** The months the rail offers: every month the fetched data covers, with
+   * any gaps filled so the strip reads as a continuous timeline, plus the
+   * selected month (which may sit outside the fetched window). */
+  function monthRailMonths(matchesByMonth) {
+    const months = new Set([state.month, ...matchesByMonth.keys()]);
+    if (lastGood) {
+      for (const combo of COMBOS) {
+        for (const dateStr of getActiveMap(combo.id).keys()) months.add(dateStr.slice(0, 7));
+      }
+    }
+    const sorted = [...months].sort();
+    const filled = [];
+    let [y, m] = sorted[0].split("-").map(Number);
+    const last = sorted[sorted.length - 1];
+    for (let guard = 0; guard < 120; guard++) {
+      const month = `${y}-${pad2(m)}`;
+      filled.push(month);
+      if (month >= last) break;
+      m += 1;
+      if (m > 12) {
+        m = 1;
+        y += 1;
+      }
+    }
+    return filled;
+  }
+
+  /** A month picker that doubles as a heat strip: each month carries a dot
+   * whose strength reflects how many dates in it match the current filters,
+   * so the choice is informed instead of trial and error. */
+  function renderMonthRail() {
+    const datesByMonth = new Map();
+    for (const row of buildTableRowsAllMonths()) {
+      if (row.isNoResult) continue;
+      const month = row.date.slice(0, 7);
+      if (!datesByMonth.has(month)) datesByMonth.set(month, new Set());
+      datesByMonth.get(month).add(row.date);
+    }
+
+    const months = monthRailMonths(datesByMonth);
+    const busiest = Math.max(1, ...months.map((month) => datesByMonth.get(month)?.size ?? 0));
+
+    els.monthRail.replaceChildren();
+    for (const month of months) {
+      const matches = datesByMonth.get(month)?.size ?? 0;
+      const selected = month === state.month;
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "month-chip";
+      chip.dataset.month = month;
+      chip.dataset.matches = String(matches);
+      chip.setAttribute("role", "radio");
+      chip.setAttribute("aria-checked", String(selected));
+      chip.tabIndex = selected ? 0 : -1;
+      chip.setAttribute(
+        "aria-label",
+        `${formatMonthHeading(month)} — ${formatCount(matches)} matching ${matches === 1 ? "date" : "dates"}`
+      );
+      if (matches > 0) chip.style.setProperty("--dot-strength", String(0.35 + 0.65 * (matches / busiest)));
+
+      const label = document.createElement("span");
+      label.className = "month-chip__label";
+      label.textContent = formatMonthRailLabel(month);
+      const dot = document.createElement("span");
+      dot.className = "month-chip__dot";
+      chip.append(label, dot);
+      els.monthRail.appendChild(chip);
+    }
+
+    const active = els.monthRail.querySelector('[aria-checked="true"]');
+    if (active) {
+      els.monthRail.scrollTo({
+        left: active.offsetLeft - els.monthRail.clientWidth / 2 + active.clientWidth / 2,
+        behavior: monthRailRendered ? "smooth" : "auto",
+      });
+    }
+    monthRailRendered = true;
+  }
+
+  function formatMonthRailLabel(monthStr) {
+    const [y, m] = monthStr.split("-").map(Number);
+    const label = new Intl.DateTimeFormat(CALENDAR_LOCALE, { timeZone: "UTC", month: "short" }).format(
+      new Date(Date.UTC(y, m - 1, 1))
+    );
+    return `${label.charAt(0).toUpperCase()}${label.slice(1).replace(".", "")} ${pad2(y % 100)}`;
   }
 
   function updateSortIndicators() {
@@ -1726,6 +1865,7 @@
   function renderAll() {
     renderDestinationImage();
     updateLastFetchedDisplay();
+    renderFilterControls();
     renderFiltersSummary();
     renderSummary();
     renderCalendar();
@@ -1811,17 +1951,15 @@
     renderAll();
   }
 
+  /** Re-reads the checkbox-backed filters (the custom controls write to
+   * `state` directly when clicked) and re-renders everything. Stays the
+   * single funnel every filter change goes through. */
   function handleFilterChange() {
-    state.direction = els.directionSelect.value === "outbound" ? "outbound" : "inbound";
-    state.month = /^\d{4}-\d{2}$/.test(els.monthInput.value) ? els.monthInput.value : state.month;
     state.nycAirports.jfk = els.nycJfk.checked;
     state.nycAirports.ewr = els.nycEwr.checked;
     state.homeAirports.arn = els.homeArn.checked;
     state.homeAirports.osl = els.homeOsl.checked;
     state.homeAirports.cph = els.homeCph.checked;
-    state.cabin = ["all", "AG", "AP", "AB"].includes(els.cabinSelect.value) ? els.cabinSelect.value : "all";
-    const parsedMinSeats = Number.parseInt(els.minSeatsInput.value, 10);
-    state.minSeats = Number.isFinite(parsedMinSeats) && parsedMinSeats >= 0 ? parsedMinSeats : 0;
     state.allMonths = els.allMonthsToggle.checked;
     // "Include missing dates" has no meaning once the table spans every
     // fetched month instead of one bounded month — grey it out rather than
@@ -1832,14 +1970,12 @@
     syncStateToUrl();
   }
 
-  /** Moves the Month filter forward/back by `delta` months and re-applies
-   * every filter (reusing handleFilterChange so this stays the single
-   * source of truth for turning DOM inputs into state). */
+  /** Moves the Month filter forward/back by `delta` months. */
   function shiftMonth(delta) {
     const [y, m] = state.month.split("-").map(Number);
     if (!y || !m) return;
     const next = new Date(Date.UTC(y, m - 1 + delta, 1));
-    els.monthInput.value = `${next.getUTCFullYear()}-${pad2(next.getUTCMonth() + 1)}`;
+    state.month = `${next.getUTCFullYear()}-${pad2(next.getUTCMonth() + 1)}`;
     handleFilterChange();
   }
 
@@ -1855,7 +1991,7 @@
     }
     const earliest = rows.reduce((min, r) => (r.date < min ? r.date : min), rows[0].date);
     els.allMonthsToggle.checked = false;
-    els.monthInput.value = earliest.slice(0, 7);
+    state.month = earliest.slice(0, 7);
     handleFilterChange();
     setStatus(`Jumped to ${formatDateDisplay(earliest)}, the earliest matching date.`, "ok");
   }
@@ -1868,7 +2004,7 @@
     }
     const latest = rows.reduce((max, r) => (r.date > max ? r.date : max), rows[0].date);
     els.allMonthsToggle.checked = false;
-    els.monthInput.value = latest.slice(0, 7);
+    state.month = latest.slice(0, 7);
     handleFilterChange();
     setStatus(`Jumped to ${formatDateDisplay(latest)}, the latest matching date.`, "ok");
   }
@@ -1876,14 +2012,14 @@
   const SORT_KEYS = ["date", "dow", "nyc", "home", "direction", "AG", "AP", "AB", "total"];
 
   /** Reads filter/sort state out of the URL's query string (if present) and
-   * applies it to the DOM inputs — called once on load, BEFORE the first
-   * handleFilterChange(), so that call's normal "read inputs into state"
-   * pass picks these up. This makes the current view shareable/bookmarkable
-   * and lets a reload restore exactly what was being looked at. */
+   * applies it — called once on load, BEFORE the first handleFilterChange()
+   * and control render, so both pick these up. This makes the current view
+   * shareable/bookmarkable and lets a reload restore exactly what was being
+   * looked at. */
   function applyUrlParamsToInputs() {
     const params = new URLSearchParams(location.search);
-    if (params.has("dir")) els.directionSelect.value = params.get("dir") === "outbound" ? "outbound" : "inbound";
-    if (params.has("month") && /^\d{4}-\d{2}$/.test(params.get("month"))) els.monthInput.value = params.get("month");
+    if (params.has("dir")) state.direction = params.get("dir") === "outbound" ? "outbound" : "inbound";
+    if (params.has("month") && /^\d{4}-\d{2}$/.test(params.get("month"))) state.month = params.get("month");
     if (params.has("nyc")) {
       const enabled = new Set(params.get("nyc").split(",").filter(Boolean));
       els.nycJfk.checked = enabled.has("jfk");
@@ -1896,9 +2032,12 @@
       els.homeCph.checked = enabled.has("cph");
     }
     if (params.has("cabin") && ["all", "AG", "AP", "AB"].includes(params.get("cabin"))) {
-      els.cabinSelect.value = params.get("cabin");
+      state.cabin = params.get("cabin");
     }
-    if (params.has("minSeats")) els.minSeatsInput.value = params.get("minSeats");
+    if (params.has("minSeats")) {
+      const parsed = Number.parseInt(params.get("minSeats"), 10);
+      if (Number.isFinite(parsed) && parsed >= 0) state.minSeats = Math.min(parsed, MAX_MIN_SEATS);
+    }
     if (params.has("includeMissing")) els.includeMissingToggle.checked = params.get("includeMissing") === "1";
     if (params.has("allMonths")) els.allMonthsToggle.checked = params.get("allMonths") === "1";
     if (params.has("sortKey") && SORT_KEYS.includes(params.get("sortKey"))) state.sort.key = params.get("sortKey");
@@ -2063,30 +2202,68 @@
   }
 
   [
-    els.directionSelect,
-    els.monthInput,
     els.nycJfk,
     els.nycEwr,
     els.homeArn,
     els.homeOsl,
     els.homeCph,
-    els.cabinSelect,
-    els.minSeatsInput,
     els.includeMissingToggle,
     els.allMonthsToggle,
   ].forEach((el) => el.addEventListener("change", handleFilterChange));
 
-  // Generic "All"/"None" shortcuts for the checkbox fieldsets above, so
-  // isolating e.g. a single home airport doesn't take one click per box.
-  const CHECKBOX_GROUPS = {
-    nyc: [els.nycJfk, els.nycEwr],
-    home: [els.homeArn, els.homeOsl, els.homeCph],
-  };
-  document.querySelectorAll(".select-shortcut").forEach((btn) => {
+  els.directionSegmented.addEventListener("click", (e) => {
+    const option = e.target.closest("[data-direction]");
+    if (!option || option.dataset.direction === state.direction) return;
+    state.direction = option.dataset.direction;
+    handleFilterChange();
+  });
+
+  els.cabinChips.addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-cabin]");
+    if (!chip || chip.dataset.cabin === state.cabin) return;
+    state.cabin = chip.dataset.cabin;
+    handleFilterChange();
+  });
+
+  els.monthRail.addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-month]");
+    if (!chip || chip.dataset.month === state.month) return;
+    state.month = chip.dataset.month;
+    handleFilterChange();
+  });
+
+  // Arrow keys move between options within a radiogroup, as expected of the
+  // role — the rendered controls are buttons, so this isn't free.
+  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail]) {
+    group.addEventListener("keydown", (e) => {
+      const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+      if (step === 0) return;
+      const options = [...group.querySelectorAll('[role="radio"]')];
+      const current = options.findIndex((o) => o.getAttribute("aria-checked") === "true");
+      const next = options[Math.min(Math.max(current + step, 0), options.length - 1)];
+      if (!next || next === options[current]) return;
+      e.preventDefault();
+      next.click();
+      group.querySelector('[aria-checked="true"]')?.focus();
+    });
+  }
+
+  document.querySelectorAll("[data-seats-step]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = state.minSeats + Number(btn.dataset.seatsStep);
+      if (next < 0 || next > MAX_MIN_SEATS) return;
+      state.minSeats = next;
+      handleFilterChange();
+    });
+  });
+
+  // One "All" chip per airport group: selects the whole group, or clears it
+  // when everything is already selected.
+  document.querySelectorAll(".chip--all").forEach((btn) => {
     btn.addEventListener("click", () => {
       const group = CHECKBOX_GROUPS[btn.dataset.group];
       if (!group) return;
-      const checked = btn.dataset.action === "all";
+      const checked = !isWholeGroupSelected(btn.dataset.group);
       group.forEach((checkbox) => {
         checkbox.checked = checked;
       });
@@ -2107,6 +2284,26 @@
   };
   syncFiltersPanel();
   compactFilters.addEventListener("change", syncFiltersPanel);
+
+  // Once the panel itself scrolls away, a compact bar keeps the active
+  // filters visible and one tap away while scanning the data below.
+  const stickyObserver = new IntersectionObserver(
+    ([entry]) => {
+      const show = !entry.isIntersecting && !document.body.classList.contains("auth-locked");
+      els.filtersSticky.hidden = !show;
+      // Let the element lay out before animating in, so it slides rather than appears.
+      requestAnimationFrame(() => {
+        els.filtersSticky.dataset.visible = String(show);
+      });
+    },
+    { rootMargin: "-8px 0px 0px 0px" }
+  );
+  stickyObserver.observe(els.filtersPanel);
+
+  els.filtersSticky.addEventListener("click", () => {
+    els.filtersPanel.open = true;
+    els.filtersPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   els.table.querySelectorAll("th[data-sort]").forEach((th) => {
     th.addEventListener("click", () => {

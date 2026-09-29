@@ -6,7 +6,7 @@
   <title>NYC → Nordics Award Finder</title>
   <meta name="description" content="SAS award availability from JFK or EWR to ARN, OSL, or CPH." />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=63" />
+  <link rel="stylesheet" href="assets/styles.css?v=64" />
 </head>
 <body class="auth-locked">
   <header class="site-header">
@@ -29,6 +29,12 @@
   </header>
 
   <main id="main" class="container">
+    <button type="button" id="filters-sticky" class="filters-sticky" hidden>
+      <span class="filters-sticky__label">Filters</span>
+      <span id="filters-sticky-summary" class="filters-sticky__summary"></span>
+      <span class="filters-sticky__chevron" aria-hidden="true">↑</span>
+    </button>
+
     <section class="dashboard-overview" aria-label="Search overview">
       <div class="dashboard-overview__status">
         <span class="status-dot" aria-hidden="true"></span>
@@ -42,57 +48,61 @@
         </summary>
 
         <section class="filters" aria-label="Filters">
-          <div class="filter-group filter-group--wide">
-            <label for="direction-select">Direction</label>
-            <select id="direction-select">
-              <option value="inbound" selected>Return: New York → home</option>
-              <option value="outbound">Outbound: home → New York</option>
-            </select>
-          </div>
-          <div class="filter-group filter-group--month">
-            <label for="month-input">Month</label>
-            <input type="month" id="month-input" value="2027-05" />
-          </div>
-          <div class="filter-group">
-            <label for="min-seats-input">Min. seats</label>
-            <input type="number" id="min-seats-input" min="0" step="1" value="1" />
-          </div>
-          <div class="filter-group filter-group--cabin">
-            <label for="cabin-select">Cabin</label>
-            <select id="cabin-select">
-              <option value="all" selected>All</option>
-              <option value="AG">Economy</option>
-              <option value="AP">Premium Economy</option>
-              <option value="AB">Business</option>
-            </select>
-          </div>
-          <fieldset class="filter-group filter-group--chips">
-            <legend>
-              <span>New York airport</span>
-              <span class="select-shortcuts">
-                <button type="button" class="select-shortcut" data-group="nyc" data-action="all">All</button>
-                <button type="button" class="select-shortcut" data-group="nyc" data-action="none">None</button>
-              </span>
-            </legend>
-            <div class="chip-row">
-              <label class="chip"><input type="checkbox" id="nyc-jfk" checked /><span>JFK</span></label>
-              <label class="chip"><input type="checkbox" id="nyc-ewr" checked /><span>EWR</span></label>
+          <div class="filters__row filters__row--lead">
+            <div id="direction-segmented" class="segmented" role="radiogroup" aria-label="Direction" data-active="inbound">
+              <span class="segmented__indicator" aria-hidden="true"></span>
+              <button type="button" class="segmented__option" role="radio" aria-checked="true" tabindex="0" data-direction="inbound">
+                New York <span aria-hidden="true">→</span> home
+              </button>
+              <button type="button" class="segmented__option" role="radio" aria-checked="false" tabindex="-1" data-direction="outbound">
+                Home <span aria-hidden="true">→</span> New York
+              </button>
             </div>
-          </fieldset>
-          <fieldset class="filter-group filter-group--chips">
-            <legend>
-              <span>Home airport</span>
-              <span class="select-shortcuts">
-                <button type="button" class="select-shortcut" data-group="home" data-action="all">All</button>
-                <button type="button" class="select-shortcut" data-group="home" data-action="none">None</button>
+
+            <div class="stepper" role="group" aria-label="Minimum seats">
+              <button type="button" class="stepper__btn" data-seats-step="-1" aria-label="One fewer seat">−</button>
+              <span class="stepper__value">
+                <output id="min-seats-value" class="stepper__number">1</output>
+                <span id="min-seats-unit" class="stepper__unit">seat</span>
               </span>
-            </legend>
-            <div class="chip-row">
-              <label class="chip"><input type="checkbox" id="home-arn" checked /><span>ARN</span></label>
-              <label class="chip"><input type="checkbox" id="home-osl" checked /><span>OSL</span></label>
-              <label class="chip"><input type="checkbox" id="home-cph" checked /><span>CPH</span></label>
+              <button type="button" class="stepper__btn" data-seats-step="1" aria-label="One more seat">+</button>
             </div>
-          </fieldset>
+          </div>
+
+          <div class="filters__row filters__row--rail">
+            <div id="month-rail" class="month-rail" role="radiogroup" aria-label="Month"></div>
+          </div>
+
+          <div class="filters__row filters__row--chips">
+            <fieldset class="chip-field">
+              <legend>Cabin</legend>
+              <div id="cabin-chips" class="chip-row" role="radiogroup" aria-label="Cabin">
+                <button type="button" class="chip" role="radio" aria-checked="true" tabindex="0" data-cabin="all">Any</button>
+                <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-cabin="AG">Economy</button>
+                <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-cabin="AP">Premium</button>
+                <button type="button" class="chip" role="radio" aria-checked="false" tabindex="-1" data-cabin="AB">Business</button>
+              </div>
+            </fieldset>
+            <fieldset class="chip-field">
+              <legend>New York airport</legend>
+              <div class="chip-row">
+                <button type="button" class="chip chip--all" data-group="nyc" aria-pressed="true">All</button>
+                <span class="chip-row__divider" aria-hidden="true"></span>
+                <label class="chip"><input type="checkbox" id="nyc-jfk" checked /><span>JFK</span></label>
+                <label class="chip"><input type="checkbox" id="nyc-ewr" checked /><span>EWR</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="chip-field">
+              <legend>Home airport</legend>
+              <div class="chip-row">
+                <button type="button" class="chip chip--all" data-group="home" aria-pressed="true">All</button>
+                <span class="chip-row__divider" aria-hidden="true"></span>
+                <label class="chip"><input type="checkbox" id="home-arn" checked /><span>ARN</span></label>
+                <label class="chip"><input type="checkbox" id="home-osl" checked /><span>OSL</span></label>
+                <label class="chip"><input type="checkbox" id="home-cph" checked /><span>CPH</span></label>
+              </div>
+            </fieldset>
+          </div>
         </section>
         <p class="filters__note">Availability is requested for one passenger.</p>
       </details>
@@ -192,8 +202,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=63"></script>
-  <script src="assets/app.js?v=63"></script>
+  <script src="assets/trip-suggestions.js?v=64"></script>
+  <script src="assets/app.js?v=64"></script>
 </body>
 </html>
 

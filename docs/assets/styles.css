@@ -345,16 +345,38 @@ body.auth-locked > footer {
   display: none;
 }
 
+/* One surface split by hairlines, rather than a grid of separately-boxed
+   controls — the filters read as a single instrument panel. */
 .filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
-  gap: 0.9rem 1.1rem;
-  align-items: start;
   background: rgba(255, 255, 255, 0.58);
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.filters__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.4rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.filters__row + .filters__row {
+  border-top: 1px solid var(--border);
+}
+
+.filters__row--lead {
+  justify-content: space-between;
+}
+
+.filters__row--rail {
+  padding: 0.5rem 0.35rem 0.5rem 0.9rem;
+}
+
+.filters__row--chips {
+  align-items: flex-start;
+  gap: 0.75rem 1.8rem;
 }
 
 .filters__note {
@@ -364,111 +386,268 @@ body.auth-locked > footer {
   font-size: 0.76rem;
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
+@media (prefers-color-scheme: dark) {
+  .filters {
+    background: rgba(255, 255, 255, 0.055);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+}
+
+/* ---------- Segmented control (direction) ---------- */
+
+.segmented {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  flex: 1 1 18rem;
   min-width: 0;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(17, 24, 39, 0.045);
 }
 
-.filter-group--wide {
-  grid-column: span 2;
+/* The moving pill is a single element sliding between the options, so the
+   control animates as one object instead of two fading backgrounds. */
+.segmented__indicator {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
+  border-radius: calc(var(--radius-sm) - 3px);
+  background: var(--card-bg);
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.12), 0 4px 12px rgba(17, 24, 39, 0.07);
+  transition: transform 0.24s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.filter-group--chips {
-  grid-column: span 2;
+.segmented[data-active="outbound"] .segmented__indicator {
+  transform: translateX(100%);
 }
 
-.filter-group select,
-.filter-group input[type="month"],
-.filter-group input[type="date"],
-.filter-group input[type="number"] {
-  width: 100%;
-  min-width: 0;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  padding: 0.55rem 0.7rem;
+.segmented__option {
+  position: relative;
+  z-index: 1;
+  border: none;
+  background: none;
+  padding: 0.45rem 0.7rem;
+  border-radius: calc(var(--radius-sm) - 3px);
   font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--fg);
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.78), 0 1px 2px rgba(17, 24, 39, 0.04);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.18s ease;
 }
 
-.filter-group select:focus,
-.filter-group input:focus {
-  border-color: rgba(10, 132, 255, 0.5);
-  outline: none;
+.segmented__option[aria-checked="true"] {
+  color: var(--fg);
+}
+
+.segmented__option:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 1px;
 }
 
 @media (prefers-color-scheme: dark) {
-  .filter-group select,
-  .filter-group input[type="month"],
-  .filter-group input[type="date"],
-  .filter-group input[type="number"] {
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: none;
+  .segmented {
+    background: rgba(255, 255, 255, 0.05);
   }
-  .filters {
-    background: rgba(255, 255, 255, 0.055);
+  .segmented__indicator {
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   }
 }
 
-.filter-group--chips {
+/* ---------- Stepper (minimum seats) ---------- */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(17, 24, 39, 0.045);
+}
+
+.stepper__btn {
+  width: 1.9rem;
+  height: 1.9rem;
   border: none;
-  margin: 0;
-  padding: 0;
+  border-radius: calc(var(--radius-sm) - 3px);
+  background: none;
+  color: var(--fg);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
 }
 
-.filter-group--chips legend {
-  display: flex;
+.stepper__btn:hover:not(:disabled) {
+  background: var(--card-bg);
+}
+
+.stepper__btn:disabled {
+  color: var(--muted);
+  opacity: 0.45;
+  cursor: default;
+}
+
+.stepper__btn:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.stepper__value {
+  display: inline-flex;
   align-items: baseline;
-  gap: 0.7rem;
-  width: 100%;
-  padding: 0;
-  margin-bottom: 0.45rem;
-  font-size: 0.72rem;
+  gap: 0.28rem;
+  min-width: 4.1rem;
+  justify-content: center;
+  font-size: 0.86rem;
+}
+
+.stepper__number {
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper__unit {
   color: var(--muted);
 }
 
-.select-shortcuts {
+@media (prefers-color-scheme: dark) {
+  .stepper {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .stepper__btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ---------- Month rail ---------- */
+
+/* Replaces the native month picker AND the duplicate ‹ › navigation: each
+   month carries a dot whose weight shows how much availability it holds, so
+   choosing a month is informed rather than a guess. */
+.month-rail {
+  display: flex;
+  gap: 0.3rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 0.15rem 0.55rem 0.15rem 0;
+  mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
+}
+
+.month-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.month-chip {
+  flex: 0 0 auto;
   display: inline-flex;
-  gap: 0.5rem;
-}
-
-.select-shortcut {
-  border: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.22rem;
+  min-width: 3.9rem;
+  padding: 0.38rem 0.6rem 0.34rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   background: none;
-  color: var(--blue);
   font-family: inherit;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  padding: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
   cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
 }
 
-.select-shortcut:hover,
-.select-shortcut:focus-visible {
-  text-decoration: underline;
+.month-chip__label {
+  font-variant-numeric: tabular-nums;
+}
+
+.month-chip__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--blue);
+  opacity: var(--dot-strength, 0);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.month-chip[data-matches="0"] .month-chip__dot {
+  background: var(--border-strong);
+  opacity: 1;
+  transform: scale(0.5);
+}
+
+.month-chip:hover {
+  background: rgba(17, 24, 39, 0.045);
+  color: var(--fg);
+}
+
+.month-chip[aria-checked="true"] {
+  background: var(--card-bg);
+  border-color: var(--border);
+  color: var(--fg);
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08);
+}
+
+.month-chip[data-matches="0"][aria-checked="true"] {
+  color: var(--muted);
+}
+
+.month-chip:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 1px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .month-chip:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .month-chip[aria-checked="true"] {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+  }
+}
+
+/* ---------- Chip fields (cabin, airports) ---------- */
+
+.chip-field {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.chip-field legend {
+  padding: 0;
+  margin-bottom: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .chip-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.35rem;
+}
+
+.chip-row__divider {
+  width: 1px;
+  height: 1.1rem;
+  margin: 0 0.15rem;
+  background: var(--border);
 }
 
 /* Same pill language as the trip-suggestion filters, so "what is included"
@@ -480,14 +659,17 @@ body.auth-locked > footer {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.32rem 0.78rem;
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 650;
   letter-spacing: 0;
   text-transform: none;
+  background: none;
   color: var(--muted);
   cursor: pointer;
   user-select: none;
-  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+  transition: background 0.16s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
 .chip input {
@@ -503,20 +685,115 @@ body.auth-locked > footer {
   color: var(--fg);
 }
 
-.chip:has(input:checked) {
-  border-color: transparent;
+.chip:has(input:checked),
+.chip[aria-checked="true"],
+.chip[aria-pressed="true"] {
+  border-color: rgba(10, 132, 255, 0.28);
   background: rgba(10, 132, 255, 0.12);
   color: var(--blue);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.chip:has(input:focus-visible) {
+.chip:has(input:focus-visible),
+.chip:focus-visible {
   outline: 3px solid var(--blue);
   outline-offset: 2px;
 }
 
+/* Neutral even when active: it's a shortcut, not a selection, and a third
+   blue pill beside the lit airports would just be a wall of accent. */
+.chip--all[aria-pressed="true"] {
+  border-color: var(--border-strong);
+  background: rgba(17, 24, 39, 0.06);
+  color: var(--fg);
+  box-shadow: none;
+}
+
 @media (prefers-color-scheme: dark) {
-  .chip:has(input:checked) {
+  .chip:has(input:checked),
+  .chip[aria-checked="true"],
+  .chip[aria-pressed="true"] {
     background: rgba(100, 169, 255, 0.18);
+    border-color: rgba(100, 169, 255, 0.3);
+    box-shadow: none;
+  }
+  .chip--all[aria-pressed="true"] {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-strong);
+    color: var(--fg);
+  }
+}
+
+/* ---------- Sticky compact filter bar ---------- */
+
+/* Shown once the real panel scrolls away, so the active filters stay
+   readable (and re-reachable) while scanning the calendar and table. */
+.filters-sticky {
+  position: fixed;
+  z-index: 40;
+  top: 0.6rem;
+  left: 50%;
+  transform: translate(-50%, -0.6rem);
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  max-width: min(46rem, calc(100vw - 1.6rem));
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-sm);
+  font-family: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.24s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.filters-sticky[hidden] {
+  display: none;
+}
+
+.filters-sticky[data-visible="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.filters-sticky__label {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.filters-sticky__summary {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  color: var(--fg);
+}
+
+.filters-sticky__chevron {
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented__indicator,
+  .chip,
+  .month-chip,
+  .month-chip__dot,
+  .stepper__btn,
+  .filters-sticky {
+    transition: none;
+  }
+  .month-rail {
+    scroll-behavior: auto;
   }
 }
 
@@ -1772,19 +2049,42 @@ a {
   .filters-panel[open] .filters-panel__summary {
     margin-bottom: 0.6rem;
   }
-  .filters {
-    padding: 0.85rem;
-    gap: 0.75rem 0.7rem;
-    /* The native month control reserves a fixed ~178px whatever the value,
-       so give it exactly that and let the short field beside it take the
-       rest, rather than stretching it across a whole empty row. */
-    grid-template-columns: auto minmax(0, 1fr);
-    border-radius: 17px;
+  .filters__row {
+    padding: 0.65rem 0.7rem;
+    gap: 0.7rem 1rem;
   }
-  .filter-group--wide,
-  .filter-group--cabin,
-  .filter-group--chips {
-    grid-column: span 2;
+  .filters__row--lead {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* In column mode a flex-basis would size the height, not the width. */
+  .segmented {
+    flex: 0 0 auto;
+  }
+  .stepper {
+    justify-content: space-between;
+  }
+  .filters__row--rail {
+    padding: 0.45rem 0.25rem 0.45rem 0.7rem;
+  }
+  /* Comfortable touch targets on the controls that are otherwise ~30px. */
+  .segmented__option,
+  .chip,
+  .month-chip {
+    min-height: 2.5rem;
+  }
+  .chip,
+  .month-chip {
+    justify-content: center;
+  }
+  .stepper__btn {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .filters-sticky {
+    top: auto;
+    bottom: 0.7rem;
+    transform: translate(-50%, 0.6rem);
   }
   .summary-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1901,15 +2201,10 @@ a {
   }
 }
 
-/* Below this the month control's fixed 178px leaves too little beside it,
-   so every filter takes its own row. */
+/* Below this the two chip groups no longer fit side by side. */
 @media (max-width: 21rem) {
-  .filters {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .filter-group--wide,
-  .filter-group--cabin,
-  .filter-group--chips {
-    grid-column: span 1;
+  .filters__row--chips {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
