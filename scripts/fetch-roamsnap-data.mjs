@@ -4,7 +4,6 @@
 import { mkdir, rename, writeFile, rm } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createRequire } from "node:module";
 
 const OUTPUT_PATH = new URL("../docs/data/latest-roamsnap.json", import.meta.url);
 const TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS) || 30000;
@@ -129,8 +128,7 @@ async function writeAtomic(path, contents) {
 }
 
 async function main() {
-  // camoufox 0.1.19's ESM bundle fails under Node; use its working CJS build.
-  const { Camoufox } = createRequire(import.meta.url)("camoufox");
+  const { Camoufox } = await import("./camoufox.mjs");
   const proxyServer = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
   const browser = await Camoufox({
     headless: true, os: "windows", locale: "en-US", humanize: true,

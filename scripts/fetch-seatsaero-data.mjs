@@ -27,11 +27,7 @@
 import { mkdir, rename, writeFile, rm, readFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-// camoufox's ESM build crashes under Node's ESM loader ("Dynamic require of
-// \"events\" is not supported", a broken esbuild bundle of its `keyv`
-// dependency) — load its working CJS build instead via createRequire.
-import { createRequire } from "node:module";
-const { Camoufox } = createRequire(import.meta.url)("camoufox");
+import { Camoufox } from "./camoufox.mjs";
 
 const OUTPUT_PATH = new URL("../docs/data/latest-seatsaero.json", import.meta.url);
 const API_URL = "https://seats.aero/_api/availability_table_modern_ss";
