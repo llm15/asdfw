@@ -1692,14 +1692,19 @@
     els.tripSuggestionsMeta.textContent =
       `${scope} departing in ${formatMonthHeading(state.month)} · ` +
       `5–10 nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}` +
-      (tripTypeLabel ? ` · ${tripTypeLabel} only` : "");
+      (tripTypeLabel ? ` · ${tripTypeLabel} only` : "") +
+      (state.tripBestOnly ? "" : " · in departure order");
 
     const pageCount = Math.max(1, Math.ceil(total / TRIP_SUGGESTIONS_PAGE_SIZE));
     if (tripSuggestionsPage >= pageCount) tripSuggestionsPage = 0;
     const start = tripSuggestionsPage * TRIP_SUGGESTIONS_PAGE_SIZE;
-    const visible = state.tripBestOnly
-      ? result.best
-      : result.trips.slice(start, start + TRIP_SUGGESTIONS_PAGE_SIZE);
+    // "Best" is the ranked shortlist; paging through everything else reads
+    // as a timeline instead, so page order matches departure order. Sort is
+    // stable, so same-day trips keep their ranking.
+    const ordered = [...result.trips].sort((a, b) =>
+      a.outbound.date < b.outbound.date ? -1 : a.outbound.date > b.outbound.date ? 1 : 0
+    );
+    const visible = state.tripBestOnly ? result.best : ordered.slice(start, start + TRIP_SUGGESTIONS_PAGE_SIZE);
 
     const list = document.createElement("div");
     list.className = "trip-list";
@@ -1710,7 +1715,7 @@
 
     const footer = document.createElement("div");
     footer.className = "trip-suggestions__footer";
-    footer.appendChild(renderTripPager(start, visible.length, total, pageCount, result.trips));
+    footer.appendChild(renderTripPager(start, visible.length, total, pageCount, ordered));
     els.tripSuggestions.appendChild(footer);
   }
 
@@ -1720,42 +1725,23 @@
     els.tripSuggestions.parentElement.scrollIntoView({ block: "start" });
   }
 
-  /** Where the earliest and latest departures sit in the ranked list. The
-   * ranking is by cabin and seats rather than date, so neither is reliably
-   * on the first or last page. */
-  function tripDepartureBounds(trips) {
-    let earliest = 0;
-    let latest = 0;
-    for (let i = 1; i < trips.length; i++) {
-      if (trips[i].outbound.date < trips[earliest].outbound.date) earliest = i;
-      if (trips[i].outbound.date > trips[latest].outbound.date) latest = i;
-    }
-    return {
-      earliest: { page: Math.floor(earliest / TRIP_SUGGESTIONS_PAGE_SIZE), date: trips[earliest].outbound.date },
-      latest: { page: Math.floor(latest / TRIP_SUGGESTIONS_PAGE_SIZE), date: trips[latest].outbound.date },
-    };
-  }
-
-  function addTripJumpButton(nav, label, bound) {
+  function addTripJumpButton(nav, label, page, date) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "jump-match-btn";
     btn.textContent = label;
-    btn.title =
-      `Jump to the page holding the ${label.toLowerCase()} departure (${formatDateDisplay(bound.date)}) — ` +
-      "suggestions are ranked by cabin and seats, not by date";
-    btn.disabled = bound.page === tripSuggestionsPage;
-    btn.addEventListener("click", () => goToTripSuggestionsPage(bound.page));
+    btn.title = `Jump to the ${label.toLowerCase()} departures (${formatDateDisplay(date)})`;
+    btn.disabled = page === tripSuggestionsPage;
+    btn.addEventListener("click", () => goToTripSuggestionsPage(page));
     nav.appendChild(btn);
   }
 
-  function renderTripPager(start, shown, total, pageCount, trips) {
+  function renderTripPager(start, shown, total, pageCount, ordered) {
     const nav = document.createElement("nav");
     nav.className = "trip-pager";
     nav.setAttribute("aria-label", "Trip suggestion pages");
 
-    const bounds = tripDepartureBounds(trips);
-    addTripJumpButton(nav, "Earliest", bounds.earliest);
+    addTripJumpButton(nav, "Earliest", 0, ordered[0].outbound.date);
 
     const prev = document.createElement("button");
     prev.type = "button";
@@ -1781,7 +1767,7 @@
     next.addEventListener("click", () => goToTripSuggestionsPage(tripSuggestionsPage + 1));
     nav.appendChild(next);
 
-    addTripJumpButton(nav, "Latest", bounds.latest);
+    addTripJumpButton(nav, "Latest", pageCount - 1, ordered[ordered.length - 1].outbound.date);
 
     const pages = document.createElement("p");
     pages.className = "trip-pager__pages";
