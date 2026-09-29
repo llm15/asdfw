@@ -1574,86 +1574,154 @@ body.auth-locked > footer {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 0.85rem;
+  padding: 1rem 1.1rem;
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(18px) saturate(1.18);
 }
 
-.monthly-activity__scope {
-  margin: 0 0 0.7rem;
-  color: var(--muted);
+.activity__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.activity__scope {
+  margin: 0;
+  color: var(--fg);
   font-size: 0.86rem;
   font-weight: 700;
 }
 
-.monthly-activity__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 0.65rem;
-}
-
-.activity-card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.58));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-}
-
-.activity-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 3px;
-  background: var(--accent, var(--border-strong));
-}
-
-.activity-card--added {
-  --accent: var(--ok);
-  background: linear-gradient(160deg, rgba(22, 131, 58, 0.14), rgba(255, 255, 255, 0.7));
-}
-
-.activity-card--lost {
-  --accent: var(--warn);
-  background: linear-gradient(160deg, rgba(166, 106, 0, 0.16), rgba(255, 255, 255, 0.7));
-}
-
-.activity-card--empty {
-  --accent: rgba(111, 118, 130, 0.3);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(244, 246, 248, 0.52));
-}
-
-.activity-card__value {
+.activity__stamp {
   margin: 0;
-  color: var(--accent, var(--fg));
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 800;
-  line-height: 1;
+  color: var(--muted);
+  font-size: 0.76rem;
+  cursor: help;
 }
 
-.activity-card__label {
-  margin: 0.42rem 0 0;
+.activity__empty {
+  margin: 0;
+  max-width: 44rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.activity__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 2rem;
+}
+
+/* The net figure leads; its two components support it rather than sitting
+   beside it as equals. */
+.activity__headline {
+  flex: 0 0 auto;
+}
+
+.activity__net {
+  margin: 0;
+  color: var(--tone, var(--fg));
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.activity__headline--up {
+  --tone: var(--ok);
+}
+
+.activity__headline--down {
+  --tone: var(--error);
+}
+
+.activity__net-label {
+  margin: 0.3rem 0 0;
   color: var(--muted);
   font-size: 0.76rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-@media (prefers-color-scheme: dark) {
-  .activity-card {
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.032));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-  .activity-card--added {
-    background: linear-gradient(160deg, rgba(82, 200, 120, 0.15), rgba(255, 255, 255, 0.045));
-  }
-  .activity-card--lost {
-    background: linear-gradient(160deg, rgba(240, 184, 76, 0.16), rgba(255, 255, 255, 0.045));
-  }
-  .activity-card--empty {
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
-  }
+.activity__split {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.activity__bar {
+  display: flex;
+  gap: 2px;
+  height: 0.5rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.activity__seg {
+  min-width: 3px;
+  border-radius: 999px;
+}
+
+.activity__seg--added {
+  background: var(--ok);
+}
+
+.activity__seg--lost {
+  background: var(--error);
+}
+
+.activity__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.4rem;
+  margin: 0.6rem 0 0;
+}
+
+.activity__legend-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.activity__legend-item::before {
+  content: "";
+  align-self: center;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--tone);
+}
+
+.activity__legend-item--added {
+  --tone: var(--ok);
+}
+
+.activity__legend-item--lost {
+  --tone: var(--error);
+}
+
+.activity__legend dt {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.activity__legend dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.activity__note {
+  margin: 0.9rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.76rem;
 }
 
 /* ---------- Trip suggestions ---------- */

@@ -261,6 +261,25 @@
     return new Intl.NumberFormat(CALENDAR_LOCALE).format(value);
   }
 
+  /** "2 hours ago" / "3 days ago", picking the largest unit that fits. */
+  function formatRelativeTime(iso) {
+    const then = new Date(iso).getTime();
+    if (Number.isNaN(then)) return "recently";
+    const seconds = Math.round((then - Date.now()) / 1000);
+    const units = [
+      ["year", 31536000],
+      ["month", 2592000],
+      ["day", 86400],
+      ["hour", 3600],
+      ["minute", 60],
+    ];
+    const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+    for (const [unit, size] of units) {
+      if (Math.abs(seconds) >= size) return formatter.format(Math.round(seconds / size), unit);
+    }
+    return "just now";
+  }
+
   function formatMonthHeading(monthStr) {
     const [y, m] = monthStr.split("-").map(Number);
     if (!y || !m) return "Calendar";
@@ -403,8 +422,13 @@
   function monthlyActivityFor(month) {
     const entry = loadMonthlyActivity()[month];
     return isPlainObject(entry)
-      ? { added: Number(entry.added) || 0, lost: Number(entry.lost) || 0, updatedAt: entry.updatedAt || null }
-      : { added: 0, lost: 0, updatedAt: null };
+      ? {
+          added: Number(entry.added) || 0,
+          lost: Number(entry.lost) || 0,
+          since: entry.since || null,
+          updatedAt: entry.updatedAt || null,
+        }
+      : { added: 0, lost: 0, since: null, updatedAt: null };
   }
 
   /** Persists the latest diff into a browser-local ledger keyed by travel
@@ -425,6 +449,7 @@
       } else {
         existing.lost = (Number(existing.lost) || 0) + delta;
       }
+      existing.since = existing.since || now;
       existing.updatedAt = now;
       activity[month] = existing;
     }
@@ -1259,37 +1284,100 @@
     }
   }
 
+  /** Seat movement this browser has observed for the selected travel month.
+   * Framed as one headline net figure with its two components, since "net"
+   * is derived from them and shouldn't compete for attention. */
   function renderMonthlyActivity() {
     els.monthlyActivity.replaceChildren();
-    const activity = monthlyActivityFor(state.month);
-    const scope = formatMonthHeading(state.month);
-    const cards = [
-      { label: "Seats added", value: activity.added, tone: activity.added > 0 ? "added" : "empty" },
-      { label: "Seats disappeared/booked", value: activity.lost, tone: activity.lost > 0 ? "lost" : "empty" },
-      { label: "Net movement", value: activity.added - activity.lost, tone: activity.added - activity.lost >= 0 ? "added" : "lost" },
-    ];
+    const { added, lost, since, updatedAt } = monthlyActivityFor(state.month);
 
-    const heading = document.createElement("p");
-    heading.className = "monthly-activity__scope";
-    heading.textContent = scope;
-    els.monthlyActivity.appendChild(heading);
-
-    const grid = document.createElement("div");
-    grid.className = "monthly-activity__grid";
-    for (const card of cards) {
-      const el = document.createElement("div");
-      el.className = `activity-card activity-card--${card.tone}`;
-      const value = document.createElement("p");
-      value.className = "activity-card__value";
-      value.textContent = String(card.value);
-      const label = document.createElement("p");
-      label.className = "activity-card__label";
-      label.textContent = card.label;
-      el.appendChild(value);
-      el.appendChild(label);
-      grid.appendChild(el);
+    const header = document.createElement("div");
+    header.className = "activity__header";
+    const scope = document.createElement("p");
+    scope.className = "activity__scope";
+    scope.textContent = formatMonthHeading(state.month);
+    header.appendChild(scope);
+    if (updatedAt) {
+      const stamp = document.createElement("p");
+      stamp.className = "activity__stamp";
+      stamp.title = formatTimestamp(updatedAt);
+      stamp.textContent = `Updated ${formatRelativeTime(updatedAt)}`;
+      header.appendChild(stamp);
     }
-    els.monthlyActivity.appendChild(grid);
+    els.monthlyActivity.appendChild(header);
+
+    if (added === 0 && lost === 0) {
+      const empty = document.createElement("p");
+      empty.className = "activity__empty";
+      empty.textContent =
+        "Nothing recorded yet. Once availability for this month changes between two of your visits, the movement shows up here.";
+      els.monthlyActivity.appendChild(empty);
+      return;
+    }
+
+    const net = added - lost;
+    const body = document.createElement("div");
+    body.className = "activity__body";
+
+    const headline = document.createElement("div");
+    headline.className = `activity__headline activity__headline--${net >= 0 ? "up" : "down"}`;
+    const value = document.createElement("p");
+    value.className = "activity__net";
+    value.textContent = `${net > 0 ? "+" : net < 0 ? "−" : ""}${formatCount(Math.abs(net))}`;
+    const label = document.createElement("p");
+    label.className = "activity__net-label";
+    label.textContent = net >= 0 ? "net seats gained" : "net seats lost";
+    headline.append(value, label);
+    body.appendChild(headline);
+
+    const split = document.createElement("div");
+    split.className = "activity__split";
+
+    const bar = document.createElement("div");
+    bar.className = "activity__bar";
+    bar.setAttribute("role", "img");
+    bar.setAttribute(
+      "aria-label",
+      `${formatCount(added)} seats appeared, ${formatCount(lost)} seats were taken`
+    );
+    const total = added + lost;
+    for (const part of [
+      { tone: "added", count: added },
+      { tone: "lost", count: lost },
+    ]) {
+      if (part.count === 0) continue;
+      const seg = document.createElement("span");
+      seg.className = `activity__seg activity__seg--${part.tone}`;
+      seg.style.flexGrow = String(part.count / total);
+      bar.appendChild(seg);
+    }
+    split.appendChild(bar);
+
+    const legend = document.createElement("dl");
+    legend.className = "activity__legend";
+    for (const item of [
+      { tone: "added", count: added, label: "appeared" },
+      { tone: "lost", count: lost, label: "taken" },
+    ]) {
+      const wrap = document.createElement("div");
+      wrap.className = `activity__legend-item activity__legend-item--${item.tone}`;
+      const dt = document.createElement("dt");
+      dt.textContent = formatCount(item.count);
+      const dd = document.createElement("dd");
+      dd.textContent = item.label;
+      wrap.append(dt, dd);
+      legend.appendChild(wrap);
+    }
+    split.appendChild(legend);
+    body.appendChild(split);
+    els.monthlyActivity.appendChild(body);
+
+    const note = document.createElement("p");
+    note.className = "activity__note";
+    note.textContent = since
+      ? `Counted in this browser since ${formatDateDisplay(since.slice(0, 10))}`
+      : "Counted in this browser only, from the changes seen between your visits";
+    els.monthlyActivity.appendChild(note);
   }
 
   /** Today as a plain UTC calendar date, matching how every other date in
