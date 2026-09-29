@@ -59,16 +59,17 @@
   // cabin — AG/AP are usually 0 for those sources. roamsnap.com also only
   // ever populates "inbound" (return) dates — "outbound" is always empty.
   //
-  // roamsnap, awardfares and seats.aero are disabled below because they
-  // surfaced dates that weren't actually bookable. Their CI jobs still
-  // publish to docs/data/, so re-enabling one is just uncommenting it.
+  // roamsnap, awardfares, seats.aero and awardhacks are disabled below
+  // because they surfaced dates that weren't actually bookable. Their CI
+  // jobs still publish to docs/data/, so re-enabling one is just
+  // uncommenting it.
   const SOURCES = {
     sas: { url: "data/latest.json", storageKey: "awards:lastGoodPayload:sas", label: "SAS official (live)" },
-    awardhacks: {
-      url: "data/latest-awardhacks.json",
-      storageKey: "awards:lastGoodPayload:awardhacks",
-      label: "Awardhacks community (business only)",
-    },
+    // awardhacks: {
+    //   url: "data/latest-awardhacks.json",
+    //   storageKey: "awards:lastGoodPayload:awardhacks",
+    //   label: "Awardhacks community (business only)",
+    // },
     // roamsnap: {
     //   url: "data/latest-roamsnap.json",
     //   storageKey: "awards:lastGoodPayload:roamsnap",
