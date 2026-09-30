@@ -1,10 +1,10 @@
 name: Fetch awardhacks.se availability data
 
 on:
-  schedule:
+  #schedule:
     # Fires every 3 hours; this is a single plain HTTP GET of a public HTML
     # page, so no random delay/anti-bot dance is needed here.
-    - cron: "20 */3 * * *"
+    #- cron: "20 */3 * * *"
   workflow_dispatch: {}
 
 # Least privilege: only contents write is needed to commit the data file.
