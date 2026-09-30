@@ -115,6 +115,10 @@
 
   const TABLE_PAGE_SIZE = 10;
 
+  // One route at a time in the route board, paged so a route with a year of
+  // dates still fits on screen.
+  const ROUTE_BOARD_PAGE_SIZE = 8;
+
   // Beyond a handful of seats per cabin SAS never returns anything, so the
   // stepper stops there instead of offering values that only ever match none.
   const MAX_MIN_SEATS = 9;
@@ -161,6 +165,12 @@
     tripSuggestions: document.getElementById("trip-suggestions"),
     tripSuggestionsMeta: document.getElementById("trip-suggestions-meta"),
     tripSuggestionsFilters: document.getElementById("trip-suggestions-filters"),
+    routeBoard: document.getElementById("route-board"),
+    routeBoardMeta: document.getElementById("route-board-meta"),
+    routeScope: document.getElementById("route-scope"),
+    routeTabs: document.getElementById("route-tabs"),
+    routePrevBtn: document.getElementById("route-prev-btn"),
+    routeNextBtn: document.getElementById("route-next-btn"),
     dayDetailDialog: document.getElementById("day-detail-dialog"),
     dayDetailContent: document.getElementById("day-detail-content"),
     dayDetailClose: document.getElementById("day-detail-close"),
@@ -186,6 +196,10 @@
     tripRoundTrip: true,
     tripOpenJaw: true,
     tripAirports: { arn: true, osl: true, cph: true, jfk: true, ewr: true },
+    // Route board: which route tab is open, and whether it spans every
+    // fetched month or only the selected one.
+    routeTab: null,
+    routeAllMonths: true,
   };
 
   // Populated only after a successful (or fallback-to-cache) fetch of every
@@ -202,6 +216,10 @@
   let availabilityChanges = new Map();
   let tripSuggestionsPage = 0;
   let tablePage = 0;
+  let routeBoardPage = 0;
+  // The route tabs scroll the selected tab into view, but doing that on the
+  // very first render would look like the page moved on its own.
+  let routeTabsRendered = false;
   // The rail scrolls the selected month into view, but jumping on the very
   // first render would look like the page moved on its own.
   let monthRailRendered = false;
@@ -1782,6 +1800,392 @@
     return nav;
   }
 
+  /* ---------- Route board ---------- */
+
+  /** Origin/destination for one combo in the direction currently selected
+   * in the filters, so a tab always reads the way you'd book it. */
+  function routeEndpoints(combo) {
+    return state.direction === "inbound"
+      ? { origin: combo.nyc.code, destination: combo.home.code }
+      : { origin: combo.home.code, destination: combo.nyc.code };
+  }
+
+  /** Every date on one route that passes the cabin/seat filters, in
+   * departure order. Past dates are dropped — this is a booking list, not a
+   * history — and the scope toggle decides whether it spans every fetched
+   * month or only the selected one. */
+  function buildRouteBoardRows(combo) {
+    const rows = [];
+    const map = getActiveMap(combo.id);
+    const today = todayIsoDate();
+    for (const [date, counts] of map) {
+      if (date < today) continue;
+      if (!state.routeAllMonths && !date.startsWith(state.month)) continue;
+      if (counts.total <= 0 || !passesRowFilters(counts)) continue;
+      rows.push({ date, AG: counts.AG, AP: counts.AP, AB: counts.AB, total: counts.total });
+    }
+    rows.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+    return rows;
+  }
+
+  /** Enabled routes in tab order: grouped by the airport you'd depart
+   * from in the current direction, so the arrows walk ARN–EWR, ARN–JFK,
+   * CPH–EWR … rather than jumping between departure airports. */
+  function routeBoardCombos() {
+    return enabledCombos()
+      .map((combo) => ({ combo, ...routeEndpoints(combo) }))
+      .sort((a, b) => a.origin.localeCompare(b.origin) || a.destination.localeCompare(b.destination))
+      .map(({ combo }) => combo);
+  }
+
+  /** The combo whose tab is open, falling back to the first enabled route
+   * when the selected one was just filtered away. */
+  function activeRouteCombo(combos) {
+    return combos.find((combo) => combo.id === state.routeTab) || combos[0] || null;
+  }
+
+  function addRouteStat(parent, label, value, tone) {
+    const el = document.createElement("span");
+    el.className = `route-stat${tone ? ` route-stat--${tone}` : ""}`;
+    const number = document.createElement("span");
+    number.className = "route-stat__value";
+    number.textContent = formatCount(value);
+    const text = document.createElement("span");
+    text.className = "route-stat__label";
+    text.textContent = label;
+    el.append(number, text);
+    parent.appendChild(el);
+    return el;
+  }
+
+  function renderRouteTabs(combos, active) {
+    els.routeTabs.replaceChildren();
+    for (const combo of combos) {
+      const { origin, destination } = routeEndpoints(combo);
+      const selected = combo === active;
+      const tab = document.createElement("button");
+      tab.type = "button";
+      tab.className = "route-tab";
+      tab.id = `route-tab-${combo.id}`;
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-selected", String(selected));
+      tab.setAttribute("aria-controls", "route-board");
+      tab.tabIndex = selected ? 0 : -1;
+      tab.dataset.route = combo.id;
+
+      const label = document.createElement("span");
+      label.className = "route-tab__label";
+      label.textContent = `${origin}–${destination}`;
+      tab.appendChild(label);
+
+      const count = buildRouteBoardRows(combo).length;
+      const badge = document.createElement("span");
+      badge.className = "route-tab__count";
+      badge.textContent = formatCount(count);
+      badge.title = `${count} matching date${count === 1 ? "" : "s"}`;
+      tab.appendChild(badge);
+      if (count === 0) tab.dataset.empty = "true";
+
+      els.routeTabs.appendChild(tab);
+    }
+
+    if (routeTabsRendered) {
+      els.routeTabs
+        .querySelector('[aria-selected="true"]')
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+    routeTabsRendered = true;
+  }
+
+  /** One row per bookable date, the date itself linking straight into the
+   * SAS points search for that flight (the link stretches over the whole
+   * row via CSS, so there is still exactly one link per row). */
+  function renderRouteTable(combo, rows) {
+    const { origin, destination } = routeEndpoints(combo);
+    const wrapper = document.createElement("div");
+    wrapper.className = "route-table-scroll";
+
+    const table = document.createElement("table");
+    table.className = "route-table";
+
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    for (const [label, className] of [
+      ["Date", "route-table__date"],
+      ["Day", "route-table__day"],
+      ["Economy", "route-table__seats"],
+      ["Premium", "route-table__seats"],
+      ["Business", "route-table__seats"],
+      ["Total", "route-table__seats"],
+      ["", "route-table__go"],
+    ]) {
+      const th = document.createElement("th");
+      th.textContent = label;
+      th.className = className;
+      if (label === "") th.setAttribute("aria-label", "Open on SAS");
+      headRow.appendChild(th);
+    }
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    for (const row of rows) {
+      const tr = document.createElement("tr");
+
+      const dateCell = document.createElement("td");
+      dateCell.className = "route-table__date";
+      const link = document.createElement("a");
+      link.className = "route-table__link";
+      link.href = buildSasFlightSearchUrl(origin, destination, row.date);
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.title = `Open the SAS points search for ${origin} → ${destination} on ${formatDateDisplay(row.date)}`;
+      const time = document.createElement("time");
+      time.dateTime = row.date;
+      time.textContent = formatDateDisplay(row.date);
+      link.appendChild(time);
+      dateCell.appendChild(link);
+      tr.appendChild(dateCell);
+
+      const dayCell = document.createElement("td");
+      dayCell.className = "route-table__day";
+      dayCell.textContent = formatWeekday(row.date);
+      tr.appendChild(dayCell);
+
+      for (const code of ["AG", "AP", "AB"]) {
+        const td = document.createElement("td");
+        td.className = `route-table__seats route-seat route-seat--${code.toLowerCase()}`;
+        const seats = row[code];
+        if (seats > 0) {
+          td.dataset.has = "true";
+          const pill = document.createElement("span");
+          pill.className = "route-seat__pill";
+          pill.textContent = formatCount(seats);
+          td.appendChild(pill);
+        } else {
+          td.textContent = "—";
+        }
+        tr.appendChild(td);
+      }
+
+      const totalCell = document.createElement("td");
+      totalCell.className = "route-table__seats route-table__total";
+      totalCell.textContent = formatCount(row.total);
+      tr.appendChild(totalCell);
+
+      const goCell = document.createElement("td");
+      goCell.className = "route-table__go";
+      goCell.textContent = "↗";
+      goCell.setAttribute("aria-hidden", "true");
+      tr.appendChild(goCell);
+
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+    return wrapper;
+  }
+
+  function goToRouteBoardPage(page) {
+    routeBoardPage = page;
+    renderRouteBoard();
+  }
+
+  function renderRoutePager(start, shown, total, pageCount) {
+    const nav = document.createElement("nav");
+    nav.className = "route-pager";
+    nav.setAttribute("aria-label", "Route date pages");
+
+    const prev = document.createElement("button");
+    prev.type = "button";
+    prev.className = "month-nav-btn";
+    prev.textContent = "‹";
+    prev.setAttribute("aria-label", "Previous page of dates");
+    prev.disabled = routeBoardPage === 0;
+    prev.addEventListener("click", () => goToRouteBoardPage(routeBoardPage - 1));
+    nav.appendChild(prev);
+
+    const status = document.createElement("p");
+    status.className = "route-pager__status";
+    status.setAttribute("role", "status");
+    status.textContent = `${formatCount(start + 1)}–${formatCount(start + shown)} of ${formatCount(total)}`;
+    nav.appendChild(status);
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "month-nav-btn";
+    next.textContent = "›";
+    next.setAttribute("aria-label", "Next page of dates");
+    next.disabled = routeBoardPage >= pageCount - 1;
+    next.addEventListener("click", () => goToRouteBoardPage(routeBoardPage + 1));
+    nav.appendChild(next);
+
+    const pages = document.createElement("p");
+    pages.className = "route-pager__pages";
+    pages.textContent = `Page ${formatCount(routeBoardPage + 1)} of ${formatCount(pageCount)}`;
+    nav.appendChild(pages);
+
+    return nav;
+  }
+
+  function renderRouteBoardEmpty(message) {
+    const p = document.createElement("p");
+    p.className = "route-board__empty";
+    p.textContent = message;
+    els.routeBoard.appendChild(p);
+  }
+
+  function renderRoutePanel(combo, rows) {
+    const { origin, destination } = routeEndpoints(combo);
+    const panel = document.createElement("section");
+    panel.className = "route-panel";
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", `route-tab-${combo.id}`);
+    panel.tabIndex = 0;
+    // Re-keying the animation per route makes the swap read as a move
+    // between tabs rather than a silent content replacement.
+    panel.dataset.route = combo.id;
+
+    const head = document.createElement("header");
+    head.className = "route-panel__head";
+
+    const title = document.createElement("h3");
+    title.className = "route-panel__title";
+    const from = document.createElement("span");
+    from.className = "route-panel__code";
+    from.textContent = origin;
+    const arrow = document.createElement("span");
+    arrow.className = "route-panel__arrow";
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.textContent = "→";
+    const to = document.createElement("span");
+    to.className = "route-panel__code";
+    to.textContent = destination;
+    title.append(from, arrow, to);
+    head.appendChild(title);
+
+    const seats = rows.reduce(
+      (acc, row) => {
+        acc.AG += row.AG;
+        acc.AP += row.AP;
+        acc.AB += row.AB;
+        return acc;
+      },
+      { AG: 0, AP: 0, AB: 0 }
+    );
+    const totalSeats = seats.AG + seats.AP + seats.AB;
+
+    const summary = document.createElement("p");
+    summary.className = "route-panel__summary";
+    summary.textContent =
+      rows.length === 0
+        ? "No dates match the current filters."
+        : `${formatCount(totalSeats)} seat${totalSeats === 1 ? "" : "s"} on ` +
+          `${formatCount(rows.length)} date${rows.length === 1 ? "" : "s"}`;
+    head.appendChild(summary);
+    panel.appendChild(head);
+
+    if (rows.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "route-board__empty";
+      empty.textContent = state.routeAllMonths
+        ? "Nothing available on this route yet — try another route above, fewer minimum seats, or a different cabin."
+        : `Nothing on this route in ${formatMonthHeading(state.month)} — switch to "All dates" or try another month.`;
+      panel.appendChild(empty);
+      return panel;
+    }
+
+    const stats = document.createElement("div");
+    stats.className = "route-stats";
+    addRouteStat(stats, "Economy", seats.AG, "economy");
+    addRouteStat(stats, "Premium", seats.AP, "premium");
+    addRouteStat(stats, "Business", seats.AB, "business");
+    addRouteStat(stats, `date${rows.length === 1 ? "" : "s"}`, rows.length, "dates");
+    panel.appendChild(stats);
+
+    const pageCount = Math.max(1, Math.ceil(rows.length / ROUTE_BOARD_PAGE_SIZE));
+    routeBoardPage = Math.min(Math.max(routeBoardPage, 0), pageCount - 1);
+    const start = routeBoardPage * ROUTE_BOARD_PAGE_SIZE;
+    const visible = rows.slice(start, start + ROUTE_BOARD_PAGE_SIZE);
+    panel.appendChild(renderRouteTable(combo, visible));
+
+    if (pageCount > 1) {
+      const footer = document.createElement("div");
+      footer.className = "route-panel__footer";
+      footer.appendChild(renderRoutePager(start, visible.length, rows.length, pageCount));
+      panel.appendChild(footer);
+    }
+
+    return panel;
+  }
+
+  function renderRouteBoard() {
+    els.routeBoard.replaceChildren();
+    els.routeBoardMeta.textContent = "";
+    for (const option of els.routeScope.querySelectorAll("[data-scope]")) {
+      const selected = (option.dataset.scope === "all") === state.routeAllMonths;
+      option.setAttribute("aria-checked", String(selected));
+      option.tabIndex = selected ? 0 : -1;
+    }
+
+    const combos = routeBoardCombos();
+    const active = lastGood ? activeRouteCombo(combos) : null;
+    const hasTabs = Boolean(active);
+    els.routeTabs.parentElement.hidden = !hasTabs;
+    els.routePrevBtn.disabled = !hasTabs || combos.length < 2;
+    els.routeNextBtn.disabled = !hasTabs || combos.length < 2;
+
+    if (!lastGood) {
+      els.routeTabs.replaceChildren();
+      renderRouteBoardEmpty('Press "Refresh availability" to load every route.');
+      return;
+    }
+    if (!active) {
+      els.routeTabs.replaceChildren();
+      renderRouteBoardEmpty("Select at least one home and one New York airport in the filters above.");
+      return;
+    }
+
+    state.routeTab = active.id;
+    renderRouteTabs(combos, active);
+
+    const rows = buildRouteBoardRows(active);
+    const scopeLabel = state.routeAllMonths ? "all fetched dates" : formatMonthHeading(state.month);
+    const seats = Math.max(1, state.minSeats);
+    const cabinLabel =
+      state.cabin === "all"
+        ? "any cabin"
+        : state.cabin === "AB"
+        ? "Business only"
+        : state.cabin === "AP"
+        ? "Premium Economy only"
+        : "Economy only";
+    els.routeBoardMeta.textContent =
+      `${state.direction === "inbound" ? "New York → home" : "Home → New York"} · ` +
+      `${scopeLabel} · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinLabel}`;
+
+    els.routeBoard.appendChild(renderRoutePanel(active, rows));
+  }
+
+  /** Steps to the next/previous route tab, wrapping around so the arrows
+   * never dead-end mid-list. */
+  function stepRouteTab(delta) {
+    const combos = routeBoardCombos();
+    if (combos.length < 2) return;
+    const current = Math.max(0, combos.findIndex((combo) => combo.id === state.routeTab));
+    const next = combos[(current + delta + combos.length) % combos.length];
+    selectRouteTab(next.id, { focusTab: true });
+  }
+
+  function selectRouteTab(comboId, { focusTab = false } = {}) {
+    if (state.routeTab === comboId) return;
+    state.routeTab = comboId;
+    routeBoardPage = 0;
+    renderRouteBoard();
+    if (focusTab) els.routeTabs.querySelector('[aria-selected="true"]')?.focus();
+    syncStateToUrl();
+  }
+
   function appendTableMessage(message) {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
@@ -2106,6 +2510,8 @@
     renderMonthlyActivity();
     tripSuggestionsPage = 0;
     renderTripSuggestions();
+    routeBoardPage = 0;
+    renderRouteBoard();
     updateSortIndicators();
   }
 
@@ -2274,6 +2680,10 @@
     if (params.has("allMonths")) els.allMonthsToggle.checked = params.get("allMonths") === "1";
     if (params.has("sortKey") && SORT_KEYS.includes(params.get("sortKey"))) state.sort.key = params.get("sortKey");
     if (params.has("sortDir")) state.sort.dir = params.get("sortDir") === "desc" ? "desc" : "asc";
+    if (params.has("route") && COMBOS.some((combo) => combo.id === params.get("route"))) {
+      state.routeTab = params.get("route");
+    }
+    if (params.has("routeScope")) state.routeAllMonths = params.get("routeScope") !== "month";
   }
 
   /** Serializes the current filter/sort state into the URL's query string
@@ -2294,6 +2704,8 @@
     if (state.allMonths) params.set("allMonths", "1");
     if (state.sort.key !== "date") params.set("sortKey", state.sort.key);
     if (state.sort.dir !== "asc") params.set("sortDir", state.sort.dir);
+    if (state.routeTab) params.set("route", state.routeTab);
+    if (!state.routeAllMonths) params.set("routeScope", "month");
     const qs = params.toString();
     history.replaceState(null, "", `${location.pathname}${qs ? `?${qs}` : ""}${location.hash}`);
   }
@@ -2464,9 +2876,43 @@
     handleFilterChange();
   });
 
+  els.routeScope.addEventListener("click", (e) => {
+    const option = e.target.closest("[data-scope]");
+    if (!option) return;
+    const all = option.dataset.scope === "all";
+    if (all === state.routeAllMonths) return;
+    state.routeAllMonths = all;
+    routeBoardPage = 0;
+    renderRouteBoard();
+    syncStateToUrl();
+  });
+
+  els.routeTabs.addEventListener("click", (e) => {
+    const tab = e.target.closest("[data-route]");
+    if (tab) selectRouteTab(tab.dataset.route);
+  });
+
+  // Arrow/Home/End move between route tabs, as expected of a tablist.
+  els.routeTabs.addEventListener("keydown", (e) => {
+    const tabs = [...els.routeTabs.querySelectorAll('[role="tab"]')];
+    if (tabs.length === 0) return;
+    const current = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
+    let index = null;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") index = (current + 1) % tabs.length;
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") index = (current - 1 + tabs.length) % tabs.length;
+    else if (e.key === "Home") index = 0;
+    else if (e.key === "End") index = tabs.length - 1;
+    if (index === null) return;
+    e.preventDefault();
+    selectRouteTab(tabs[index].dataset.route, { focusTab: true });
+  });
+
+  els.routePrevBtn.addEventListener("click", () => stepRouteTab(-1));
+  els.routeNextBtn.addEventListener("click", () => stepRouteTab(1));
+
   // Arrow keys move between options within a radiogroup, as expected of the
   // role — the rendered controls are buttons, so this isn't free.
-  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail]) {
+  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail, els.routeScope]) {
     group.addEventListener("keydown", (e) => {
       const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
       if (step === 0) return;

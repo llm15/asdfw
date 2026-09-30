@@ -927,7 +927,8 @@ body.auth-locked > footer {
 .table-section,
 .technical-section,
 .monthly-activity-section,
-.trip-suggestions-section {
+.trip-suggestions-section,
+.route-board-section {
   margin-bottom: 1.75rem;
 }
 
@@ -935,7 +936,8 @@ body.auth-locked > footer {
 .table-section h2,
 .technical-section h2,
 .monthly-activity-section h2,
-.trip-suggestions-section h2 {
+.trip-suggestions-section h2,
+.route-board-section h2 {
   font-size: 1.15rem;
   color: var(--fg);
   letter-spacing: 0;
@@ -945,7 +947,8 @@ body.auth-locked > footer {
 .theme-dark .table-section h2,
 .theme-dark .technical-section h2,
 .theme-dark .monthly-activity-section h2,
-.theme-dark .trip-suggestions-section h2 {
+.theme-dark .trip-suggestions-section h2,
+.theme-dark .route-board-section h2 {
   color: var(--fg);
 }
 
@@ -2079,7 +2082,8 @@ body.auth-locked > footer {
 }
 
 .trip-pager,
-.table-pager {
+.table-pager,
+.route-pager {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -2087,7 +2091,8 @@ body.auth-locked > footer {
 }
 
 .trip-pager__status,
-.table-pager__status {
+.table-pager__status,
+.route-pager__status {
   margin: 0;
   min-width: 8.5rem;
   color: var(--muted);
@@ -2097,7 +2102,8 @@ body.auth-locked > footer {
 }
 
 .trip-pager__pages,
-.table-pager__pages {
+.table-pager__pages,
+.route-pager__pages {
   margin: 0 0 0 auto;
   color: var(--muted);
   font-size: 0.82rem;
@@ -2105,7 +2111,8 @@ body.auth-locked > footer {
 }
 
 .trip-pager .month-nav-btn:disabled,
-.table-pager .month-nav-btn:disabled {
+.table-pager .month-nav-btn:disabled,
+.route-pager .month-nav-btn:disabled {
   opacity: 0.35;
   cursor: default;
   border-color: var(--border);
@@ -2155,6 +2162,462 @@ body.auth-locked > footer {
   background: transparent;
 }
 
+/* ---------- Route board ---------- */
+
+.route-board-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.route-board-heading h2 {
+  margin: 0;
+}
+
+.route-board-heading__right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+}
+
+.route-board__meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.route-scope {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.16rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+}
+
+.route-scope__option {
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.26rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.route-scope__option:hover {
+  color: var(--fg);
+}
+
+.route-scope__option[aria-checked="true"] {
+  background: rgba(10, 132, 255, 0.12);
+  color: var(--blue);
+}
+
+.theme-dark .route-scope__option[aria-checked="true"] {
+  background: rgba(100, 169, 255, 0.18);
+}
+
+/* One rail of routes with an arrow at each end: the tabs scroll, the arrows
+   step, and the fades tell you there is more in that direction. */
+.route-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+
+.route-tabs-row[hidden] {
+  display: none;
+}
+
+.route-tabs__nav {
+  flex: 0 0 auto;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+}
+
+.route-tabs__nav:hover:not(:disabled),
+.route-tabs__nav:focus-visible {
+  border-color: var(--blue);
+  color: var(--blue);
+  transform: scale(1.06);
+}
+
+.route-tabs__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.route-tabs {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 0.35rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding: 0.15rem 0.1rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 1.2rem, #000 calc(100% - 1.2rem), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 1.2rem, #000 calc(100% - 1.2rem), transparent);
+}
+
+.route-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.route-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease,
+    transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.route-tab:hover {
+  border-color: var(--border-strong);
+  color: var(--fg);
+  transform: translateY(-1px);
+}
+
+.route-tab[aria-selected="true"] {
+  border-color: transparent;
+  background: var(--navy);
+  color: var(--bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-dark .route-tab[aria-selected="true"] {
+  background: var(--fg);
+  color: #0b0d11;
+}
+
+.route-tab[data-empty="true"] {
+  opacity: 0.55;
+}
+
+.route-tab__count {
+  min-width: 1.35rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: rgba(10, 132, 255, 0.12);
+  color: var(--blue);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.route-tab[aria-selected="true"] .route-tab__count {
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+}
+
+.theme-dark .route-tab[aria-selected="true"] .route-tab__count {
+  background: rgba(11, 13, 17, 0.12);
+}
+
+.route-panel {
+  padding: 1.15rem 1.35rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.18);
+  animation: route-panel-in 0.26s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.route-panel:focus-visible {
+  outline-offset: 4px;
+}
+
+@keyframes route-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.route-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+
+.route-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 750;
+  letter-spacing: 0.03em;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.route-panel__arrow {
+  color: var(--blue);
+  font-weight: 400;
+}
+
+.route-panel__summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.9rem 0 0.85rem;
+}
+
+.route-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.6rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent, var(--border-strong));
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.route-stat--economy {
+  --accent: var(--blue);
+}
+
+.route-stat--premium {
+  --accent: #6e7f92;
+}
+
+.route-stat--business {
+  --accent: var(--gold);
+}
+
+.route-stat--dates {
+  --accent: #6c5ce7;
+}
+
+.theme-dark .route-stat--premium {
+  --accent: #a0a7b2;
+}
+
+.theme-dark .route-stat--dates {
+  --accent: #a79bff;
+}
+
+.route-stat__value {
+  color: var(--fg);
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-stat__label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.route-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.route-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.route-table th,
+.route-table td {
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.route-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.route-table th {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--bg-elevated);
+}
+
+.route-table__seats,
+.route-table th.route-table__seats {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-table__day {
+  color: var(--muted);
+}
+
+.route-table__total {
+  font-weight: 750;
+}
+
+.route-table__go {
+  width: 1.5rem;
+  color: var(--muted);
+  text-align: right;
+  opacity: 0;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+/* The date is the only link in the row, stretched over the row so the whole
+   line is one target without a second, duplicate link. */
+.route-table tbody tr {
+  position: relative;
+  transition: background 0.16s ease;
+}
+
+.route-table tbody tr:hover,
+.route-table tbody tr:has(.route-table__link:focus-visible) {
+  background: rgba(10, 132, 255, 0.07);
+}
+
+.theme-dark .route-table tbody tr:hover,
+.theme-dark .route-table tbody tr:has(.route-table__link:focus-visible) {
+  background: rgba(100, 169, 255, 0.1);
+}
+
+.route-table tbody tr:hover .route-table__go,
+.route-table tbody tr:has(.route-table__link:focus-visible) .route-table__go {
+  opacity: 1;
+  transform: translateX(-0.15rem);
+}
+
+.route-table__link {
+  color: var(--fg);
+  font-weight: 650;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-table__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.route-table tbody tr:hover .route-table__link {
+  color: var(--blue);
+}
+
+.route-seat {
+  color: var(--muted);
+}
+
+.route-seat__pill {
+  display: inline-block;
+  min-width: 1.6rem;
+  padding: 0.08rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.route-seat--ag[data-has="true"] .route-seat__pill {
+  color: var(--blue);
+  background: rgba(10, 132, 255, 0.12);
+}
+
+.route-seat--ap[data-has="true"] .route-seat__pill {
+  color: var(--fg);
+  background: rgba(111, 118, 130, 0.14);
+}
+
+.route-seat--ab[data-has="true"] .route-seat__pill {
+  color: var(--gold);
+  background: rgba(184, 135, 47, 0.16);
+}
+
+.theme-dark .route-seat--ag[data-has="true"] .route-seat__pill {
+  background: rgba(100, 169, 255, 0.16);
+}
+
+.theme-dark .route-seat--ab[data-has="true"] .route-seat__pill {
+  background: rgba(214, 169, 80, 0.16);
+}
+
+.route-panel__footer {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.route-board__empty {
+  margin: 0.9rem 0 0;
+  padding: 1.4rem 1.15rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-panel {
+    animation: none;
+  }
+  .route-tabs {
+    scroll-behavior: auto;
+  }
+  .route-tab:hover,
+  .route-tabs__nav:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
@@ -2174,6 +2637,37 @@ a {
 }
 
 @media (max-width: 40rem) {
+  .route-board-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .route-board-heading__right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .route-panel {
+    padding: 1rem 0.9rem 1.1rem;
+  }
+  .route-panel__title {
+    font-size: 1.3rem;
+  }
+  .route-pager {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .route-pager__pages {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+  .route-table th,
+  .route-table td {
+    padding: 0.55rem 0.6rem;
+  }
+  /* The row is the link on touch, so the hover-only arrow is dead weight. */
+  .route-table__go {
+    display: none;
+  }
   .trip-suggestions {
     padding: 0;
   }

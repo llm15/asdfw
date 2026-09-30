@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#0b0d11" />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=74" />
+  <link rel="stylesheet" href="assets/styles.css?v=75" />
   <!-- Inline and before the first paint, so a dark-theme visitor never sees a flash of the light theme. -->
   <script>
     (() => {
@@ -156,6 +156,25 @@
       <div id="trip-suggestions" class="trip-suggestions" aria-live="polite"></div>
     </section>
 
+    <section class="route-board-section">
+      <div class="route-board-heading">
+        <h2>Availability by route</h2>
+        <div class="route-board-heading__right">
+          <p id="route-board-meta" class="route-board__meta"></p>
+          <div id="route-scope" class="route-scope" role="radiogroup" aria-label="Date range">
+            <button type="button" class="route-scope__option" role="radio" aria-checked="true" tabindex="0" data-scope="all">All dates</button>
+            <button type="button" class="route-scope__option" role="radio" aria-checked="false" tabindex="-1" data-scope="month">Selected month</button>
+          </div>
+        </div>
+      </div>
+      <div class="route-tabs-row">
+        <button type="button" id="route-prev-btn" class="route-tabs__nav" aria-label="Previous route">‹</button>
+        <div id="route-tabs" class="route-tabs" role="tablist" aria-label="Route"></div>
+        <button type="button" id="route-next-btn" class="route-tabs__nav" aria-label="Next route">›</button>
+      </div>
+      <div id="route-board" class="route-board" aria-live="polite"></div>
+    </section>
+
     <section class="table-section">
       <div class="table-toolbar">
         <div class="table-toolbar__heading">
@@ -222,8 +241,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=74"></script>
-  <script src="assets/app.js?v=74"></script>
+  <script src="assets/trip-suggestions.js?v=75"></script>
+  <script src="assets/app.js?v=75"></script>
 </body>
 </html>
 
