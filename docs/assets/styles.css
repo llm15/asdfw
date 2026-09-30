@@ -3158,6 +3158,95 @@ body.auth-locked > footer {
   text-align: center;
 }
 
+/* Transposed for phones: days run down the page and routes across it, so
+   the whole month reads with the scroll gesture the page already uses. */
+.heatmap--tall {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 3px;
+}
+
+.heatmap--tall .heatmap__corner,
+.heatmap--tall .heatmap__route {
+  position: static;
+  padding: 0.1rem 0 0.3rem;
+  background: none;
+  text-align: center;
+}
+
+.heatmap--tall .heatmap__corner {
+  width: 2.7rem;
+  padding-left: 0.2rem;
+  text-align: left;
+}
+
+.heatmap--tall .heatmap__route {
+  font-size: 0.6rem;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.heatmap--tall .heatmap__route-code {
+  display: block;
+}
+
+.heatmap--tall .heatmap__route-arrow {
+  display: block;
+  margin: -0.1rem 0;
+  font-size: 0.56rem;
+  opacity: 0.65;
+}
+
+.heatmap--tall .heatmap__day {
+  width: 2.7rem;
+  padding: 0 0.2rem 0 0.2rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.heatmap--tall .heatmap__day-number,
+.heatmap--tall .heatmap__day-letter {
+  display: inline;
+}
+
+.heatmap--tall .heatmap__day-number {
+  color: var(--fg);
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.heatmap--tall .heatmap__day-letter {
+  margin-left: 0.2rem;
+  font-size: 0.62rem;
+}
+
+.heatmap--tall .heatmap__day[data-past="true"] {
+  opacity: 0.4;
+}
+
+.heatmap--tall tbody tr[data-today="true"] .heatmap__day-number,
+.heatmap--tall tbody tr[data-today="true"] .heatmap__day-letter {
+  color: var(--blue);
+}
+
+.heatmap--tall .heatmap__cell {
+  width: auto;
+  height: 1.75rem;
+  border-radius: 5px;
+}
+
+.heatmap--tall .heatmap__total-head {
+  padding: 0.35rem 0.2rem 0 0;
+  text-align: left;
+}
+
+.heatmap--tall .heatmap__total {
+  padding: 0.35rem 0 0;
+  text-align: center;
+  font-size: 0.74rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .heatmap__link:hover,
   .heatmap__link:focus-visible {
@@ -3293,6 +3382,147 @@ body.auth-locked > footer {
   .insight--action:focus-visible {
     transform: none;
   }
+}
+
+/* ---------- Route board: phone card list ---------- */
+
+.route-cards {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.route-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto 0.7rem;
+  grid-template-areas:
+    "date  total trend chevron"
+    "seats seats trend chevron";
+  align-items: center;
+  column-gap: 0.6rem;
+  row-gap: 0.3rem;
+  padding: 0.7rem 0.55rem 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.12s ease;
+}
+
+.route-card:active {
+  transform: scale(0.985);
+  background: rgba(10, 132, 255, 0.08);
+}
+
+.route-card:focus-visible {
+  border-color: var(--blue);
+}
+
+.route-card__date {
+  grid-area: date;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.route-card__dow {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.route-card__total {
+  grid-area: total;
+  margin: 0;
+  color: var(--fg);
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.route-card__total-unit {
+  margin-left: 0.22rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.route-card__seats {
+  grid-area: seats;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.route-card__seat {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.route-card__seat strong {
+  font-weight: 800;
+}
+
+.route-card__seat.route-seat--ag {
+  color: var(--blue);
+  background: rgba(10, 132, 255, 0.12);
+}
+
+.route-card__seat.route-seat--ap {
+  color: var(--fg);
+  background: rgba(111, 118, 130, 0.16);
+}
+
+.route-card__seat.route-seat--ab {
+  color: var(--gold);
+  background: rgba(184, 135, 47, 0.16);
+}
+
+.theme-dark .route-card__seat.route-seat--ag {
+  background: rgba(100, 169, 255, 0.16);
+}
+
+.theme-dark .route-card__seat.route-seat--ab {
+  background: rgba(214, 169, 80, 0.18);
+}
+
+/* The cabin in focus keeps full contrast; the rest are context. */
+.route-cards[data-cabin="AG"] .route-card__seat:not(.route-seat--ag),
+.route-cards[data-cabin="AP"] .route-card__seat:not(.route-seat--ap),
+.route-cards[data-cabin="AB"] .route-card__seat:not(.route-seat--ab) {
+  opacity: 0.45;
+}
+
+.route-card__trend {
+  grid-area: trend;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.route-card__chevron {
+  grid-area: chevron;
+  justify-self: end;
+  align-self: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
 }
 
 /* ---------- Footer ---------- */

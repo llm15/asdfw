@@ -259,6 +259,17 @@
     home: [els.homeArn, els.homeOsl, els.homeCph],
   };
 
+  // Phone-shaped viewports get genuinely different layouts (a transposed
+  // heatmap, cards instead of a table) rather than a squeezed desktop one,
+  // so a few sections have to re-render when this flips.
+  const compactViewport = window.matchMedia("(max-width: 40rem)");
+  const isCompact = () => compactViewport.matches;
+  compactViewport.addEventListener("change", () => {
+    if (!lastGood) return;
+    renderHeatmap();
+    renderRouteBoard();
+  });
+
   function isPlainObject(value) {
     return Boolean(value) && typeof value === "object" && !Array.isArray(value);
   }
@@ -1220,50 +1231,192 @@
     return null;
   }
 
-  function heatmapHeader(y, m, numDays, today) {
-    const thead = document.createElement("thead");
-    const row = document.createElement("tr");
+  function heatmapDayHeader(dateStr, day, today, scope) {
+    const weekday = formatWeekday(dateStr);
+    const cell = document.createElement("th");
+    cell.className = "heatmap__day";
+    cell.scope = scope;
+    cell.title = `${formatDateDisplay(dateStr)} (${weekday})`;
+    if (dateStr === today) cell.dataset.today = "true";
+    if (dateStr < today) cell.dataset.past = "true";
+    const weekend = utcDateFrom(dateStr).getUTCDay();
+    if (weekend === 0 || weekend === 6) cell.dataset.weekend = "true";
 
+    const number = document.createElement("span");
+    number.className = "heatmap__day-number";
+    number.textContent = String(day);
+    const letter = document.createElement("span");
+    letter.className = "heatmap__day-letter";
+    letter.textContent = weekday.charAt(0).toUpperCase();
+    cell.append(number, letter);
+    return cell;
+  }
+
+  function heatmapRouteHeader(origin, destination, stacked) {
+    const cell = document.createElement("th");
+    cell.className = "heatmap__route";
+    cell.scope = stacked ? "col" : "row";
+    cell.title = `${origin} → ${destination}`;
+    const from = document.createElement("span");
+    from.className = "heatmap__route-code";
+    from.textContent = origin;
+    const arrow = document.createElement("span");
+    arrow.className = "heatmap__route-arrow";
+    arrow.textContent = stacked ? "↓" : "→";
+    const to = document.createElement("span");
+    to.className = "heatmap__route-code";
+    to.textContent = destination;
+    cell.append(from, arrow, to);
+    return cell;
+  }
+
+  /** One square: tinted by the best cabin available, or left as grid
+   * background when there is nothing (hatched when no source answered). */
+  function heatmapCell(combo, dateStr, today) {
+    const { origin, destination } = routeEndpoints(combo);
+    const counts = getActiveMap(combo.id).get(dateStr);
+    const best = bestCabinFor(counts);
+    const td = document.createElement("td");
+    td.className = "heatmap__cell";
+    if (dateStr < today) td.dataset.past = "true";
+    const weekday = utcDateFrom(dateStr).getUTCDay();
+    if (weekday === 0 || weekday === 6) td.dataset.weekend = "true";
+
+    if (!best) {
+      td.dataset.state = counts ? "none" : "unknown";
+      td.title = counts
+        ? `${origin} → ${destination} on ${formatDateDisplay(dateStr)} — nothing matching the current filters.`
+        : `${origin} → ${destination} on ${formatDateDisplay(dateStr)} — no result returned.`;
+      return { td, matched: false };
+    }
+
+    td.dataset.cabin = best.code;
+    // Four seats is as strong as the scale goes; beyond that the extra ink
+    // says nothing useful.
+    td.style.setProperty("--heat", String(Math.min(1, best.seats / 4)));
+
+    const link = document.createElement("a");
+    link.className = "heatmap__link";
+    link.href = buildSasFlightSearchUrl(origin, destination, dateStr);
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.setAttribute(
+      "aria-label",
+      `${origin} to ${destination} on ${formatDateDisplay(dateStr)}: ${CABIN_LABELS[best.code]} ${best.seats}`
+    );
+    link.title =
+      `${origin} → ${destination} · ${formatDateDisplay(dateStr)} (${formatWeekday(dateStr)})\n` +
+      `Economy ${counts.AG}, Premium Economy ${counts.AP}, Business ${counts.AB}`;
+    td.appendChild(link);
+    return { td, matched: true };
+  }
+
+  function heatmapTotalCell(count, tag = "td") {
+    const cell = document.createElement(tag);
+    cell.className = "heatmap__total";
+    cell.textContent = formatCount(count);
+    if (count === 0) cell.dataset.empty = "true";
+    return cell;
+  }
+
+  /** Wide layout: routes down the side, every day of the month across. */
+  function buildHeatmapWide(combos, dates, today) {
+    const table = document.createElement("table");
+    table.className = "heatmap";
+
+    const headRow = document.createElement("tr");
     const corner = document.createElement("th");
     corner.className = "heatmap__corner";
     corner.scope = "col";
     corner.textContent = "Route";
-    row.appendChild(corner);
+    headRow.appendChild(corner);
+    for (const { dateStr, day } of dates) headRow.appendChild(heatmapDayHeader(dateStr, day, today, "col"));
+    const totalHead = document.createElement("th");
+    totalHead.className = "heatmap__total-head";
+    totalHead.scope = "col";
+    totalHead.textContent = "Dates";
+    headRow.appendChild(totalHead);
+    const thead = document.createElement("thead");
+    thead.appendChild(headRow);
+    table.appendChild(thead);
 
-    for (let d = 1; d <= numDays; d++) {
-      const dateStr = `${y}-${pad2(m)}-${pad2(d)}`;
-      const weekday = formatWeekday(dateStr);
-      const th = document.createElement("th");
-      th.className = "heatmap__day";
-      th.scope = "col";
-      th.title = `${formatDateDisplay(dateStr)} (${weekday})`;
-      if (dateStr === today) th.dataset.today = "true";
-      const weekend = utcDateFrom(dateStr).getUTCDay();
-      if (weekend === 0 || weekend === 6) th.dataset.weekend = "true";
-
-      const number = document.createElement("span");
-      number.className = "heatmap__day-number";
-      number.textContent = String(d);
-      const letter = document.createElement("span");
-      letter.className = "heatmap__day-letter";
-      letter.textContent = weekday.charAt(0).toUpperCase();
-      th.append(number, letter);
-      row.appendChild(th);
+    const tbody = document.createElement("tbody");
+    let matching = 0;
+    for (const combo of combos) {
+      const { origin, destination } = routeEndpoints(combo);
+      const tr = document.createElement("tr");
+      tr.appendChild(heatmapRouteHeader(origin, destination, false));
+      let routeDates = 0;
+      for (const { dateStr } of dates) {
+        const { td, matched } = heatmapCell(combo, dateStr, today);
+        if (matched) routeDates += 1;
+        tr.appendChild(td);
+      }
+      matching += routeDates;
+      tr.appendChild(heatmapTotalCell(routeDates));
+      tbody.appendChild(tr);
     }
-
-    const total = document.createElement("th");
-    total.className = "heatmap__total-head";
-    total.scope = "col";
-    total.textContent = "Dates";
-    row.appendChild(total);
-
-    thead.appendChild(row);
-    return thead;
+    table.appendChild(tbody);
+    return { table, matching };
   }
 
-  /** One row per enabled route, one cell per day of the selected month,
-   * tinted by the best cabin available that day — so a dry route or a
-   * midweek-only pattern is visible without reading a single number. */
+  /** Narrow layout: the grid is transposed so it scrolls the way a phone
+   * already scrolls — days run down the page and the routes fit across it
+   * without any sideways swiping. */
+  function buildHeatmapTall(combos, dates, today) {
+    const table = document.createElement("table");
+    table.className = "heatmap heatmap--tall";
+
+    const headRow = document.createElement("tr");
+    const corner = document.createElement("th");
+    corner.className = "heatmap__corner";
+    corner.scope = "col";
+    corner.textContent = "Day";
+    headRow.appendChild(corner);
+    for (const combo of combos) {
+      const { origin, destination } = routeEndpoints(combo);
+      headRow.appendChild(heatmapRouteHeader(origin, destination, true));
+    }
+    const thead = document.createElement("thead");
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    const totals = combos.map(() => 0);
+    let matching = 0;
+    for (const { dateStr, day } of dates) {
+      const tr = document.createElement("tr");
+      if (dateStr === today) tr.dataset.today = "true";
+      tr.appendChild(heatmapDayHeader(dateStr, day, today, "row"));
+      combos.forEach((combo, i) => {
+        const { td, matched } = heatmapCell(combo, dateStr, today);
+        if (matched) {
+          totals[i] += 1;
+          matching += 1;
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+
+    const footRow = document.createElement("tr");
+    const footLabel = document.createElement("th");
+    footLabel.className = "heatmap__total-head";
+    footLabel.scope = "row";
+    footLabel.textContent = "Dates";
+    footRow.appendChild(footLabel);
+    for (const total of totals) footRow.appendChild(heatmapTotalCell(total));
+    const tfoot = document.createElement("tfoot");
+    tfoot.appendChild(footRow);
+    table.appendChild(tfoot);
+
+    return { table, matching };
+  }
+
+  /** Routes against every day of the selected month, each square tinted by
+   * the best cabin available — so a dry route or a midweek-only pattern is
+   * visible without reading a single number. */
   function renderHeatmap() {
     els.heatmap.replaceChildren();
     els.heatmapMeta.textContent = "";
@@ -1287,94 +1440,22 @@
 
     const [y, m] = state.month.split("-").map(Number);
     if (!y || !m) return;
-    const numDays = daysInMonth(y, m);
     const today = todayIsoDate();
+    const dates = Array.from({ length: daysInMonth(y, m) }, (_, i) => ({
+      day: i + 1,
+      dateStr: `${y}-${pad2(m)}-${pad2(i + 1)}`,
+    }));
 
-    const table = document.createElement("table");
-    table.className = "heatmap";
-    table.appendChild(heatmapHeader(y, m, numDays, today));
-
-    const tbody = document.createElement("tbody");
-    let matchingCells = 0;
-
-    for (const combo of combos) {
-      const { origin, destination } = routeEndpoints(combo);
-      const map = getActiveMap(combo.id);
-      const tr = document.createElement("tr");
-
-      const label = document.createElement("th");
-      label.className = "heatmap__route";
-      label.scope = "row";
-      const from = document.createElement("span");
-      from.textContent = origin;
-      const arrow = document.createElement("span");
-      arrow.className = "heatmap__route-arrow";
-      arrow.textContent = "→";
-      const to = document.createElement("span");
-      to.textContent = destination;
-      label.append(from, arrow, to);
-      tr.appendChild(label);
-
-      let routeDates = 0;
-      for (let d = 1; d <= numDays; d++) {
-        const dateStr = `${y}-${pad2(m)}-${pad2(d)}`;
-        const counts = map.get(dateStr);
-        const best = bestCabinFor(counts);
-        const td = document.createElement("td");
-        td.className = "heatmap__cell";
-        if (dateStr < today) td.dataset.past = "true";
-        const weekday = utcDateFrom(dateStr).getUTCDay();
-        if (weekday === 0 || weekday === 6) td.dataset.weekend = "true";
-
-        if (!best) {
-          td.dataset.state = counts ? "none" : "unknown";
-          td.title = counts
-            ? `${origin} → ${destination} on ${formatDateDisplay(dateStr)} — nothing matching the current filters.`
-            : `${origin} → ${destination} on ${formatDateDisplay(dateStr)} — no result returned.`;
-          tr.appendChild(td);
-          continue;
-        }
-
-        routeDates += 1;
-        matchingCells += 1;
-        td.dataset.cabin = best.code;
-        // Four seats is as strong as the scale goes; beyond that the extra
-        // ink says nothing useful.
-        td.style.setProperty("--heat", String(Math.min(1, best.seats / 4)));
-
-        const link = document.createElement("a");
-        link.className = "heatmap__link";
-        link.href = buildSasFlightSearchUrl(origin, destination, dateStr);
-        link.target = "_blank";
-        link.rel = "noreferrer";
-        link.setAttribute(
-          "aria-label",
-          `${origin} to ${destination} on ${formatDateDisplay(dateStr)}: ${CABIN_LABELS[best.code]} ${best.seats}`
-        );
-        link.title =
-          `${origin} → ${destination} · ${formatDateDisplay(dateStr)} (${formatWeekday(dateStr)})\n` +
-          `Economy ${counts.AG}, Premium Economy ${counts.AP}, Business ${counts.AB}`;
-        td.appendChild(link);
-        tr.appendChild(td);
-      }
-
-      const total = document.createElement("td");
-      total.className = "heatmap__total";
-      total.textContent = formatCount(routeDates);
-      if (routeDates === 0) total.dataset.empty = "true";
-      tr.appendChild(total);
-
-      tbody.appendChild(tr);
-    }
-
-    table.appendChild(tbody);
+    const { table, matching } = isCompact()
+      ? buildHeatmapTall(combos, dates, today)
+      : buildHeatmapWide(combos, dates, today);
     els.heatmap.appendChild(table);
 
     const seats = Math.max(1, state.minSeats);
     const cabinLabel = state.cabin === "all" ? "best cabin" : `${CABIN_LABELS[state.cabin]} only`;
     els.heatmapMeta.textContent =
       `${formatMonthHeading(state.month)} · ${state.direction === "inbound" ? "New York → home" : "Home → New York"} · ` +
-      `${formatCount(matchingCells)} matching day${matchingCells === 1 ? "" : "s"} across ${combos.length} route${combos.length === 1 ? "" : "s"} · ` +
+      `${formatCount(matching)} matching day${matching === 1 ? "" : "s"} across ${combos.length} route${combos.length === 1 ? "" : "s"} · ` +
       `${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinLabel}`;
   }
 
@@ -2375,6 +2456,76 @@
     return wrapper;
   }
 
+  /** Narrow layout for the same rows: one tappable card per date instead
+   * of a table that would have to be swiped sideways to read. */
+  function renderRouteCards(combo, rows) {
+    const { origin, destination } = routeEndpoints(combo);
+    const cabin = routeCabinFilter();
+    const list = document.createElement("ul");
+    list.className = "route-cards";
+    list.dataset.cabin = cabin;
+
+    for (const row of rows) {
+      const item = document.createElement("li");
+      const card = document.createElement("a");
+      card.className = "route-card";
+      card.href = buildSasFlightSearchUrl(origin, destination, row.date);
+      card.target = "_blank";
+      card.rel = "noreferrer";
+      card.title = `Open the SAS points search for ${origin} → ${destination} on ${formatDateDisplay(row.date)}`;
+
+      const when = document.createElement("p");
+      when.className = "route-card__date";
+      const time = document.createElement("time");
+      time.dateTime = row.date;
+      time.textContent = formatDateDisplay(row.date);
+      const dow = document.createElement("span");
+      dow.className = "route-card__dow";
+      dow.textContent = formatWeekday(row.date);
+      when.append(time, dow);
+      card.appendChild(when);
+
+      const total = document.createElement("p");
+      total.className = "route-card__total";
+      total.append(formatCount(row.total));
+      const unit = document.createElement("span");
+      unit.className = "route-card__total-unit";
+      unit.textContent = row.total === 1 ? "seat" : "seats";
+      total.appendChild(unit);
+      card.appendChild(total);
+
+      const seats = document.createElement("p");
+      seats.className = "route-card__seats";
+      for (const code of ["AG", "AP", "AB"]) {
+        if (row[code] <= 0) continue;
+        const pill = document.createElement("span");
+        pill.className = `route-card__seat route-seat--${code.toLowerCase()}`;
+        pill.dataset.has = "true";
+        const value = document.createElement("strong");
+        value.textContent = formatCount(row[code]);
+        pill.append(value, ` ${CABIN_SHORT[code]}`);
+        seats.appendChild(pill);
+      }
+      card.appendChild(seats);
+
+      const trend = document.createElement("p");
+      trend.className = "route-card__trend";
+      trend.appendChild(renderSparkline(combo.id, state.direction, row.date, cabin));
+      card.appendChild(trend);
+
+      const chevron = document.createElement("span");
+      chevron.className = "route-card__chevron";
+      chevron.setAttribute("aria-hidden", "true");
+      chevron.textContent = "›";
+      card.appendChild(chevron);
+
+      item.appendChild(card);
+      list.appendChild(item);
+    }
+
+    return list;
+  }
+
   function goToRouteBoardPage(page) {
     routeBoardPage = page;
     renderRouteBoard();
@@ -2513,7 +2664,7 @@
     routeBoardPage = Math.min(Math.max(routeBoardPage, 0), pageCount - 1);
     const start = routeBoardPage * ROUTE_BOARD_PAGE_SIZE;
     const visible = rows.slice(start, start + ROUTE_BOARD_PAGE_SIZE);
-    panel.appendChild(renderRouteTable(combo, visible));
+    panel.appendChild(isCompact() ? renderRouteCards(combo, visible) : renderRouteTable(combo, visible));
 
     if (pageCount > 1) {
       const footer = document.createElement("div");
