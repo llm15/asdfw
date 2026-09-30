@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#0b0d11" />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=79" />
+  <link rel="stylesheet" href="assets/styles.css?v=80" />
   <!-- Inline and before the first paint, so a dark-theme visitor never sees a flash of the light theme. -->
   <script>
     (() => {
@@ -147,6 +147,21 @@
       <div id="monthly-activity" class="monthly-activity"></div>
     </section>
 
+    <section class="changes-section">
+      <div class="changes-heading">
+        <h2>What changed</h2>
+        <div class="changes-heading__right">
+          <p id="changes-meta" class="changes__meta"></p>
+          <div id="changes-window" class="route-segment" role="radiogroup" aria-label="Time window">
+            <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-window="1">24 hours</button>
+            <button type="button" class="route-segment__option" role="radio" aria-checked="true" tabindex="0" data-window="7">7 days</button>
+            <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-window="30">30 days</button>
+          </div>
+        </div>
+      </div>
+      <div id="changes-feed" class="changes-feed" aria-live="polite"></div>
+    </section>
+
     <section class="trip-suggestions-section">
       <div class="trip-suggestions-heading">
         <h2>Trip suggestions</h2>
@@ -248,8 +263,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=79"></script>
-  <script src="assets/app.js?v=79"></script>
+  <script src="assets/trip-suggestions.js?v=80"></script>
+  <script src="assets/app.js?v=80"></script>
 </body>
 </html>
 

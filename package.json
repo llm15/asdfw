@@ -11,6 +11,7 @@
     "fetch:roamsnap": "node scripts/fetch-roamsnap-data.mjs",
     "fetch:awardfares": "node scripts/fetch-awardfares-data.mjs",
     "fetch:seatsaero": "node scripts/fetch-seatsaero-data.mjs",
+    "history": "node scripts/build-history.mjs",
     "notify": "node scripts/notify.mjs"
   },
   "dependencies": {

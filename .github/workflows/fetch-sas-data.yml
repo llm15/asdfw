@@ -45,15 +45,18 @@ jobs:
       - name: Fetch latest SAS availability
         run: npm run fetch:data
 
+      - name: Record availability history
+        run: npm run history
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- docs/data/latest.json; then
+          if git diff --quiet -- docs/data/latest.json docs/data/history.json; then
             echo "No changes to commit."
             exit 0
           fi
-          git add docs/data/latest.json
+          git add docs/data/latest.json docs/data/history.json
           git commit -m "chore: update SAS availability data"
           git pull --rebase
           git push

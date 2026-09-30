@@ -88,6 +88,13 @@
   };
   const SOURCE_KEYS = Object.keys(SOURCES);
 
+  // A change-point log of every route/direction/date, published by
+  // scripts/build-history.mjs so "what changed" and seat trends survive a
+  // cleared browser, a different device, or a private window. Optional:
+  // the dashboard works unchanged when the file isn't there yet.
+  const HISTORY_URL = "data/history.json";
+  const HISTORY_VERSION = 1;
+
   // Home (Nordic) airports we're willing to fly home to, and the New York
   // airports we might fly out of. Every combination is fetched by the CI job
   // and can be shown side by side here — "I'll take a spot home to ARN, OSL,
@@ -108,6 +115,8 @@
   // Priority order for picking which cabin "best" represents a mixed result.
   const CABIN_PRIORITY = ["AB", "AP", "AG"];
   const CABIN_LABELS = { AG: "Economy", AP: "Premium Economy", AB: "Business" };
+  // Column-width-friendly variants for pills and chips.
+  const CABIN_SHORT = { AG: "Economy", AP: "Premium", AB: "Business" };
 
   // Trip suggestions can be narrowed to a short, varied shortlist; otherwise
   // every combination is paged rather than dumped on the page.
@@ -115,6 +124,10 @@
   const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
 
   const TABLE_PAGE_SIZE = 10;
+
+  const CHANGES_PAGE_SIZE = 8;
+  // Enough points to show a shape without turning into noise at 56px wide.
+  const SPARKLINE_POINTS = 12;
 
   // One route at a time in the route board, paged so a route with a year of
   // dates still fits on screen.
@@ -162,6 +175,9 @@
     tablePager: document.getElementById("table-pager"),
     technical: document.getElementById("technical-details"),
     monthlyActivity: document.getElementById("monthly-activity"),
+    changesFeed: document.getElementById("changes-feed"),
+    changesMeta: document.getElementById("changes-meta"),
+    changesWindow: document.getElementById("changes-window"),
     tripSuggestions: document.getElementById("trip-suggestions"),
     tripSuggestionsMeta: document.getElementById("trip-suggestions-meta"),
     tripSuggestionsFilters: document.getElementById("trip-suggestions-filters"),
@@ -204,6 +220,8 @@
     // 'all' follows the page-wide Cabin filter; anything else overrides it
     // for this section only.
     routeCabin: "all",
+    // Days of published history the "What changed" feed covers.
+    changesWindow: 7,
   };
 
   // Populated only after a successful (or fallback-to-cache) fetch of every
@@ -221,6 +239,10 @@
   let tripSuggestionsPage = 0;
   let tablePage = 0;
   let routeBoardPage = 0;
+  let changesPage = 0;
+  // { runs: [iso], series: Map("combo|direction|date" -> [[runIndex, AG, AP, AB]]) }
+  // or null until the published history has loaded (or if it 404s).
+  let seatHistory = null;
   // The route tabs scroll the selected tab into view, but doing that on the
   // very first render would look like the page moved on its own.
   let routeTabsRendered = false;
@@ -1936,6 +1958,7 @@
       ["Premium", "route-table__seats"],
       ["Business", "route-table__seats"],
       ["Total", "route-table__seats"],
+      ["Trend", "route-table__trend"],
       ["", "route-table__go"],
     ]) {
       const th = document.createElement("th");
@@ -1991,6 +2014,11 @@
       totalCell.className = "route-table__seats route-table__total";
       totalCell.textContent = formatCount(row.total);
       tr.appendChild(totalCell);
+
+      const trendCell = document.createElement("td");
+      trendCell.className = "route-table__trend";
+      trendCell.appendChild(renderSparkline(combo.id, state.direction, row.date, table.dataset.cabin));
+      tr.appendChild(trendCell);
 
       const goCell = document.createElement("td");
       goCell.className = "route-table__go";
@@ -2225,6 +2253,325 @@
     renderRouteBoard();
     if (focusTab) els.routeTabs.querySelector('[aria-selected="true"]')?.focus({ preventScroll: true });
     syncStateToUrl();
+  }
+
+  /* ---------- Published availability history ---------- */
+
+  /** Loads the published change-point log. Never throws and never blocks
+   * the dashboard: without it, the history-backed sections simply say so. */
+  async function fetchHistory() {
+    try {
+      const response = await fetch(`${HISTORY_URL}?t=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+      const payload = await response.json();
+      if (!isPlainObject(payload) || payload.version !== HISTORY_VERSION) throw new Error("Unexpected history format");
+      const runs = Array.isArray(payload.runs) ? payload.runs.filter((at) => typeof at === "string") : [];
+      const series = new Map();
+      if (isPlainObject(payload.series)) {
+        for (const [key, points] of Object.entries(payload.series)) {
+          if (!Array.isArray(points)) continue;
+          const clean = points.filter(
+            (p) => Array.isArray(p) && p.length === 4 && p.every(Number.isInteger) && p[0] >= 0 && p[0] < runs.length
+          );
+          if (clean.length > 0) series.set(key, clean);
+        }
+      }
+      seatHistory = runs.length > 0 ? { runs, series } : null;
+    } catch {
+      // A missing or malformed history file is not an error — it just means
+      // there is nothing to show yet.
+      seatHistory = null;
+    }
+  }
+
+  function historyKey(comboId, direction, dateStr) {
+    return `${comboId}|${direction}|${dateStr}`;
+  }
+
+  /** Expands a change-point series into one reading per run, from the first
+   * recorded point to the latest run, so a flat stretch is visible as flat
+   * rather than missing. */
+  function historyReadings(comboId, direction, dateStr) {
+    if (!seatHistory) return [];
+    const points = seatHistory.series.get(historyKey(comboId, direction, dateStr));
+    if (!points || points.length === 0) return [];
+    const readings = [];
+    let pointIndex = 0;
+    let current = points[0].slice(1);
+    for (let run = points[0][0]; run < seatHistory.runs.length; run++) {
+      while (pointIndex < points.length && points[pointIndex][0] === run) {
+        current = points[pointIndex].slice(1);
+        pointIndex += 1;
+      }
+      readings.push({ at: seatHistory.runs[run], AG: current[0], AP: current[1], AB: current[2] });
+    }
+    return readings;
+  }
+
+  /** Every recorded change newer than `sinceIso`, newest first. The very
+   * first point of a series is only an event when it appeared after the
+   * history started — at run 0 it is just the baseline. */
+  function historyEvents(sinceIso) {
+    if (!seatHistory) return [];
+    const allowed = new Set(enabledCombos().map((combo) => combo.id));
+    const today = todayIsoDate();
+    const events = [];
+
+    for (const [key, points] of seatHistory.series) {
+      const [comboId, direction, dateStr] = key.split("|");
+      if (!allowed.has(comboId) || dateStr < today) continue;
+      for (let i = 0; i < points.length; i++) {
+        const [runIndex, ...counts] = points[i];
+        if (i === 0 && runIndex === 0) continue;
+        const at = seatHistory.runs[runIndex];
+        if (at < sinceIso) continue;
+        const previous = i > 0 ? points[i - 1].slice(1) : [0, 0, 0];
+        events.push({ at, runIndex, comboId, direction, date: dateStr, previous, counts });
+      }
+    }
+
+    events.sort(
+      (a, b) => b.runIndex - a.runIndex || (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || a.comboId.localeCompare(b.comboId)
+    );
+    return events;
+  }
+
+  function sumSeats(counts) {
+    return counts[0] + counts[1] + counts[2];
+  }
+
+  /** A tiny SVG trend line for one route/date, plotting the cabin in focus
+   * (or the total) across the runs it has been tracked for. */
+  function renderSparkline(comboId, direction, dateStr, cabin) {
+    const readings = historyReadings(comboId, direction, dateStr).slice(-SPARKLINE_POINTS);
+    const wrap = document.createElement("span");
+    wrap.className = "sparkline";
+
+    if (readings.length < 2) {
+      wrap.classList.add("sparkline--empty");
+      wrap.textContent = seatHistory ? "·" : "";
+      wrap.title = seatHistory
+        ? "No movement recorded yet — trends appear once this date has been checked a few times."
+        : "Seat history has not been published yet.";
+      return wrap;
+    }
+
+    const valueOf = (r) => (cabin === "all" ? r.AG + r.AP + r.AB : r[cabin]);
+    const values = readings.map(valueOf);
+    const max = Math.max(1, ...values);
+    const width = 56;
+    const height = 18;
+    const step = width / (values.length - 1);
+    const y = (value) => height - 2 - (value / max) * (height - 4);
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.setAttribute("width", String(width));
+    svg.setAttribute("height", String(height));
+    svg.setAttribute("aria-hidden", "true");
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    line.setAttribute("points", values.map((value, i) => `${(i * step).toFixed(1)},${y(value).toFixed(1)}`).join(" "));
+    svg.appendChild(line);
+
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("cx", String(width));
+    dot.setAttribute("cy", y(values[values.length - 1]).toFixed(1));
+    dot.setAttribute("r", "2");
+    svg.appendChild(dot);
+
+    const first = values[0];
+    const last = values[values.length - 1];
+    wrap.dataset.trend = last > first ? "up" : last < first ? "down" : "flat";
+    wrap.appendChild(svg);
+    wrap.title =
+      `${cabin === "all" ? "Total" : CABIN_LABELS[cabin]} seats over the last ` +
+      `${formatCount(values.length)} checks: ${values.join(" → ")} ` +
+      `(peak ${formatCount(Math.max(...values))}, first tracked ${formatRelativeTime(readings[0].at)})`;
+    return wrap;
+  }
+
+  /* ---------- What changed ---------- */
+
+  function changesSince() {
+    return new Date(Date.now() - state.changesWindow * 86400000).toISOString();
+  }
+
+  function renderChangesEmpty(message) {
+    const p = document.createElement("p");
+    p.className = "changes__empty";
+    p.textContent = message;
+    els.changesFeed.appendChild(p);
+  }
+
+  function renderChangeRow(event) {
+    const combo = COMBOS.find((c) => c.id === event.comboId);
+    if (!combo) return null;
+    const origin = event.direction === "inbound" ? combo.nyc.code : combo.home.code;
+    const destination = event.direction === "inbound" ? combo.home.code : combo.nyc.code;
+    const before = sumSeats(event.previous);
+    const after = sumSeats(event.counts);
+    const delta = after - before;
+
+    const row = document.createElement("a");
+    row.className = `change change--${delta > 0 ? "up" : "down"}`;
+    row.href = buildSasFlightSearchUrl(origin, destination, event.date);
+    row.target = "_blank";
+    row.rel = "noreferrer";
+
+    const badge = document.createElement("span");
+    badge.className = "change__badge";
+    badge.textContent = before === 0 ? "New" : after === 0 ? "Gone" : `${delta > 0 ? "+" : "−"}${formatCount(Math.abs(delta))}`;
+    row.appendChild(badge);
+
+    const route = document.createElement("span");
+    route.className = "change__route";
+    const arrow = document.createElement("span");
+    arrow.className = "change__arrow";
+    arrow.textContent = "→";
+    route.append(origin, arrow, destination);
+    row.appendChild(route);
+
+    const when = document.createElement("span");
+    when.className = "change__date";
+    const date = document.createElement("time");
+    date.dateTime = event.date;
+    date.textContent = formatDateDisplay(event.date);
+    const dow = document.createElement("span");
+    dow.className = "change__dow";
+    dow.textContent = formatWeekday(event.date);
+    when.append(date, dow);
+    row.appendChild(when);
+
+    const cabins = document.createElement("span");
+    cabins.className = "change__cabins";
+    const moved = ["AG", "AP", "AB"]
+      .map((code, i) => ({ code, from: event.previous[i], to: event.counts[i] }))
+      .filter((c) => c.from !== c.to);
+    for (const cabin of moved) {
+      const pill = document.createElement("span");
+      pill.className = `change__cabin change__cabin--${cabin.code.toLowerCase()}`;
+      pill.textContent = `${CABIN_SHORT[cabin.code]} ${formatCount(cabin.from)}→${formatCount(cabin.to)}`;
+      cabins.appendChild(pill);
+    }
+    row.appendChild(cabins);
+
+    const ago = document.createElement("time");
+    ago.className = "change__when";
+    ago.dateTime = event.at;
+    ago.textContent = formatRelativeTime(event.at);
+    ago.title = formatTimestamp(event.at);
+    row.appendChild(ago);
+
+    row.title =
+      `${origin} → ${destination} on ${formatDateDisplay(event.date)} — ` +
+      `${before} seat${before === 1 ? "" : "s"} → ${after} seat${after === 1 ? "" : "s"}, ` +
+      `recorded ${formatRelativeTime(event.at)}. Opens the SAS points search.`;
+    return row;
+  }
+
+  function goToChangesPage(page) {
+    changesPage = page;
+    renderChanges();
+  }
+
+  function renderChangesPager(start, shown, total, pageCount) {
+    const nav = document.createElement("nav");
+    nav.className = "changes-pager";
+    nav.setAttribute("aria-label", "Change pages");
+
+    const prev = document.createElement("button");
+    prev.type = "button";
+    prev.className = "month-nav-btn";
+    prev.textContent = "‹";
+    prev.setAttribute("aria-label", "Previous page of changes");
+    prev.disabled = changesPage === 0;
+    prev.addEventListener("click", () => goToChangesPage(changesPage - 1));
+    nav.appendChild(prev);
+
+    const status = document.createElement("p");
+    status.className = "changes-pager__status";
+    status.setAttribute("role", "status");
+    status.textContent = `${formatCount(start + 1)}–${formatCount(start + shown)} of ${formatCount(total)}`;
+    nav.appendChild(status);
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "month-nav-btn";
+    next.textContent = "›";
+    next.setAttribute("aria-label", "Next page of changes");
+    next.disabled = changesPage >= pageCount - 1;
+    next.addEventListener("click", () => goToChangesPage(changesPage + 1));
+    nav.appendChild(next);
+
+    const pages = document.createElement("p");
+    pages.className = "changes-pager__pages";
+    pages.textContent = `Page ${formatCount(changesPage + 1)} of ${formatCount(pageCount)}`;
+    nav.appendChild(pages);
+
+    return nav;
+  }
+
+  function renderChanges() {
+    els.changesFeed.replaceChildren();
+    els.changesMeta.textContent = "";
+    for (const option of els.changesWindow.querySelectorAll("[data-window]")) {
+      const selected = Number(option.dataset.window) === state.changesWindow;
+      option.setAttribute("aria-checked", String(selected));
+      option.tabIndex = selected ? 0 : -1;
+    }
+
+    if (!seatHistory) {
+      renderChangesEmpty(
+        "No published seat history yet — it starts building from the next few scheduled updates, " +
+          "and then works on any device without needing this browser to have been open."
+      );
+      return;
+    }
+
+    const events = historyEvents(changesSince());
+    const windowLabel = state.changesWindow === 1 ? "24 hours" : `${state.changesWindow} days`;
+    const tracked = formatRelativeTime(seatHistory.runs[0]);
+    els.changesMeta.textContent =
+      `${formatCount(seatHistory.runs.length)} update${seatHistory.runs.length === 1 ? "" : "s"} recorded · ` +
+      `tracking since ${tracked}`;
+
+    if (events.length === 0) {
+      renderChangesEmpty(
+        seatHistory.runs.length === 1
+          ? "Only one update has been recorded so far — changes appear from the next one onwards."
+          : `Nothing moved on the selected routes in the last ${windowLabel}.`
+      );
+      return;
+    }
+
+    const gained = events.filter((e) => sumSeats(e.counts) > sumSeats(e.previous)).length;
+    const summary = document.createElement("p");
+    summary.className = "changes__summary";
+    summary.textContent =
+      `${formatCount(events.length)} change${events.length === 1 ? "" : "s"} in the last ${windowLabel} · ` +
+      `${formatCount(gained)} gained seats · ${formatCount(events.length - gained)} lost seats`;
+    els.changesFeed.appendChild(summary);
+
+    const pageCount = Math.max(1, Math.ceil(events.length / CHANGES_PAGE_SIZE));
+    changesPage = Math.min(Math.max(changesPage, 0), pageCount - 1);
+    const start = changesPage * CHANGES_PAGE_SIZE;
+    const visible = events.slice(start, start + CHANGES_PAGE_SIZE);
+
+    const list = document.createElement("div");
+    list.className = "changes-list";
+    for (const event of visible) {
+      const row = renderChangeRow(event);
+      if (row) list.appendChild(row);
+    }
+    els.changesFeed.appendChild(list);
+
+    if (pageCount > 1) {
+      const footer = document.createElement("div");
+      footer.className = "changes__footer";
+      footer.appendChild(renderChangesPager(start, visible.length, events.length, pageCount));
+      els.changesFeed.appendChild(footer);
+    }
   }
 
   function appendTableMessage(message) {
@@ -2549,6 +2896,8 @@
     renderTable();
     renderTechnicalDetails();
     renderMonthlyActivity();
+    changesPage = 0;
+    renderChanges();
     tripSuggestionsPage = 0;
     renderTripSuggestions();
     routeBoardPage = 0;
@@ -2589,7 +2938,10 @@
     els.refreshBtnLabel.textContent = "Fetching availability…";
     setStatus("Fetching availability…");
 
-    const results = await Promise.all(SOURCE_KEYS.map((key) => fetchOneSource(key)));
+    const [results] = await Promise.all([
+      Promise.all(SOURCE_KEYS.map((key) => fetchOneSource(key))),
+      fetchHistory(),
+    ]);
     sourcesData = {};
     const previousSourcesData = {};
     const errors = {};
@@ -2941,6 +3293,14 @@
     syncStateToUrl();
   });
 
+  els.changesWindow.addEventListener("click", (e) => {
+    const option = e.target.closest("[data-window]");
+    if (!option || Number(option.dataset.window) === state.changesWindow) return;
+    state.changesWindow = Number(option.dataset.window);
+    changesPage = 0;
+    renderChanges();
+  });
+
   els.routeTabs.addEventListener("click", (e) => {
     const tab = e.target.closest("[data-route]");
     if (tab) selectRouteTab(tab.dataset.route);
@@ -2966,7 +3326,7 @@
 
   // Arrow keys move between options within a radiogroup, as expected of the
   // role — the rendered controls are buttons, so this isn't free.
-  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail, els.routeScope, els.routeCabin]) {
+  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail, els.routeScope, els.routeCabin, els.changesWindow]) {
     group.addEventListener("keydown", (e) => {
       const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
       if (step === 0) return;
