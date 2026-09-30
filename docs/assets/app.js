@@ -165,6 +165,8 @@
     summary: document.getElementById("summary-cards"),
     calendarHeading: document.getElementById("calendar-heading"),
     calendar: document.getElementById("calendar"),
+    heatmap: document.getElementById("heatmap"),
+    heatmapMeta: document.getElementById("heatmap-meta"),
     prevMonthBtn: document.getElementById("prev-month-btn"),
     nextMonthBtn: document.getElementById("next-month-btn"),
     jumpEarliestBtn: document.getElementById("jump-earliest-btn"),
@@ -1034,6 +1036,179 @@
 
     els.calendar.appendChild(grid);
     calendarRowObserver.observe(grid);
+  }
+
+  /* ---------- Route × date heatmap ---------- */
+
+  /** The best cabin on one date that clears the seat filter, honouring the
+   * page-wide cabin filter. Null when the date isn't bookable under the
+   * current filters. */
+  function bestCabinFor(counts) {
+    if (!counts) return null;
+    const minSeats = Math.max(1, state.minSeats);
+    for (const code of state.cabin === "all" ? CABIN_PRIORITY : [state.cabin]) {
+      const seats = counts[code] || 0;
+      if (seats >= minSeats) return { code, seats };
+    }
+    return null;
+  }
+
+  function heatmapHeader(y, m, numDays, today) {
+    const thead = document.createElement("thead");
+    const row = document.createElement("tr");
+
+    const corner = document.createElement("th");
+    corner.className = "heatmap__corner";
+    corner.scope = "col";
+    corner.textContent = "Route";
+    row.appendChild(corner);
+
+    for (let d = 1; d <= numDays; d++) {
+      const dateStr = `${y}-${pad2(m)}-${pad2(d)}`;
+      const weekday = formatWeekday(dateStr);
+      const th = document.createElement("th");
+      th.className = "heatmap__day";
+      th.scope = "col";
+      th.title = `${formatDateDisplay(dateStr)} (${weekday})`;
+      if (dateStr === today) th.dataset.today = "true";
+      const weekend = utcDateFrom(dateStr).getUTCDay();
+      if (weekend === 0 || weekend === 6) th.dataset.weekend = "true";
+
+      const number = document.createElement("span");
+      number.className = "heatmap__day-number";
+      number.textContent = String(d);
+      const letter = document.createElement("span");
+      letter.className = "heatmap__day-letter";
+      letter.textContent = weekday.charAt(0).toUpperCase();
+      th.append(number, letter);
+      row.appendChild(th);
+    }
+
+    const total = document.createElement("th");
+    total.className = "heatmap__total-head";
+    total.scope = "col";
+    total.textContent = "Dates";
+    row.appendChild(total);
+
+    thead.appendChild(row);
+    return thead;
+  }
+
+  /** One row per enabled route, one cell per day of the selected month,
+   * tinted by the best cabin available that day — so a dry route or a
+   * midweek-only pattern is visible without reading a single number. */
+  function renderHeatmap() {
+    els.heatmap.replaceChildren();
+    els.heatmapMeta.textContent = "";
+
+    if (!lastGood) {
+      const p = document.createElement("p");
+      p.className = "heatmap__empty";
+      p.textContent = 'Press "Refresh availability" to build the heatmap.';
+      els.heatmap.appendChild(p);
+      return;
+    }
+
+    const combos = routeBoardCombos();
+    if (combos.length === 0) {
+      const p = document.createElement("p");
+      p.className = "heatmap__empty";
+      p.textContent = "Select at least one home and one New York airport in the filters above.";
+      els.heatmap.appendChild(p);
+      return;
+    }
+
+    const [y, m] = state.month.split("-").map(Number);
+    if (!y || !m) return;
+    const numDays = daysInMonth(y, m);
+    const today = todayIsoDate();
+
+    const table = document.createElement("table");
+    table.className = "heatmap";
+    table.appendChild(heatmapHeader(y, m, numDays, today));
+
+    const tbody = document.createElement("tbody");
+    let matchingCells = 0;
+
+    for (const combo of combos) {
+      const { origin, destination } = routeEndpoints(combo);
+      const map = getActiveMap(combo.id);
+      const tr = document.createElement("tr");
+
+      const label = document.createElement("th");
+      label.className = "heatmap__route";
+      label.scope = "row";
+      const from = document.createElement("span");
+      from.textContent = origin;
+      const arrow = document.createElement("span");
+      arrow.className = "heatmap__route-arrow";
+      arrow.textContent = "→";
+      const to = document.createElement("span");
+      to.textContent = destination;
+      label.append(from, arrow, to);
+      tr.appendChild(label);
+
+      let routeDates = 0;
+      for (let d = 1; d <= numDays; d++) {
+        const dateStr = `${y}-${pad2(m)}-${pad2(d)}`;
+        const counts = map.get(dateStr);
+        const best = bestCabinFor(counts);
+        const td = document.createElement("td");
+        td.className = "heatmap__cell";
+        if (dateStr < today) td.dataset.past = "true";
+        const weekday = utcDateFrom(dateStr).getUTCDay();
+        if (weekday === 0 || weekday === 6) td.dataset.weekend = "true";
+
+        if (!best) {
+          td.dataset.state = counts ? "none" : "unknown";
+          td.title = counts
+            ? `${origin} → ${destination} on ${formatDateDisplay(dateStr)} — nothing matching the current filters.`
+            : `${origin} → ${destination} on ${formatDateDisplay(dateStr)} — no result returned.`;
+          tr.appendChild(td);
+          continue;
+        }
+
+        routeDates += 1;
+        matchingCells += 1;
+        td.dataset.cabin = best.code;
+        // Four seats is as strong as the scale goes; beyond that the extra
+        // ink says nothing useful.
+        td.style.setProperty("--heat", String(Math.min(1, best.seats / 4)));
+
+        const link = document.createElement("a");
+        link.className = "heatmap__link";
+        link.href = buildSasFlightSearchUrl(origin, destination, dateStr);
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.setAttribute(
+          "aria-label",
+          `${origin} to ${destination} on ${formatDateDisplay(dateStr)}: ${CABIN_LABELS[best.code]} ${best.seats}`
+        );
+        link.title =
+          `${origin} → ${destination} · ${formatDateDisplay(dateStr)} (${formatWeekday(dateStr)})\n` +
+          `Economy ${counts.AG}, Premium Economy ${counts.AP}, Business ${counts.AB}`;
+        td.appendChild(link);
+        tr.appendChild(td);
+      }
+
+      const total = document.createElement("td");
+      total.className = "heatmap__total";
+      total.textContent = formatCount(routeDates);
+      if (routeDates === 0) total.dataset.empty = "true";
+      tr.appendChild(total);
+
+      tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody);
+    els.heatmap.appendChild(table);
+
+    const seats = Math.max(1, state.minSeats);
+    const cabinLabel = state.cabin === "all" ? "best cabin" : `${CABIN_LABELS[state.cabin]} only`;
+    els.heatmapMeta.textContent =
+      `${formatMonthHeading(state.month)} · ${state.direction === "inbound" ? "New York → home" : "Home → New York"} · ` +
+      `${formatCount(matchingCells)} matching day${matchingCells === 1 ? "" : "s"} across ${combos.length} route${combos.length === 1 ? "" : "s"} · ` +
+      `${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinLabel}`;
   }
 
   /** Adds one term/value pair to a <dl>, matching the technical-details style. */
@@ -2892,6 +3067,7 @@
     renderFiltersSummary();
     renderSummary();
     renderCalendar();
+    renderHeatmap();
     tablePage = 0; // a filter change makes the old page number meaningless
     renderTable();
     renderTechnicalDetails();

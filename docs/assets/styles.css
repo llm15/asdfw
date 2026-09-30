@@ -929,7 +929,8 @@ body.auth-locked > footer {
 .monthly-activity-section,
 .trip-suggestions-section,
 .route-board-section,
-.changes-section {
+.changes-section,
+.heatmap-section {
   margin-bottom: 1.75rem;
 }
 
@@ -939,7 +940,8 @@ body.auth-locked > footer {
 .monthly-activity-section h2,
 .trip-suggestions-section h2,
 .route-board-section h2,
-.changes-section h2 {
+.changes-section h2,
+.heatmap-section h2 {
   font-size: 1.15rem;
   color: var(--fg);
   letter-spacing: 0;
@@ -951,7 +953,8 @@ body.auth-locked > footer {
 .theme-dark .monthly-activity-section h2,
 .theme-dark .trip-suggestions-section h2,
 .theme-dark .route-board-section h2,
-.theme-dark .changes-section h2 {
+.theme-dark .changes-section h2,
+.theme-dark .heatmap-section h2 {
   color: var(--fg);
 }
 
@@ -2904,6 +2907,249 @@ body.auth-locked > footer {
   color: var(--muted);
   opacity: 0.5;
   font-size: 0.9rem;
+}
+
+/* ---------- Route × date heatmap ---------- */
+
+.heatmap-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.heatmap-heading h2 {
+  margin: 0;
+}
+
+.heatmap-heading__right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+}
+
+.heatmap__meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.heatmap-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.heatmap-legend__item::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+  background: var(--swatch);
+}
+
+.heatmap-legend__item--ab {
+  --swatch: var(--gold);
+}
+
+.heatmap-legend__item--ap {
+  --swatch: #6e7f92;
+}
+
+.heatmap-legend__item--ag {
+  --swatch: var(--blue);
+}
+
+.theme-dark .heatmap-legend__item--ap {
+  --swatch: #a0a7b2;
+}
+
+.heatmap-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.18);
+}
+
+.heatmap {
+  border-collapse: separate;
+  border-spacing: 2px;
+  padding: 0.55rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.heatmap__corner,
+.heatmap__route {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding: 0 0.7rem 0 0.55rem;
+  text-align: left;
+  white-space: nowrap;
+  background: var(--card-bg);
+}
+
+.heatmap__corner,
+.heatmap__total-head {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heatmap__total-head {
+  padding-left: 0.6rem;
+  text-align: right;
+}
+
+.heatmap__route {
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.heatmap__route-arrow {
+  margin: 0 0.3rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.heatmap__day {
+  width: 1.55rem;
+  padding: 0.1rem 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.heatmap__day[data-weekend="true"] {
+  color: var(--fg);
+  opacity: 0.75;
+}
+
+.heatmap__day[data-today="true"] {
+  color: var(--blue);
+}
+
+.heatmap__day-number,
+.heatmap__day-letter {
+  display: block;
+}
+
+.heatmap__day-letter {
+  font-size: 0.58rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+/* An unbooked square is the background of the grid, so anything with seats
+   reads as a mark on it rather than one shade among many. */
+.heatmap__cell {
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+}
+
+.heatmap__cell[data-state="unknown"] {
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--fg) 5%, transparent),
+    color-mix(in srgb, var(--fg) 5%, transparent) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.heatmap__cell[data-weekend="true"] {
+  background: color-mix(in srgb, var(--fg) 11%, transparent);
+}
+
+.heatmap__cell[data-past="true"] {
+  opacity: 0.4;
+}
+
+.heatmap__cell[data-cabin] {
+  background: color-mix(in srgb, var(--heat-colour) calc(24% + var(--heat, 0.5) * 66%), transparent);
+}
+
+.heatmap__cell[data-cabin="AB"] {
+  --heat-colour: var(--gold);
+}
+
+.heatmap__cell[data-cabin="AP"] {
+  --heat-colour: #6e7f92;
+}
+
+.heatmap__cell[data-cabin="AG"] {
+  --heat-colour: var(--blue);
+}
+
+.theme-dark .heatmap__cell[data-cabin="AP"] {
+  --heat-colour: #a0a7b2;
+}
+
+.heatmap__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  transition: box-shadow 0.14s ease, transform 0.14s ease;
+}
+
+.heatmap__link:hover,
+.heatmap__link:focus-visible {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--fg);
+  outline: none;
+}
+
+.heatmap__total {
+  padding-left: 0.6rem;
+  color: var(--fg);
+  font-size: 0.82rem;
+  font-weight: 750;
+  text-align: right;
+}
+
+.heatmap__total[data-empty="true"] {
+  color: var(--muted);
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.heatmap__empty {
+  margin: 0;
+  padding: 1.5rem 1.15rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heatmap__link:hover,
+  .heatmap__link:focus-visible {
+    transform: none;
+  }
 }
 
 /* ---------- Footer ---------- */
