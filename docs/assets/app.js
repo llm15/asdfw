@@ -2108,25 +2108,36 @@
     head.appendChild(summary);
     panel.appendChild(head);
 
+    // The cabin chips live next to the data they filter, so they move into
+    // the open panel rather than being rebuilt (keeping their listener).
+    const controls = document.createElement("div");
+    controls.className = "route-panel__controls";
+
+    if (rows.length > 0) {
+      const stats = document.createElement("div");
+      stats.className = "route-stats";
+      stats.dataset.cabin = cabin;
+      addRouteStat(stats, "Economy", seats.AG, "economy");
+      addRouteStat(stats, "Premium", seats.AP, "premium");
+      addRouteStat(stats, "Business", seats.AB, "business");
+      addRouteStat(stats, `date${rows.length === 1 ? "" : "s"}`, rows.length, "dates");
+      controls.appendChild(stats);
+    }
+
+    els.routeCabin.hidden = false;
+    controls.appendChild(els.routeCabin);
+    panel.appendChild(controls);
+
     if (rows.length === 0) {
       const empty = document.createElement("p");
       empty.className = "route-board__empty";
-      const cabinNote = cabin === "all" ? "" : ` in ${CABIN_LABELS[cabin]}`;
+      const cabinNote = cabin === "all" ? "" : `${CABIN_LABELS[cabin]} `;
       empty.textContent = state.routeAllMonths
-        ? `Nothing available on this route${cabinNote} yet — try another route above, fewer minimum seats, or another cabin.`
-        : `Nothing on this route${cabinNote} in ${formatMonthHeading(state.month)} — switch to "All dates" or try another month.`;
+        ? `No ${cabinNote}dates on this route yet — try another route above, fewer minimum seats, or another cabin.`
+        : `No ${cabinNote}dates on this route in ${formatMonthHeading(state.month)} — switch to "All dates" or try another month.`;
       panel.appendChild(empty);
       return panel;
     }
-
-    const stats = document.createElement("div");
-    stats.className = "route-stats";
-    stats.dataset.cabin = cabin;
-    addRouteStat(stats, "Economy", seats.AG, "economy");
-    addRouteStat(stats, "Premium", seats.AP, "premium");
-    addRouteStat(stats, "Business", seats.AB, "business");
-    addRouteStat(stats, `date${rows.length === 1 ? "" : "s"}`, rows.length, "dates");
-    panel.appendChild(stats);
 
     const pageCount = Math.max(1, Math.ceil(rows.length / ROUTE_BOARD_PAGE_SIZE));
     routeBoardPage = Math.min(Math.max(routeBoardPage, 0), pageCount - 1);
@@ -2167,6 +2178,7 @@
     const active = lastGood ? activeRouteCombo(combos) : null;
     const hasTabs = Boolean(active);
     els.routeTabs.parentElement.hidden = !hasTabs;
+    els.routeCabin.hidden = !hasTabs;
     els.routePrevBtn.disabled = !hasTabs || combos.length < 2;
     els.routeNextBtn.disabled = !hasTabs || combos.length < 2;
 

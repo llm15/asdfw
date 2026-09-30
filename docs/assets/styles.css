@@ -2199,6 +2199,10 @@ body.auth-locked > footer {
   background: var(--bg-elevated);
 }
 
+.route-segment[hidden] {
+  display: none;
+}
+
 .route-segment__option {
   border: none;
   background: transparent;
@@ -2416,11 +2420,25 @@ body.auth-locked > footer {
   font-variant-numeric: tabular-nums;
 }
 
+/* Stats and the cabin filter share the line directly above the table, so
+   the control sits with the data it narrows. */
+.route-panel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  margin: 0.9rem 0 0.85rem;
+}
+
+.route-panel__controls .route-cabin {
+  margin-left: auto;
+}
+
 .route-stats {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: 0.9rem 0 0.85rem;
 }
 
 .route-stats[data-cabin="AG"] .route-stat:not(.route-stat--economy):not(.route-stat--dates),
@@ -2682,6 +2700,13 @@ a {
   }
   .route-panel__title {
     font-size: 1.3rem;
+  }
+  /* On its own line the cabin filter reads better as a full-width control
+     than as a right-aligned pill. */
+  .route-panel__controls .route-cabin {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
   }
   .route-pager {
     flex-wrap: wrap;

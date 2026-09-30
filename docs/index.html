@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#0b0d11" />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=78" />
+  <link rel="stylesheet" href="assets/styles.css?v=79" />
   <!-- Inline and before the first paint, so a dark-theme visitor never sees a flash of the light theme. -->
   <script>
     (() => {
@@ -161,12 +161,6 @@
         <h2>Availability by route</h2>
         <div class="route-board-heading__right">
           <p id="route-board-meta" class="route-board__meta"></p>
-          <div id="route-cabin" class="route-segment route-cabin" role="radiogroup" aria-label="Cabin">
-            <button type="button" class="route-segment__option" role="radio" aria-checked="true" tabindex="0" data-route-cabin="all">Any cabin</button>
-            <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-route-cabin="AG">Economy</button>
-            <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-route-cabin="AP">Premium</button>
-            <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-route-cabin="AB">Business</button>
-          </div>
           <div id="route-scope" class="route-segment route-scope" role="radiogroup" aria-label="Date range">
             <button type="button" class="route-segment__option" role="radio" aria-checked="true" tabindex="0" data-scope="all">All dates</button>
             <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-scope="month">Selected month</button>
@@ -177,6 +171,13 @@
         <button type="button" id="route-prev-btn" class="route-tabs__nav" aria-label="Previous route">‹</button>
         <div id="route-tabs" class="route-tabs" role="tablist" aria-label="Route"></div>
         <button type="button" id="route-next-btn" class="route-tabs__nav" aria-label="Next route">›</button>
+      </div>
+      <!-- Moved into the open route panel, just above its table, on first render. -->
+      <div id="route-cabin" class="route-segment route-cabin" role="radiogroup" aria-label="Cabin" hidden>
+        <button type="button" class="route-segment__option" role="radio" aria-checked="true" tabindex="0" data-route-cabin="all">Any cabin</button>
+        <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-route-cabin="AG">Economy</button>
+        <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-route-cabin="AP">Premium</button>
+        <button type="button" class="route-segment__option" role="radio" aria-checked="false" tabindex="-1" data-route-cabin="AB">Business</button>
       </div>
       <div id="route-board" class="route-board" aria-live="polite"></div>
     </section>
@@ -247,8 +248,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=78"></script>
-  <script src="assets/app.js?v=78"></script>
+  <script src="assets/trip-suggestions.js?v=79"></script>
+  <script src="assets/app.js?v=79"></script>
 </body>
 </html>
 
