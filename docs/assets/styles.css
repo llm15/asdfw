@@ -1997,6 +1997,16 @@ body.auth-locked > footer {
   transition: background 0.16s ease;
 }
 
+/* The return leg sits against the right edge of the card, so the two legs
+   read as the outer ends of one journey rather than crowding the middle. */
+.trip__legs > .trip-leg:last-child {
+  text-align: right;
+}
+
+.trip__legs > .trip-leg:last-child .trip-leg__meta {
+  justify-content: flex-end;
+}
+
 .trip-leg:hover,
 .trip-leg:focus-visible {
   background: rgba(10, 132, 255, 0.07);
@@ -3421,6 +3431,13 @@ a {
   .trip__legs {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.85rem;
+  }
+  /* Stacked, both legs share the same left edge again. */
+  .trip__legs > .trip-leg:last-child {
+    text-align: left;
+  }
+  .trip__legs > .trip-leg:last-child .trip-leg__meta {
+    justify-content: flex-start;
   }
   .trip__journey {
     flex-direction: row;
