@@ -159,7 +159,6 @@
     table: document.getElementById("dates-table"),
     tableMeta: document.getElementById("table-meta"),
     tableBody: document.getElementById("dates-table-body"),
-    tableScroll: document.getElementById("table-scroll"),
     tablePager: document.getElementById("table-pager"),
     technical: document.getElementById("technical-details"),
     monthlyActivity: document.getElementById("monthly-activity"),
@@ -1219,7 +1218,6 @@
   function goToTablePage(page) {
     tablePage = page;
     renderTable();
-    els.tableScroll.scrollIntoView({ block: "start" });
   }
 
   function renderTablePager(start, shown, total, pageCount) {
@@ -1591,7 +1589,7 @@
       tripSuggestionsPage = 0;
       renderTripSuggestions();
       // Re-rendering replaces the button that was just clicked.
-      els.tripSuggestionsFilters.querySelector(`[data-trip-filter="${id}"]`)?.focus();
+      els.tripSuggestionsFilters.querySelector(`[data-trip-filter="${id}"]`)?.focus({ preventScroll: true });
     });
     parent.appendChild(button);
     return button;
@@ -1750,7 +1748,6 @@
   function goToTripSuggestionsPage(page) {
     tripSuggestionsPage = page;
     renderTripSuggestions();
-    els.tripSuggestions.parentElement.scrollIntoView({ block: "start" });
   }
 
   function addTripJumpButton(nav, label, page, date) {
@@ -1904,10 +1901,14 @@
       els.routeTabs.appendChild(tab);
     }
 
-    if (routeTabsRendered) {
-      els.routeTabs
-        .querySelector('[aria-selected="true"]')
-        ?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    // Scrolls the rail itself rather than the selected tab into view, so
+    // reaching an off-screen route never moves the page under you.
+    const activeTab = els.routeTabs.querySelector('[aria-selected="true"]');
+    if (activeTab) {
+      els.routeTabs.scrollTo({
+        left: activeTab.offsetLeft - els.routeTabs.clientWidth / 2 + activeTab.clientWidth / 2,
+        behavior: routeTabsRendered ? "smooth" : "auto",
+      });
     }
     routeTabsRendered = true;
   }
@@ -2210,7 +2211,7 @@
     state.routeTab = comboId;
     routeBoardPage = 0;
     renderRouteBoard();
-    if (focusTab) els.routeTabs.querySelector('[aria-selected="true"]')?.focus();
+    if (focusTab) els.routeTabs.querySelector('[aria-selected="true"]')?.focus({ preventScroll: true });
     syncStateToUrl();
   }
 
@@ -2963,7 +2964,7 @@
       if (!next || next === options[current]) return;
       e.preventDefault();
       next.click();
-      group.querySelector('[aria-checked="true"]')?.focus();
+      group.querySelector('[aria-checked="true"]')?.focus({ preventScroll: true });
     });
   }
 
