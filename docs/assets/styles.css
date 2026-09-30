@@ -2513,7 +2513,8 @@ body.auth-locked > footer {
 }
 
 .route-table__seats,
-.route-table th.route-table__seats {
+.route-table th.route-table__seats,
+.route-table td.route-table__seats {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -2526,7 +2527,9 @@ body.auth-locked > footer {
   font-weight: 750;
 }
 
-.route-table__go {
+.route-table__go,
+.route-table th.route-table__go,
+.route-table td.route-table__go {
   width: 1.5rem;
   color: var(--muted);
   text-align: right;
