@@ -107,6 +107,7 @@
 
   // Priority order for picking which cabin "best" represents a mixed result.
   const CABIN_PRIORITY = ["AB", "AP", "AG"];
+  const CABIN_LABELS = { AG: "Economy", AP: "Premium Economy", AB: "Business" };
 
   // Trip suggestions can be narrowed to a short, varied shortlist; otherwise
   // every combination is paged rather than dumped on the page.
@@ -167,6 +168,7 @@
     tripSuggestionsFilters: document.getElementById("trip-suggestions-filters"),
     routeBoard: document.getElementById("route-board"),
     routeBoardMeta: document.getElementById("route-board-meta"),
+    routeCabin: document.getElementById("route-cabin"),
     routeScope: document.getElementById("route-scope"),
     routeTabs: document.getElementById("route-tabs"),
     routePrevBtn: document.getElementById("route-prev-btn"),
@@ -200,6 +202,9 @@
     // fetched month or only the selected one.
     routeTab: null,
     routeAllMonths: true,
+    // 'all' follows the page-wide Cabin filter; anything else overrides it
+    // for this section only.
+    routeCabin: "all",
   };
 
   // Populated only after a successful (or fallback-to-cache) fetch of every
@@ -1810,6 +1815,13 @@
       : { origin: combo.home.code, destination: combo.nyc.code };
   }
 
+  /** The cabin the route board is actually filtering on: its own chip when
+   * one is picked, otherwise whatever the page-wide Cabin filter says. The
+   * more specific control wins, so the two can never contradict. */
+  function routeCabinFilter() {
+    return state.routeCabin === "all" ? state.cabin : state.routeCabin;
+  }
+
   /** Every date on one route that passes the cabin/seat filters, in
    * departure order. Past dates are dropped — this is a booking list, not a
    * history — and the scope toggle decides whether it spans every fetched
@@ -1818,10 +1830,13 @@
     const rows = [];
     const map = getActiveMap(combo.id);
     const today = todayIsoDate();
+    const cabin = routeCabinFilter();
     for (const [date, counts] of map) {
       if (date < today) continue;
       if (!state.routeAllMonths && !date.startsWith(state.month)) continue;
-      if (counts.total <= 0 || !passesRowFilters(counts)) continue;
+      if (counts.total <= 0) continue;
+      const seats = cabin === "all" ? counts.total : counts[cabin] || 0;
+      if (seats < state.minSeats || seats <= 0) continue;
       rows.push({ date, AG: counts.AG, AP: counts.AP, AB: counts.AB, total: counts.total });
     }
     rows.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
@@ -1907,6 +1922,9 @@
 
     const table = document.createElement("table");
     table.className = "route-table";
+    // Dims the cabins that aren't being filtered on, so the one that is
+    // stays the column you read.
+    table.dataset.cabin = routeCabinFilter();
 
     const thead = document.createElement("thead");
     const headRow = document.createElement("tr");
@@ -2074,29 +2092,35 @@
       { AG: 0, AP: 0, AB: 0 }
     );
     const totalSeats = seats.AG + seats.AP + seats.AB;
+    const cabin = routeCabinFilter();
+    // With a cabin filter on, the headline counts that cabin — the other
+    // seats are context, not what was asked for.
+    const headlineSeats = cabin === "all" ? totalSeats : seats[cabin];
 
     const summary = document.createElement("p");
     summary.className = "route-panel__summary";
     summary.textContent =
       rows.length === 0
         ? "No dates match the current filters."
-        : `${formatCount(totalSeats)} seat${totalSeats === 1 ? "" : "s"} on ` +
-          `${formatCount(rows.length)} date${rows.length === 1 ? "" : "s"}`;
+        : `${formatCount(headlineSeats)} ${cabin === "all" ? "" : `${CABIN_LABELS[cabin]} `}` +
+          `seat${headlineSeats === 1 ? "" : "s"} on ${formatCount(rows.length)} date${rows.length === 1 ? "" : "s"}`;
     head.appendChild(summary);
     panel.appendChild(head);
 
     if (rows.length === 0) {
       const empty = document.createElement("p");
       empty.className = "route-board__empty";
+      const cabinNote = cabin === "all" ? "" : ` in ${CABIN_LABELS[cabin]}`;
       empty.textContent = state.routeAllMonths
-        ? "Nothing available on this route yet — try another route above, fewer minimum seats, or a different cabin."
-        : `Nothing on this route in ${formatMonthHeading(state.month)} — switch to "All dates" or try another month.`;
+        ? `Nothing available on this route${cabinNote} yet — try another route above, fewer minimum seats, or another cabin.`
+        : `Nothing on this route${cabinNote} in ${formatMonthHeading(state.month)} — switch to "All dates" or try another month.`;
       panel.appendChild(empty);
       return panel;
     }
 
     const stats = document.createElement("div");
     stats.className = "route-stats";
+    stats.dataset.cabin = cabin;
     addRouteStat(stats, "Economy", seats.AG, "economy");
     addRouteStat(stats, "Premium", seats.AP, "premium");
     addRouteStat(stats, "Business", seats.AB, "business");
@@ -2127,6 +2151,16 @@
       option.setAttribute("aria-checked", String(selected));
       option.tabIndex = selected ? 0 : -1;
     }
+    for (const option of els.routeCabin.querySelectorAll("[data-route-cabin]")) {
+      const selected = option.dataset.routeCabin === state.routeCabin;
+      option.setAttribute("aria-checked", String(selected));
+      option.tabIndex = selected ? 0 : -1;
+      // "Any cabin" still defers to the page-wide filter, so say so there.
+      option.title =
+        option.dataset.routeCabin === "all" && state.cabin !== "all"
+          ? `Follows the Cabin filter above (${CABIN_LABELS[state.cabin]})`
+          : `Only dates with ${option.dataset.routeCabin === "all" ? "any cabin" : CABIN_LABELS[option.dataset.routeCabin]} availability`;
+    }
 
     const combos = routeBoardCombos();
     const active = lastGood ? activeRouteCombo(combos) : null;
@@ -2152,14 +2186,8 @@
     const rows = buildRouteBoardRows(active);
     const scopeLabel = state.routeAllMonths ? "all fetched dates" : formatMonthHeading(state.month);
     const seats = Math.max(1, state.minSeats);
-    const cabinLabel =
-      state.cabin === "all"
-        ? "any cabin"
-        : state.cabin === "AB"
-        ? "Business only"
-        : state.cabin === "AP"
-        ? "Premium Economy only"
-        : "Economy only";
+    const cabin = routeCabinFilter();
+    const cabinLabel = cabin === "all" ? "any cabin" : `${CABIN_LABELS[cabin]} only`;
     els.routeBoardMeta.textContent =
       `${state.direction === "inbound" ? "New York → home" : "Home → New York"} · ` +
       `${scopeLabel} · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinLabel}`;
@@ -2684,6 +2712,9 @@
       state.routeTab = params.get("route");
     }
     if (params.has("routeScope")) state.routeAllMonths = params.get("routeScope") !== "month";
+    if (params.has("routeCabin") && ["all", "AG", "AP", "AB"].includes(params.get("routeCabin"))) {
+      state.routeCabin = params.get("routeCabin");
+    }
   }
 
   /** Serializes the current filter/sort state into the URL's query string
@@ -2706,6 +2737,7 @@
     if (state.sort.dir !== "asc") params.set("sortDir", state.sort.dir);
     if (state.routeTab) params.set("route", state.routeTab);
     if (!state.routeAllMonths) params.set("routeScope", "month");
+    if (state.routeCabin !== "all") params.set("routeCabin", state.routeCabin);
     const qs = params.toString();
     history.replaceState(null, "", `${location.pathname}${qs ? `?${qs}` : ""}${location.hash}`);
   }
@@ -2887,6 +2919,15 @@
     syncStateToUrl();
   });
 
+  els.routeCabin.addEventListener("click", (e) => {
+    const option = e.target.closest("[data-route-cabin]");
+    if (!option || option.dataset.routeCabin === state.routeCabin) return;
+    state.routeCabin = option.dataset.routeCabin;
+    routeBoardPage = 0;
+    renderRouteBoard();
+    syncStateToUrl();
+  });
+
   els.routeTabs.addEventListener("click", (e) => {
     const tab = e.target.closest("[data-route]");
     if (tab) selectRouteTab(tab.dataset.route);
@@ -2912,7 +2953,7 @@
 
   // Arrow keys move between options within a radiogroup, as expected of the
   // role — the rendered controls are buttons, so this isn't free.
-  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail, els.routeScope]) {
+  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail, els.routeScope, els.routeCabin]) {
     group.addEventListener("keydown", (e) => {
       const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
       if (step === 0) return;

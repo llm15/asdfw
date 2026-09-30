@@ -2190,7 +2190,7 @@ body.auth-locked > footer {
   font-size: 0.82rem;
 }
 
-.route-scope {
+.route-segment {
   display: flex;
   gap: 0.2rem;
   padding: 0.16rem;
@@ -2199,7 +2199,7 @@ body.auth-locked > footer {
   background: var(--bg-elevated);
 }
 
-.route-scope__option {
+.route-segment__option {
   border: none;
   background: transparent;
   border-radius: 999px;
@@ -2212,17 +2212,33 @@ body.auth-locked > footer {
   transition: background 0.16s ease, color 0.16s ease;
 }
 
-.route-scope__option:hover {
+.route-segment__option:hover {
   color: var(--fg);
 }
 
-.route-scope__option[aria-checked="true"] {
+.route-segment__option[aria-checked="true"] {
   background: rgba(10, 132, 255, 0.12);
   color: var(--blue);
 }
 
-.theme-dark .route-scope__option[aria-checked="true"] {
+.theme-dark .route-segment__option[aria-checked="true"] {
   background: rgba(100, 169, 255, 0.18);
+}
+
+/* Each cabin keeps the colour it has everywhere else, so the chip and the
+   column it filters read as the same thing. */
+.route-cabin [data-route-cabin="AB"][aria-checked="true"] {
+  background: rgba(184, 135, 47, 0.16);
+  color: var(--gold);
+}
+
+.route-cabin [data-route-cabin="AP"][aria-checked="true"] {
+  background: rgba(111, 118, 130, 0.18);
+  color: var(--fg);
+}
+
+.theme-dark .route-cabin [data-route-cabin="AB"][aria-checked="true"] {
+  background: rgba(214, 169, 80, 0.18);
 }
 
 /* One rail of routes with an arrow at each end: the tabs scroll, the arrows
@@ -2407,6 +2423,12 @@ body.auth-locked > footer {
   margin: 0.9rem 0 0.85rem;
 }
 
+.route-stats[data-cabin="AG"] .route-stat:not(.route-stat--economy):not(.route-stat--dates),
+.route-stats[data-cabin="AP"] .route-stat:not(.route-stat--premium):not(.route-stat--dates),
+.route-stats[data-cabin="AB"] .route-stat:not(.route-stat--business):not(.route-stat--dates) {
+  opacity: 0.45;
+}
+
 .route-stat {
   display: inline-flex;
   align-items: baseline;
@@ -2554,6 +2576,13 @@ body.auth-locked > footer {
 
 .route-seat {
   color: var(--muted);
+}
+
+/* With a cabin filter on, the other two columns are context, not the answer. */
+.route-table[data-cabin="AG"] .route-seat:not(.route-seat--ag),
+.route-table[data-cabin="AP"] .route-seat:not(.route-seat--ap),
+.route-table[data-cabin="AB"] .route-seat:not(.route-seat--ab) {
+  opacity: 0.4;
 }
 
 .route-seat__pill {
