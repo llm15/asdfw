@@ -163,6 +163,8 @@
     includeMissingToggle: document.getElementById("include-missing-toggle"),
     allMonthsToggle: document.getElementById("all-months-toggle"),
     summary: document.getElementById("summary-cards"),
+    insights: document.getElementById("insights"),
+    insightsMeta: document.getElementById("insights-meta"),
     calendarHeading: document.getElementById("calendar-heading"),
     calendar: document.getElementById("calendar"),
     heatmap: document.getElementById("heatmap"),
@@ -1036,6 +1038,171 @@
 
     els.calendar.appendChild(grid);
     calendarRowObserver.observe(grid);
+  }
+
+  /* ---------- Patterns ---------- */
+
+  /** Every future date that clears the current cabin/seat filters, across
+   * ALL fetched months and every enabled route — patterns are about the
+   * whole dataset, not the month that happens to be selected. */
+  function collectMatchingDates() {
+    const matches = [];
+    if (!lastGood) return matches;
+    const today = todayIsoDate();
+    for (const combo of enabledCombos()) {
+      for (const [date, counts] of getActiveMap(combo.id)) {
+        if (date < today) continue;
+        const best = bestCabinFor(counts);
+        if (!best) continue;
+        matches.push({ combo, date, cabin: best.code, seats: best.seats, total: counts.total });
+      }
+    }
+    return matches;
+  }
+
+  function topEntry(counts) {
+    let best = null;
+    for (const [key, count] of counts) {
+      if (!best || count > best.count || (count === best.count && key < best.key)) best = { key, count };
+    }
+    return best;
+  }
+
+  function tally(items, keyOf) {
+    const counts = new Map();
+    for (const item of items) {
+      const key = keyOf(item);
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+    return counts;
+  }
+
+  function median(values) {
+    if (values.length === 0) return null;
+    const sorted = [...values].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 0 ? Math.round((sorted[mid - 1] + sorted[mid]) / 2) : sorted[mid];
+  }
+
+  function addInsight(parent, { label, value, detail, tone, onClick, title }) {
+    const card = document.createElement(onClick ? "button" : "article");
+    card.className = `insight insight--${tone}`;
+    if (onClick) {
+      card.type = "button";
+      card.classList.add("insight--action");
+      card.addEventListener("click", onClick);
+    }
+    if (title) card.title = title;
+
+    const labelEl = document.createElement("p");
+    labelEl.className = "insight__label";
+    labelEl.textContent = label;
+    const valueEl = document.createElement("p");
+    valueEl.className = "insight__value";
+    valueEl.textContent = value;
+    const detailEl = document.createElement("p");
+    detailEl.className = "insight__detail";
+    detailEl.textContent = detail;
+
+    card.append(labelEl, valueEl, detailEl);
+    parent.appendChild(card);
+  }
+
+  /** A handful of one-line reads on the whole fetched dataset — which
+   * weekday and month actually carry availability, how far ahead seats
+   * tend to sit, and which route is worth watching. */
+  function renderInsights() {
+    els.insights.replaceChildren();
+    els.insightsMeta.textContent = "";
+
+    if (!lastGood) return;
+
+    const matches = collectMatchingDates();
+    const cabinLabel = state.cabin === "all" ? "Availability" : CABIN_LABELS[state.cabin];
+    const seats = Math.max(1, state.minSeats);
+
+    if (matches.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "insights__empty";
+      empty.textContent = "No upcoming dates match the current filters, so there is no pattern to read yet.";
+      els.insights.appendChild(empty);
+      return;
+    }
+
+    els.insightsMeta.textContent =
+      `${formatCount(matches.length)} upcoming date${matches.length === 1 ? "" : "s"} across every fetched month · ` +
+      `${state.direction === "inbound" ? "New York → home" : "Home → New York"} · ` +
+      `${seats}+ seat${seats === 1 ? "" : "s"} · ${state.cabin === "all" ? "any cabin" : `${CABIN_LABELS[state.cabin]} only`}`;
+
+    const weekdayFull = new Intl.DateTimeFormat(CALENDAR_LOCALE, { timeZone: "UTC", weekday: "long" });
+    const byWeekday = tally(matches, (m) => String(utcDateFrom(m.date).getUTCDay()));
+    const topWeekday = topEntry(byWeekday);
+    // 2024-01-07 was a Sunday, so day 0..6 maps straight onto that week.
+    const weekdayName = weekdayFull.format(new Date(Date.UTC(2024, 0, 7 + Number(topWeekday.key))));
+    addInsight(els.insights, {
+      label: `${cabinLabel} peaks on`,
+      value: weekdayName.charAt(0).toUpperCase() + weekdayName.slice(1),
+      detail: `${formatCount(topWeekday.count)} of ${formatCount(matches.length)} dates`,
+      tone: "weekday",
+      title: "Weekday carrying the most matching dates across every fetched month.",
+    });
+
+    const byMonth = tally(matches, (m) => m.date.slice(0, 7));
+    const topMonth = topEntry(byMonth);
+    addInsight(els.insights, {
+      label: "Best month",
+      value: formatMonthHeading(topMonth.key),
+      detail: `${formatCount(topMonth.count)} dates · ${formatCount(byMonth.size)} months have any`,
+      tone: "month",
+      title: "Switches the month filter to this month.",
+      onClick:
+        topMonth.key === state.month
+          ? null
+          : () => {
+              state.month = topMonth.key;
+              handleFilterChange();
+            },
+    });
+
+    const byRoute = tally(matches, (m) => {
+      const { origin, destination } = routeEndpoints(m.combo);
+      return `${origin}–${destination}`;
+    });
+    const topRoute = topEntry(byRoute);
+    addInsight(els.insights, {
+      label: "Strongest route",
+      value: topRoute.key,
+      detail: `${formatCount(topRoute.count)} dates · ${formatCount(byRoute.size)} of ${formatCount(enabledCombos().length)} routes have any`,
+      tone: "route",
+      title: "Route with the most matching dates under the current filters.",
+    });
+
+    const leadDays = matches.map((m) => nightsFromToday(m.date));
+    const medianLead = median(leadDays);
+    addInsight(els.insights, {
+      label: "Typical lead time",
+      value: `${formatCount(medianLead)} days`,
+      detail: `soonest ${formatCount(Math.min(...leadDays))} · furthest ${formatCount(Math.max(...leadDays))}`,
+      tone: "lead",
+      title: "Median number of days between today and a matching departure date.",
+    });
+
+    const peak = matches.reduce((best, m) => (m.seats > best.seats ? m : best), matches[0]);
+    const peakRoute = routeEndpoints(peak.combo);
+    addInsight(els.insights, {
+      label: "Biggest single date",
+      value: `${formatCount(peak.seats)} ${CABIN_SHORT[peak.cabin].toLowerCase()} seats`,
+      detail: `${peakRoute.origin}–${peakRoute.destination} · ${formatDateDisplay(peak.date)}`,
+      tone: "peak",
+      title: `${peakRoute.origin} → ${peakRoute.destination} on ${formatDateDisplay(peak.date)} — ${peak.total} seats in total.`,
+    });
+  }
+
+  /** Whole days between today and a future date-only string. */
+  function nightsFromToday(dateStr) {
+    const from = utcDateFrom(todayIsoDate()).getTime();
+    const to = utcDateFrom(dateStr).getTime();
+    return Math.round((to - from) / 86400000);
   }
 
   /* ---------- Route × date heatmap ---------- */
@@ -3066,6 +3233,7 @@
     renderFilterControls();
     renderFiltersSummary();
     renderSummary();
+    renderInsights();
     renderCalendar();
     renderHeatmap();
     tablePage = 0; // a filter change makes the old page number meaningless

@@ -930,7 +930,8 @@ body.auth-locked > footer {
 .trip-suggestions-section,
 .route-board-section,
 .changes-section,
-.heatmap-section {
+.heatmap-section,
+.insights-section {
   margin-bottom: 1.75rem;
 }
 
@@ -941,7 +942,8 @@ body.auth-locked > footer {
 .trip-suggestions-section h2,
 .route-board-section h2,
 .changes-section h2,
-.heatmap-section h2 {
+.heatmap-section h2,
+.insights-section h2 {
   font-size: 1.15rem;
   color: var(--fg);
   letter-spacing: 0;
@@ -954,7 +956,8 @@ body.auth-locked > footer {
 .theme-dark .trip-suggestions-section h2,
 .theme-dark .route-board-section h2,
 .theme-dark .changes-section h2,
-.theme-dark .heatmap-section h2 {
+.theme-dark .heatmap-section h2,
+.theme-dark .insights-section h2 {
   color: var(--fg);
 }
 
@@ -3152,6 +3155,136 @@ body.auth-locked > footer {
   }
 }
 
+/* ---------- Patterns ---------- */
+
+.insights-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.insights-heading h2 {
+  margin: 0;
+}
+
+.insights__meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.insights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.insight {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent, var(--border-strong));
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.18);
+  font-family: inherit;
+  text-align: left;
+}
+
+.insight--weekday {
+  --accent: #6c5ce7;
+}
+
+.insight--month {
+  --accent: var(--blue);
+}
+
+.insight--route {
+  --accent: var(--gold);
+}
+
+.insight--lead {
+  --accent: var(--ok);
+}
+
+.insight--peak {
+  --accent: #6e7f92;
+}
+
+.theme-dark .insight--weekday {
+  --accent: #a79bff;
+}
+
+.theme-dark .insight--peak {
+  --accent: #a0a7b2;
+}
+
+.insight__label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.insight__value {
+  margin: 0.25rem 0 0;
+  color: var(--fg);
+  font-size: 1.12rem;
+  font-weight: 770;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.insight__detail {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Only the cards that actually do something get the affordance. */
+.insight--action {
+  cursor: pointer;
+  transition: transform 0.16s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.insight--action:hover,
+.insight--action:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  border-left-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.insight--action .insight__value {
+  color: var(--accent);
+}
+
+.insights__empty {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .insight--action:hover,
+  .insight--action:focus-visible {
+    transform: none;
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
@@ -3250,6 +3383,21 @@ a {
   }
   .changes-heading__right {
     width: 100%;
+  }
+  /* Two narrower cards beat five full-width ones on a phone. */
+  .insights {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.4rem;
+  }
+  .insight {
+    padding: 0.6rem 0.7rem;
+  }
+  .insight__value {
+    font-size: 1rem;
+  }
+  .insights-heading {
+    flex-direction: column;
+    align-items: flex-start;
   }
   .trip-suggestions {
     padding: 0;
