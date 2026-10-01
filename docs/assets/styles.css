@@ -3000,7 +3000,12 @@ body.auth-locked > footer {
   backdrop-filter: blur(18px) saturate(1.18);
 }
 
+/* Fixed layout with a full-width table: the day columns split whatever is
+   left evenly, so a 28-day month fills the card exactly like a 31-day one. */
 .heatmap {
+  width: 100%;
+  min-width: 34rem;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 2px;
   padding: 0.55rem;
@@ -3012,6 +3017,7 @@ body.auth-locked > footer {
   position: sticky;
   left: 0;
   z-index: 1;
+  width: 6.4rem;
   padding: 0 0.7rem 0 0.55rem;
   text-align: left;
   white-space: nowrap;
@@ -3028,6 +3034,7 @@ body.auth-locked > footer {
 }
 
 .heatmap__total-head {
+  width: 3.4rem;
   padding-left: 0.6rem;
   text-align: right;
 }
@@ -3045,7 +3052,6 @@ body.auth-locked > footer {
 }
 
 .heatmap__day {
-  width: 1.55rem;
   padding: 0.1rem 0;
   color: var(--muted);
   font-size: 0.66rem;
@@ -3076,10 +3082,9 @@ body.auth-locked > footer {
 /* An unbooked square is the background of the grid, so anything with seats
    reads as a mark on it rather than one shade among many. */
 .heatmap__cell {
-  width: 1.55rem;
-  height: 1.55rem;
+  height: 1.7rem;
   padding: 0;
-  border-radius: 4px;
+  border-radius: 5px;
   background: color-mix(in srgb, var(--fg) 6%, transparent);
 }
 
@@ -3162,6 +3167,7 @@ body.auth-locked > footer {
    the whole month reads with the scroll gesture the page already uses. */
 .heatmap--tall {
   width: 100%;
+  min-width: 0;
   table-layout: fixed;
   border-spacing: 3px;
 }
@@ -3181,6 +3187,7 @@ body.auth-locked > footer {
 }
 
 .heatmap--tall .heatmap__route {
+  width: auto;
   font-size: 0.6rem;
   font-weight: 750;
   line-height: 1.2;
@@ -3584,19 +3591,27 @@ a {
   }
   /* One change per line rather than a five-column grid squeezed into 320px. */
   .change {
-    grid-template-columns: 3.1rem minmax(0, 1fr) auto;
+    grid-template-columns: 3.3rem minmax(0, 1fr) auto;
     grid-template-areas:
       "badge route when"
       "badge date  date"
       "cabins cabins cabins";
     gap: 0.25rem 0.6rem;
+    min-height: 3.5rem;
+    padding: 0.65rem 0.8rem;
+  }
+  .change:active {
+    transform: scale(0.985);
   }
   .change__badge {
     grid-area: badge;
     align-self: center;
+    padding: 0.22rem 0.4rem;
+    font-size: 0.8rem;
   }
   .change__route {
     grid-area: route;
+    font-size: 1.05rem;
   }
   .change__when {
     grid-area: when;
@@ -3606,7 +3621,7 @@ a {
   }
   .change__cabins {
     grid-area: cabins;
-    margin-top: 0.15rem;
+    margin-top: 0.25rem;
   }
   .changes-pager {
     flex-wrap: wrap;
