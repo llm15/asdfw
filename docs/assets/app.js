@@ -114,6 +114,8 @@
 
   // Priority order for picking which cabin "best" represents a mixed result.
   const CABIN_PRIORITY = ["AB", "AP", "AG"];
+  // The order seat triples are stored in, both in history.json and in memory.
+  const CABIN_ORDER = ["AG", "AP", "AB"];
   const CABIN_LABELS = { AG: "Economy", AP: "Premium Economy", AB: "Business" };
   // Column-width-friendly variants for pills and chips.
   const CABIN_SHORT = { AG: "Economy", AP: "Premium", AB: "Business" };
@@ -1590,6 +1592,101 @@
 
       els.dayDetailContent.appendChild(block);
     }
+
+    els.dayDetailContent.appendChild(renderDayHistory(dateStr));
+  }
+
+  /** The bottom section of the day-detail dialog: every stretch this date has
+   * ever been bookable, so an empty square still answers "was there ever
+   * anything here, and when did it vanish?". */
+  function renderDayHistory(dateStr) {
+    const section = document.createElement("section");
+    section.className = "day-history";
+
+    const heading = document.createElement("h4");
+    heading.textContent = "History for this date";
+    section.appendChild(heading);
+
+    if (!seatHistory) {
+      const empty = document.createElement("p");
+      empty.className = "day-detail-empty";
+      empty.textContent = "Seat history has not been published yet.";
+      section.appendChild(empty);
+      return section;
+    }
+
+    let found = 0;
+    for (const combo of enabledCombos()) {
+      const spells = daySpells(combo.id, state.direction, dateStr);
+      if (spells.length === 0) continue;
+      found += spells.length;
+
+      const group = document.createElement("div");
+      group.className = "day-history__route";
+      const name = document.createElement("h5");
+      name.textContent = `${combo.nyc.code} ↔ ${combo.home.code}`;
+      group.appendChild(name);
+
+      const list = document.createElement("ul");
+      list.className = "day-history__list";
+      for (const spell of spells) list.appendChild(renderDaySpell(spell));
+      group.appendChild(list);
+      section.appendChild(group);
+    }
+
+    if (found === 0) {
+      const empty = document.createElement("p");
+      empty.className = "day-detail-empty";
+      empty.textContent =
+        `No seats have been seen on this date since tracking started ${formatRelativeTime(seatHistory.runs[0])}.`;
+      section.appendChild(empty);
+    }
+    return section;
+  }
+
+  function renderDaySpell(spell) {
+    const item = document.createElement("li");
+    item.className = `day-history__spell day-history__spell--${spell.to ? "gone" : "open"}`;
+
+    const badge = document.createElement("span");
+    badge.className = "day-history__badge";
+    badge.textContent = spell.to ? "Gone" : "Available";
+    item.appendChild(badge);
+
+    const body = document.createElement("div");
+    body.className = "day-history__body";
+
+    const added = document.createElement("span");
+    added.className = "day-history__line";
+    added.textContent = spell.fromKnown
+      ? `Added ${formatTimestamp(spell.from)} · ${formatRelativeTime(spell.from)}`
+      : `Already available when tracking started (${formatTimestamp(spell.from)})`;
+    body.appendChild(added);
+
+    const left = document.createElement("span");
+    left.className = "day-history__line";
+    left.textContent = spell.to
+      ? `Disappeared ${formatTimestamp(spell.to)} · ${formatRelativeTime(spell.to)}`
+      : "Still available right now";
+    body.appendChild(left);
+
+    const cabins = document.createElement("span");
+    cabins.className = "change__cabins day-history__cabins";
+    const label = document.createElement("span");
+    label.className = "day-history__cabins-label";
+    label.textContent = "Most seats seen:";
+    cabins.appendChild(label);
+    CABIN_ORDER.forEach((code, i) => {
+      if (spell.peak[i] === 0) return;
+      const pill = document.createElement("span");
+      pill.className = `change__cabin change__cabin--${code.toLowerCase()}`;
+      pill.textContent = `${CABIN_SHORT[code]} ${formatCount(spell.peak[i])}`;
+      cabins.appendChild(pill);
+    });
+    body.appendChild(cabins);
+
+    item.appendChild(body);
+    return item;
   }
 
   function openDayDetail(dateStr) {
@@ -2799,6 +2896,42 @@
       readings.push({ at: seatHistory.runs[run], AG: current[0], AP: current[1], AB: current[2] });
     }
     return readings;
+  }
+
+  /** Collapses a change-point series into the stretches where this
+   * route/direction/date actually had seats: when each stretch appeared, when
+   * it vanished (null while still open) and the most seats seen during it.
+   * Newest first. A stretch that is already open at run 0 started before
+   * tracking began, so its start time is unknown (`fromKnown: false`). */
+  function daySpells(comboId, direction, dateStr) {
+    if (!seatHistory) return [];
+    const points = seatHistory.series.get(historyKey(comboId, direction, dateStr));
+    if (!points) return [];
+
+    const spells = [];
+    let open = null;
+    for (const point of points) {
+      const runIndex = point[0];
+      const counts = point.slice(1);
+      if (sumSeats(counts) > 0) {
+        if (open) {
+          open.peak = open.peak.map((seats, i) => Math.max(seats, counts[i]));
+        } else {
+          open = {
+            from: seatHistory.runs[runIndex],
+            fromKnown: runIndex > 0,
+            to: null,
+            peak: counts,
+          };
+        }
+      } else if (open) {
+        open.to = seatHistory.runs[runIndex];
+        spells.push(open);
+        open = null;
+      }
+    }
+    if (open) spells.push(open);
+    return spells.reverse();
   }
 
   /** Every recorded change newer than `sinceIso`, newest first. The very
