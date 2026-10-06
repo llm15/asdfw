@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#0b0d11" />
   <!-- Bump ?v= on every asset URL below whenever app.js/trip-suggestions.js/styles.css change, to bust browser caches -->
-  <link rel="stylesheet" href="assets/styles.css?v=84" />
+  <link rel="stylesheet" href="assets/styles.css?v=88" />
   <!-- Inline and before the first paint, so a dark-theme visitor never sees a flash of the light theme. -->
   <script>
     (() => {
@@ -190,6 +190,17 @@
         <h2>Trip suggestions</h2>
         <p id="trip-suggestions-meta" class="trip-suggestions__meta"></p>
       </div>
+      <div class="trip-length">
+        <span class="trip-length__label">Trip length</span>
+        <div class="stepper" role="group" aria-label="Trip length in nights">
+          <button type="button" class="stepper__btn" data-nights-step="-1" aria-label="One fewer night">−</button>
+          <span class="stepper__value">
+            <output id="trip-nights-value" class="stepper__number">5</output>
+            <span id="trip-nights-unit" class="stepper__unit">nights</span>
+          </span>
+          <button type="button" class="stepper__btn" data-nights-step="1" aria-label="One more night">+</button>
+        </div>
+      </div>
       <div id="trip-suggestions-filters" class="trip-suggestions-filters"></div>
       <div id="trip-suggestions" class="trip-suggestions" aria-live="polite"></div>
     </section>
@@ -286,8 +297,8 @@
     </p>
   </footer>
 
-  <script src="assets/trip-suggestions.js?v=84"></script>
-  <script src="assets/app.js?v=84"></script>
+  <script src="assets/trip-suggestions.js?v=88"></script>
+  <script src="assets/app.js?v=88"></script>
 </body>
 </html>
 

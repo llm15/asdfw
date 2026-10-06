@@ -1895,6 +1895,24 @@ body.auth-locked > footer {
   margin-bottom: 0.65rem;
 }
 
+/* "How long is the trip" is a different question from "what kind of trip",
+   so it gets its own line above the trip-shape filters. */
+.trip-length {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.trip-length__label {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .trip-filter-group {
   display: flex;
   gap: 0.3rem;

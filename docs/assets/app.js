@@ -124,6 +124,9 @@
   // every combination is paged rather than dumped on the page.
   const TRIP_SUGGESTIONS_BEST = 5;
   const TRIP_SUGGESTIONS_PAGE_SIZE = 5;
+  // Trip lengths the stepper offers, in nights.
+  const MIN_TRIP_NIGHTS = 5;
+  const MAX_TRIP_NIGHTS = 10;
 
   const TABLE_PAGE_SIZE = 10;
 
@@ -189,6 +192,8 @@
     tripSuggestions: document.getElementById("trip-suggestions"),
     tripSuggestionsMeta: document.getElementById("trip-suggestions-meta"),
     tripSuggestionsFilters: document.getElementById("trip-suggestions-filters"),
+    tripNightsValue: document.getElementById("trip-nights-value"),
+    tripNightsUnit: document.getElementById("trip-nights-unit"),
     routeBoard: document.getElementById("route-board"),
     routeBoardMeta: document.getElementById("route-board-meta"),
     routeCabin: document.getElementById("route-cabin"),
@@ -221,6 +226,8 @@
     tripRoundTrip: true,
     tripOpenJaw: true,
     tripAirports: { arn: true, osl: true, cph: true, jfk: true, ewr: true },
+    // Exact trip length in nights, stepped between 5 and 10.
+    tripNights: MIN_TRIP_NIGHTS,
     // Route board: which route tab is open, and whether it spans every
     // fetched month or only the selected one.
     routeTab: null,
@@ -2054,6 +2061,8 @@
       cabin: state.tripBusinessOnly ? "AB" : state.cabin,
       earliestDate: todayIsoDate(),
       departureMonth: state.month,
+      minNights: state.tripNights,
+      maxNights: state.tripNights,
       allowRoundTrip: state.tripRoundTrip,
       allowOpenJaw: state.tripOpenJaw,
       bestLimit: TRIP_SUGGESTIONS_BEST,
@@ -2179,6 +2188,15 @@
     els.tripSuggestions.appendChild(p);
   }
 
+  function renderTripLength() {
+    els.tripNightsValue.textContent = formatCount(state.tripNights);
+    els.tripNightsUnit.textContent = state.tripNights === 1 ? "night" : "nights";
+    for (const btn of document.querySelectorAll("[data-nights-step]")) {
+      const next = state.tripNights + Number(btn.dataset.nightsStep);
+      btn.disabled = next < MIN_TRIP_NIGHTS || next > MAX_TRIP_NIGHTS;
+    }
+  }
+
   function addTripFilterButton(parent, id, label, pressed, title, onToggle) {
     const button = document.createElement("button");
     button.type = "button";
@@ -2279,6 +2297,7 @@
 
   function renderTripSuggestions() {
     renderTripFilters();
+    renderTripLength();
     els.tripSuggestions.replaceChildren();
     els.tripSuggestionsMeta.textContent = "";
 
@@ -2297,8 +2316,8 @@
     }
     if (result.total === 0) {
       renderTripSuggestionsEmpty(
-        `No 5–10 night trips depart in ${formatMonthHeading(state.month)} with the current filters. ` +
-          "Try another month, fewer minimum seats, more airports, or turning off Business."
+        `No ${formatCount(state.tripNights)}-night trips depart in ${formatMonthHeading(state.month)} with the current filters. ` +
+          "Try another trip length, another month, fewer minimum seats, more airports, or turning off Business."
       );
       return;
     }
@@ -2320,7 +2339,7 @@
       : `${formatCount(total)} possible trip${total === 1 ? "" : "s"}`;
     els.tripSuggestionsMeta.textContent =
       `${scope} departing in ${formatMonthHeading(state.month)} · ` +
-      `5–10 nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}` +
+      `${formatCount(state.tripNights)} nights · ${seats}+ seat${seats === 1 ? "" : "s"} · ${cabinFilterLabel}` +
       (tripTypeLabel ? ` · ${tripTypeLabel} only` : "") +
       (state.tripBestOnly ? "" : " · in departure order");
 
@@ -3769,6 +3788,10 @@
     if (params.has("routeCabin") && ["all", "AG", "AP", "AB"].includes(params.get("routeCabin"))) {
       state.routeCabin = params.get("routeCabin");
     }
+    if (params.has("nights")) {
+      const nights = Number.parseInt(params.get("nights"), 10);
+      if (nights >= MIN_TRIP_NIGHTS && nights <= MAX_TRIP_NIGHTS) state.tripNights = nights;
+    }
   }
 
   /** Serializes the current filter/sort state into the URL's query string
@@ -3792,6 +3815,7 @@
     if (state.routeTab) params.set("route", state.routeTab);
     if (!state.routeAllMonths) params.set("routeScope", "month");
     if (state.routeCabin !== "all") params.set("routeCabin", state.routeCabin);
+    if (state.tripNights !== MIN_TRIP_NIGHTS) params.set("nights", String(state.tripNights));
     const qs = params.toString();
     history.replaceState(null, "", `${location.pathname}${qs ? `?${qs}` : ""}${location.hash}`);
   }
@@ -3990,6 +4014,17 @@
     renderChanges();
   });
 
+  document.querySelectorAll("[data-nights-step]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = state.tripNights + Number(btn.dataset.nightsStep);
+      if (next < MIN_TRIP_NIGHTS || next > MAX_TRIP_NIGHTS) return;
+      state.tripNights = next;
+      tripSuggestionsPage = 0;
+      renderTripSuggestions();
+      syncStateToUrl();
+    });
+  });
+
   els.routeTabs.addEventListener("click", (e) => {
     const tab = e.target.closest("[data-route]");
     if (tab) selectRouteTab(tab.dataset.route);
@@ -4015,7 +4050,14 @@
 
   // Arrow keys move between options within a radiogroup, as expected of the
   // role — the rendered controls are buttons, so this isn't free.
-  for (const group of [els.directionSegmented, els.cabinChips, els.monthRail, els.routeScope, els.routeCabin, els.changesWindow]) {
+  for (const group of [
+    els.directionSegmented,
+    els.cabinChips,
+    els.monthRail,
+    els.routeScope,
+    els.routeCabin,
+    els.changesWindow,
+  ]) {
     group.addEventListener("keydown", (e) => {
       const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
       if (step === 0) return;
