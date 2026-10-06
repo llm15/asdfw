@@ -1316,14 +1316,9 @@ body.auth-locked > footer {
   color: var(--fg);
 }
 
-.day-history__route + .day-history__route {
-  margin-top: 0.9rem;
-}
-
-.day-history__route h5 {
-  margin: 0 0 0.4rem;
+.day-history__route {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 750;
   letter-spacing: 0.02em;
 }
@@ -1382,6 +1377,10 @@ body.auth-locked > footer {
 .day-history__cabins-label {
   color: var(--muted);
   font-size: 0.74rem;
+}
+
+.day-history__pager {
+  margin-top: 0.75rem;
 }
 
 /* ---------- Table ---------- */

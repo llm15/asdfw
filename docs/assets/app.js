@@ -128,6 +128,8 @@
   const TABLE_PAGE_SIZE = 10;
 
   const CHANGES_PAGE_SIZE = 8;
+  // Small, because this list lives inside the day-detail dialog.
+  const DAY_HISTORY_PAGE_SIZE = 4;
   // Enough points to show a shape without turning into noise at 56px wide.
   const SPARKLINE_POINTS = 12;
 
@@ -246,6 +248,7 @@
   let tablePage = 0;
   let routeBoardPage = 0;
   let changesPage = 0;
+  let dayHistoryPage = 0;
   // { runs: [iso], series: Map("combo|direction|date" -> [[runIndex, AG, AP, AB]]) }
   // or null until the published history has loaded (or if it 404s).
   let seatHistory = null;
@@ -1615,36 +1618,88 @@
       return section;
     }
 
-    let found = 0;
+    const entries = [];
     for (const combo of enabledCombos()) {
-      const spells = daySpells(combo.id, state.direction, dateStr);
-      if (spells.length === 0) continue;
-      found += spells.length;
-
-      const group = document.createElement("div");
-      group.className = "day-history__route";
-      const name = document.createElement("h5");
-      name.textContent = `${combo.nyc.code} ↔ ${combo.home.code}`;
-      group.appendChild(name);
-
-      const list = document.createElement("ul");
-      list.className = "day-history__list";
-      for (const spell of spells) list.appendChild(renderDaySpell(spell));
-      group.appendChild(list);
-      section.appendChild(group);
+      for (const spell of daySpells(combo.id, state.direction, dateStr)) entries.push({ combo, spell });
     }
+    // Still-open stretches first, then the most recently ended ones.
+    entries.sort(
+      (a, b) =>
+        (b.spell.to ? 0 : 1) - (a.spell.to ? 0 : 1) ||
+        (b.spell.to || "").localeCompare(a.spell.to || "") ||
+        b.spell.from.localeCompare(a.spell.from)
+    );
 
-    if (found === 0) {
+    if (entries.length === 0) {
       const empty = document.createElement("p");
       empty.className = "day-detail-empty";
       empty.textContent =
         `No seats have been seen on this date since tracking started ${formatRelativeTime(seatHistory.runs[0])}.`;
       section.appendChild(empty);
+      return section;
+    }
+
+    const pageCount = Math.max(1, Math.ceil(entries.length / DAY_HISTORY_PAGE_SIZE));
+    dayHistoryPage = Math.min(Math.max(dayHistoryPage, 0), pageCount - 1);
+    const start = dayHistoryPage * DAY_HISTORY_PAGE_SIZE;
+    const visible = entries.slice(start, start + DAY_HISTORY_PAGE_SIZE);
+
+    const list = document.createElement("ul");
+    list.className = "day-history__list";
+    for (const entry of visible) list.appendChild(renderDaySpell(entry.combo, entry.spell));
+    section.appendChild(list);
+
+    if (pageCount > 1) {
+      section.appendChild(renderDayHistoryPager(dateStr, start, visible.length, entries.length, pageCount));
     }
     return section;
   }
 
-  function renderDaySpell(spell) {
+  /** Swaps just the history block so paging keeps the dialog's scroll spot. */
+  function goToDayHistoryPage(dateStr, page) {
+    dayHistoryPage = page;
+    const current = els.dayDetailContent.querySelector(".day-history");
+    if (current) current.replaceWith(renderDayHistory(dateStr));
+  }
+
+  function renderDayHistoryPager(dateStr, start, shown, total, pageCount) {
+    const nav = document.createElement("nav");
+    nav.className = "changes-pager day-history__pager";
+    nav.setAttribute("aria-label", "History pages for this date");
+
+    const prev = document.createElement("button");
+    prev.type = "button";
+    prev.className = "month-nav-btn";
+    prev.textContent = "‹";
+    prev.setAttribute("aria-label", "Previous page of this date's history");
+    prev.disabled = dayHistoryPage === 0;
+    prev.addEventListener("click", () => goToDayHistoryPage(dateStr, dayHistoryPage - 1));
+    nav.appendChild(prev);
+
+    const status = document.createElement("p");
+    status.className = "changes-pager__status";
+    status.setAttribute("role", "status");
+    status.textContent = `${formatCount(start + 1)}–${formatCount(start + shown)} of ${formatCount(total)}`;
+    nav.appendChild(status);
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "month-nav-btn";
+    next.textContent = "›";
+    next.setAttribute("aria-label", "Next page of this date's history");
+    next.disabled = dayHistoryPage >= pageCount - 1;
+    next.addEventListener("click", () => goToDayHistoryPage(dateStr, dayHistoryPage + 1));
+    nav.appendChild(next);
+
+    const pages = document.createElement("p");
+    pages.className = "changes-pager__pages";
+    pages.textContent = `Page ${formatCount(dayHistoryPage + 1)} of ${formatCount(pageCount)}`;
+    nav.appendChild(pages);
+
+    return nav;
+  }
+
+  function renderDaySpell(combo, spell) {
     const item = document.createElement("li");
     item.className = `day-history__spell day-history__spell--${spell.to ? "gone" : "open"}`;
 
@@ -1655,6 +1710,11 @@
 
     const body = document.createElement("div");
     body.className = "day-history__body";
+
+    const route = document.createElement("span");
+    route.className = "day-history__route";
+    route.textContent = `${combo.nyc.code} ↔ ${combo.home.code}`;
+    body.appendChild(route);
 
     const added = document.createElement("span");
     added.className = "day-history__line";
@@ -1691,6 +1751,7 @@
 
   function openDayDetail(dateStr) {
     if (!lastGood) return;
+    dayHistoryPage = 0;
     renderDayDetail(dateStr);
     if (typeof els.dayDetailDialog.showModal === "function") {
       els.dayDetailDialog.showModal();
