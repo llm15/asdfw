@@ -2,10 +2,10 @@ name: Fetch SAS availability data
 
 on:
   schedule:
-    # Fires every 6 hours; the random-delay step below then spreads the
-    # actual fetch across a further ~3h window so requests aren't sent at a
+    # Fires every 3 hours (8x/day); the random-delay step below then spreads the
+    # actual fetch across a further ~30m window so requests aren't sent at a
     # predictable exact time every run.
-    - cron: "0 */6 * * *"
+    - cron: "0 */3 * * *"
   workflow_dispatch: {}
 
 # Least privilege: only contents write is needed to commit the data file.
@@ -40,7 +40,7 @@ jobs:
 
       - name: Random delay (avoid predictable request timing)
         if: github.event_name == 'schedule'
-        run: sleep $((RANDOM % 10800))
+        run: sleep $((RANDOM % 1800))
 
       - name: Fetch latest SAS availability
         run: npm run fetch:data
