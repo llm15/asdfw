@@ -131,6 +131,8 @@
   const TABLE_PAGE_SIZE = 10;
 
   const CHANGES_PAGE_SIZE = 8;
+  // The "What changed" window that covers everything the history still holds.
+  const CHANGES_ALL_TIME = 0;
   // Small, because this list lives inside the day-detail dialog.
   const DAY_HISTORY_PAGE_SIZE = 4;
   // Enough points to show a shape without turning into noise at 56px wide.
@@ -3100,7 +3102,14 @@
   /* ---------- What changed ---------- */
 
   function changesSince() {
+    // "" sorts before every ISO timestamp, so no change is filtered out.
+    if (state.changesWindow === CHANGES_ALL_TIME) return "";
     return new Date(Date.now() - state.changesWindow * 86400000).toISOString();
+  }
+
+  function changesWindowPhrase() {
+    if (state.changesWindow === CHANGES_ALL_TIME) return "in all recorded history";
+    return state.changesWindow === 1 ? "in the last 24 hours" : `in the last ${state.changesWindow} days`;
   }
 
   function renderChangesEmpty(message) {
@@ -3186,14 +3195,21 @@
     nav.className = "changes-pager";
     nav.setAttribute("aria-label", "Change pages");
 
-    const prev = document.createElement("button");
-    prev.type = "button";
-    prev.className = "month-nav-btn";
-    prev.textContent = "‹";
-    prev.setAttribute("aria-label", "Previous page of changes");
-    prev.disabled = changesPage === 0;
-    prev.addEventListener("click", () => goToChangesPage(changesPage - 1));
-    nav.appendChild(prev);
+    const step = (label, description, page, disabled) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "month-nav-btn";
+      btn.textContent = label;
+      btn.setAttribute("aria-label", description);
+      btn.disabled = disabled;
+      btn.addEventListener("click", () => goToChangesPage(page));
+      return btn;
+    };
+
+    const atStart = changesPage === 0;
+    const atEnd = changesPage >= pageCount - 1;
+    nav.appendChild(step("«", "First page of changes", 0, atStart));
+    nav.appendChild(step("‹", "Previous page of changes", changesPage - 1, atStart));
 
     const status = document.createElement("p");
     status.className = "changes-pager__status";
@@ -3201,14 +3217,8 @@
     status.textContent = `${formatCount(start + 1)}–${formatCount(start + shown)} of ${formatCount(total)}`;
     nav.appendChild(status);
 
-    const next = document.createElement("button");
-    next.type = "button";
-    next.className = "month-nav-btn";
-    next.textContent = "›";
-    next.setAttribute("aria-label", "Next page of changes");
-    next.disabled = changesPage >= pageCount - 1;
-    next.addEventListener("click", () => goToChangesPage(changesPage + 1));
-    nav.appendChild(next);
+    nav.appendChild(step("›", "Next page of changes", changesPage + 1, atEnd));
+    nav.appendChild(step("»", "Last page of changes", pageCount - 1, atEnd));
 
     const pages = document.createElement("p");
     pages.className = "changes-pager__pages";
@@ -3236,7 +3246,7 @@
     }
 
     const events = historyEvents(changesSince());
-    const windowLabel = state.changesWindow === 1 ? "24 hours" : `${state.changesWindow} days`;
+    const windowPhrase = changesWindowPhrase();
     const tracked = formatRelativeTime(seatHistory.runs[0]);
     els.changesMeta.textContent =
       `${formatCount(seatHistory.runs.length)} update${seatHistory.runs.length === 1 ? "" : "s"} recorded · ` +
@@ -3246,7 +3256,7 @@
       renderChangesEmpty(
         seatHistory.runs.length === 1
           ? "Only one update has been recorded so far — changes appear from the next one onwards."
-          : `Nothing moved on the selected routes in the last ${windowLabel}.`
+          : `Nothing moved on the selected routes ${windowPhrase}.`
       );
       return;
     }
@@ -3255,7 +3265,7 @@
     const summary = document.createElement("p");
     summary.className = "changes__summary";
     summary.textContent =
-      `${formatCount(events.length)} change${events.length === 1 ? "" : "s"} in the last ${windowLabel} · ` +
+      `${formatCount(events.length)} change${events.length === 1 ? "" : "s"} ${windowPhrase} · ` +
       `${formatCount(gained)} gained seats · ${formatCount(events.length - gained)} lost seats`;
     els.changesFeed.appendChild(summary);
 
