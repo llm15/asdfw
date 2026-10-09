@@ -2,10 +2,14 @@ name: Fetch SAS availability data
 
 on:
   schedule:
-    # Fires every 3 hours (8x/day); the random-delay step below then spreads the
-    # actual fetch across a further ~30m window so requests aren't sent at a
-    # predictable exact time every run.
-    - cron: "0 */3 * * *"
+    # The goal is 8 fetches a day, at 00/03/06/09/12/15/18/21 UTC. A plain
+    # "0 */3 * * *" does not deliver that: GitHub treats scheduled events as
+    # best-effort and silently dropped roughly two thirds of them here, leaving
+    # 2-3 runs a day at drifting times. So we ask far more often and throw most
+    # attempts away -- the `gate` job lets at most one fetch through per 3-hour
+    # window, and any attempt landing in a window claims it. Odd minutes avoid
+    # the congested top of the hour, where dropped events concentrate.
+    - cron: "7,27,47 * * * *"
   workflow_dispatch: {}
 
 # Least privilege: only contents write is needed to commit the data file.
@@ -13,13 +17,57 @@ permissions:
   contents: write
 
 # Avoid two scheduled/manual runs racing to commit at once; queue instead of
-# cancelling so an in-progress atomic write is never interrupted.
+# cancelling so an in-progress atomic write is never interrupted. This also
+# serialises the frequent attempts, so a queued one sees the fresh data its
+# predecessor committed and gates itself out.
 concurrency:
   group: fetch-sas-data
   cancel-in-progress: false
 
 jobs:
+  # Cheap guard so the ~70 daily attempts cost a checkout each, not a browser
+  # download and a fetch.
+  gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      should-run: ${{ steps.check.outputs.should-run }}
+    steps:
+      - name: Checkout published data only
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: docs/data/latest.json
+          sparse-checkout-cone-mode: false
+
+      - name: Claim this 3-hour window, or skip
+        id: check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" != "schedule" ]; then
+            echo "Manual run; skipping the window check."
+            echo "should-run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          window_start=$(( $(date -u +%s) / 10800 * 10800 ))
+          last_iso=$(jq -r '.updatedAt // empty' docs/data/latest.json 2>/dev/null || true)
+          last=0
+          if [ -n "$last_iso" ]; then
+            last=$(date -u -d "$last_iso" +%s 2>/dev/null || echo 0)
+          fi
+          if [ "$last" -ge "$window_start" ]; then
+            echo "Window $(date -u -d "@$window_start" +%H:%M) already fetched at $last_iso; skipping."
+            echo "should-run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Window $(date -u -d "@$window_start" +%H:%M) not fetched yet (last: ${last_iso:-never}); running."
+            echo "should-run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   fetch:
+    needs: gate
+    if: needs.gate.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,7 +88,9 @@ jobs:
 
       - name: Random delay (avoid predictable request timing)
         if: github.event_name == 'schedule'
-        run: sleep $((RANDOM % 1800))
+        # Kept well under the 20m gap between attempts so the fetch lands
+        # inside the window the gate just claimed.
+        run: sleep $((RANDOM % 600))
 
       - name: Fetch latest SAS availability
         run: npm run fetch:data
