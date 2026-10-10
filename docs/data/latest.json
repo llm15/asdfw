@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-09T19:54:00.481Z",
+  "updatedAt": "2026-10-10T00:06:05.285Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -7390,13 +7390,6 @@
               }
             ],
             "inbound": [
-              {
-                "key": 261009,
-                "date": "2026-10-09",
-                "availableSeatsTotal": 12,
-                "AG": 2,
-                "AP": 10
-              },
               {
                 "key": 261010,
                 "date": "2026-10-10",
