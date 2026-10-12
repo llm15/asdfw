@@ -9,7 +9,7 @@ on:
     # attempts away -- the `gate` job lets at most one fetch through per 3-hour
     # window, and any attempt landing in a window claims it. Odd minutes avoid
     # the congested top of the hour, where dropped events concentrate.
-    - cron: "7,27,47 * * * *"
+    - cron: "13 0,3,6,9,12,15,18,21,23 * * *"
   workflow_dispatch: {}
 
 # Least privilege: only contents write is needed to commit the data file.
