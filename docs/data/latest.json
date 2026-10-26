@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-26T08:56:38.128Z",
+  "updatedAt": "2026-10-26T16:11:25.873Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -2801,12 +2801,6 @@
           "availability": {
             "outbound": [
               {
-                "key": 261101,
-                "date": "2026-11-01",
-                "availableSeatsTotal": 4,
-                "AP": 4
-              },
-              {
                 "key": 261102,
                 "date": "2026-11-02",
                 "availableSeatsTotal": 15,
@@ -2830,9 +2824,9 @@
               {
                 "key": 261105,
                 "date": "2026-11-05",
-                "availableSeatsTotal": 14,
+                "availableSeatsTotal": 13,
                 "AG": 10,
-                "AP": 4
+                "AP": 3
               },
               {
                 "key": 261106,
@@ -2885,10 +2879,9 @@
               {
                 "key": 261114,
                 "date": "2026-11-14",
-                "availableSeatsTotal": 18,
+                "availableSeatsTotal": 14,
                 "AG": 10,
-                "AP": 6,
-                "AB": 2
+                "AP": 4
               },
               {
                 "key": 261116,
@@ -3086,9 +3079,9 @@
               {
                 "key": 270123,
                 "date": "2027-01-23",
-                "availableSeatsTotal": 16,
+                "availableSeatsTotal": 12,
                 "AG": 10,
-                "AP": 6
+                "AP": 2
               },
               {
                 "key": 270124,
@@ -3532,9 +3525,9 @@
               {
                 "key": 270518,
                 "date": "2027-05-18",
-                "availableSeatsTotal": 8,
+                "availableSeatsTotal": 6,
                 "AG": 2,
-                "AP": 6
+                "AP": 4
               },
               {
                 "key": 270519,
@@ -3769,8 +3762,8 @@
               {
                 "key": 261112,
                 "date": "2026-11-12",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 3,
+                "AG": 3
               },
               {
                 "key": 261113,
