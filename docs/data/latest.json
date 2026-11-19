@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-18T20:29:29.172Z",
+  "updatedAt": "2026-11-19T02:39:31.711Z",
   "routes": {
     "arn-jfk": {
       "origin": "ARN",
@@ -23,18 +23,18 @@
           "availability": {
             "outbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 18,
-                "AG": 10,
-                "AP": 8
-              },
-              {
                 "key": 261119,
                 "date": "2026-11-19",
                 "availableSeatsTotal": 20,
                 "AG": 10,
                 "AP": 10
+              },
+              {
+                "key": 261120,
+                "date": "2026-11-20",
+                "availableSeatsTotal": 4,
+                "AP": 1,
+                "AB": 3
               },
               {
                 "key": 261122,
@@ -45,16 +45,22 @@
               {
                 "key": 261123,
                 "date": "2026-11-23",
-                "availableSeatsTotal": 10,
-                "AG": 3,
+                "availableSeatsTotal": 11,
+                "AG": 4,
                 "AP": 7
               },
               {
                 "key": 261124,
                 "date": "2026-11-24",
-                "availableSeatsTotal": 9,
-                "AG": 3,
+                "availableSeatsTotal": 10,
+                "AG": 4,
                 "AP": 6
+              },
+              {
+                "key": 261126,
+                "date": "2026-11-26",
+                "availableSeatsTotal": 3,
+                "AP": 3
               },
               {
                 "key": 261204,
@@ -66,8 +72,8 @@
               {
                 "key": 261205,
                 "date": "2026-12-05",
-                "availableSeatsTotal": 3,
-                "AG": 3
+                "availableSeatsTotal": 4,
+                "AG": 4
               },
               {
                 "key": 261207,
@@ -164,9 +170,9 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 13,
-                "AG": 8,
-                "AP": 5
+                "availableSeatsTotal": 16,
+                "AG": 10,
+                "AP": 6
               },
               {
                 "key": 270117,
@@ -206,9 +212,9 @@
               {
                 "key": 270123,
                 "date": "2027-01-23",
-                "availableSeatsTotal": 12,
+                "availableSeatsTotal": 15,
                 "AG": 10,
-                "AP": 1,
+                "AP": 4,
                 "AB": 1
               },
               {
@@ -250,15 +256,17 @@
               {
                 "key": 270130,
                 "date": "2027-01-30",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 16,
+                "AG": 10,
+                "AP": 6
               },
               {
                 "key": 270131,
                 "date": "2027-01-31",
-                "availableSeatsTotal": 11,
+                "availableSeatsTotal": 12,
                 "AG": 10,
-                "AP": 1
+                "AP": 1,
+                "AB": 1
               },
               {
                 "key": 270201,
@@ -277,14 +285,16 @@
               {
                 "key": 270204,
                 "date": "2027-02-04",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 13,
+                "AG": 10,
+                "AP": 3
               },
               {
                 "key": 270205,
                 "date": "2027-02-05",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 13,
+                "AG": 10,
+                "AP": 3
               },
               {
                 "key": 270206,
@@ -345,9 +355,9 @@
               {
                 "key": 270215,
                 "date": "2027-02-15",
-                "availableSeatsTotal": 16,
+                "availableSeatsTotal": 17,
                 "AG": 10,
-                "AP": 5,
+                "AP": 6,
                 "AB": 1
               },
               {
@@ -467,16 +477,22 @@
               {
                 "key": 270315,
                 "date": "2027-03-15",
-                "availableSeatsTotal": 12,
+                "availableSeatsTotal": 17,
                 "AG": 10,
-                "AP": 2
+                "AP": 7
               },
               {
                 "key": 270316,
                 "date": "2027-03-16",
-                "availableSeatsTotal": 12,
+                "availableSeatsTotal": 17,
                 "AG": 10,
-                "AP": 2
+                "AP": 7
+              },
+              {
+                "key": 270406,
+                "date": "2027-04-06",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270410,
@@ -732,9 +748,9 @@
               {
                 "key": 270522,
                 "date": "2027-05-22",
-                "availableSeatsTotal": 9,
+                "availableSeatsTotal": 10,
                 "AG": 4,
-                "AP": 5
+                "AP": 6
               },
               {
                 "key": 270523,
@@ -937,8 +953,9 @@
               {
                 "key": 270119,
                 "date": "2027-01-19",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270122,
@@ -1171,12 +1188,6 @@
           "availability": {
             "outbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 10,
-                "AG": 10
-              },
-              {
                 "key": 261119,
                 "date": "2026-11-19",
                 "availableSeatsTotal": 13,
@@ -1186,22 +1197,39 @@
               {
                 "key": 261120,
                 "date": "2026-11-20",
-                "availableSeatsTotal": 12,
+                "availableSeatsTotal": 21,
                 "AG": 10,
-                "AP": 1,
+                "AP": 10,
                 "AB": 1
               },
               {
                 "key": 261121,
                 "date": "2026-11-21",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 11,
+                "AG": 10,
+                "AB": 1
               },
               {
                 "key": 261122,
                 "date": "2026-11-22",
                 "availableSeatsTotal": 10,
                 "AG": 10
+              },
+              {
+                "key": 261123,
+                "date": "2026-11-23",
+                "availableSeatsTotal": 15,
+                "AG": 4,
+                "AP": 7,
+                "AB": 4
+              },
+              {
+                "key": 261124,
+                "date": "2026-11-24",
+                "availableSeatsTotal": 13,
+                "AG": 4,
+                "AP": 6,
+                "AB": 3
               },
               {
                 "key": 261202,
@@ -1247,9 +1275,10 @@
               {
                 "key": 261208,
                 "date": "2026-12-08",
-                "availableSeatsTotal": 16,
+                "availableSeatsTotal": 17,
                 "AG": 10,
-                "AP": 6
+                "AP": 6,
+                "AB": 1
               },
               {
                 "key": 261209,
@@ -1295,10 +1324,16 @@
               {
                 "key": 261215,
                 "date": "2026-12-15",
-                "availableSeatsTotal": 15,
+                "availableSeatsTotal": 16,
                 "AG": 10,
                 "AP": 4,
-                "AB": 1
+                "AB": 2
+              },
+              {
+                "key": 261216,
+                "date": "2026-12-16",
+                "availableSeatsTotal": 2,
+                "AB": 2
               },
               {
                 "key": 261223,
@@ -1390,8 +1425,8 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 15,
-                "AG": 8,
+                "availableSeatsTotal": 17,
+                "AG": 10,
                 "AP": 5,
                 "AB": 2
               },
@@ -1440,9 +1475,9 @@
               {
                 "key": 270123,
                 "date": "2027-01-23",
-                "availableSeatsTotal": 11,
+                "availableSeatsTotal": 14,
                 "AG": 10,
-                "AP": 1
+                "AP": 4
               },
               {
                 "key": 270124,
@@ -1489,8 +1524,9 @@
               {
                 "key": 270130,
                 "date": "2027-01-30",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270131,
@@ -1599,9 +1635,9 @@
               {
                 "key": 270215,
                 "date": "2027-02-15",
-                "availableSeatsTotal": 15,
+                "availableSeatsTotal": 16,
                 "AG": 10,
-                "AP": 5
+                "AP": 6
               },
               {
                 "key": 270216,
@@ -1619,8 +1655,8 @@
               {
                 "key": 270218,
                 "date": "2027-02-18",
-                "availableSeatsTotal": 6,
-                "AG": 6
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270219,
@@ -1631,8 +1667,8 @@
               {
                 "key": 270220,
                 "date": "2027-02-20",
-                "availableSeatsTotal": 2,
-                "AG": 2
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270221,
@@ -1665,8 +1701,8 @@
               {
                 "key": 270225,
                 "date": "2027-02-25",
-                "availableSeatsTotal": 10,
-                "AG": 8,
+                "availableSeatsTotal": 11,
+                "AG": 9,
                 "AP": 2
               },
               {
@@ -1751,15 +1787,16 @@
               {
                 "key": 270311,
                 "date": "2027-03-11",
-                "availableSeatsTotal": 14,
+                "availableSeatsTotal": 16,
                 "AG": 10,
-                "AP": 4
+                "AP": 6
               },
               {
                 "key": 270312,
                 "date": "2027-03-12",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 18,
+                "AG": 10,
+                "AP": 8
               },
               {
                 "key": 270313,
@@ -1774,10 +1811,40 @@
                 "AG": 4
               },
               {
+                "key": 270409,
+                "date": "2027-04-09",
+                "availableSeatsTotal": 1,
+                "AG": 1
+              },
+              {
+                "key": 270410,
+                "date": "2027-04-10",
+                "availableSeatsTotal": 6,
+                "AP": 6
+              },
+              {
                 "key": 270411,
                 "date": "2027-04-11",
                 "availableSeatsTotal": 1,
                 "AG": 1
+              },
+              {
+                "key": 270412,
+                "date": "2027-04-12",
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270413,
+                "date": "2027-04-13",
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270414,
+                "date": "2027-04-14",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270417,
@@ -1806,8 +1873,9 @@
               {
                 "key": 270422,
                 "date": "2027-04-22",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 6,
+                "AG": 4,
+                "AP": 2
               },
               {
                 "key": 270423,
@@ -1907,16 +1975,16 @@
               {
                 "key": 270507,
                 "date": "2027-05-07",
-                "availableSeatsTotal": 9,
+                "availableSeatsTotal": 10,
                 "AG": 4,
-                "AP": 5
+                "AP": 6
               },
               {
                 "key": 270508,
                 "date": "2027-05-08",
-                "availableSeatsTotal": 7,
+                "availableSeatsTotal": 8,
                 "AG": 4,
-                "AP": 3
+                "AP": 4
               },
               {
                 "key": 270509,
@@ -1954,6 +2022,12 @@
                 "availableSeatsTotal": 8,
                 "AG": 4,
                 "AP": 4
+              },
+              {
+                "key": 270514,
+                "date": "2027-05-14",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270515,
@@ -2064,8 +2138,8 @@
               {
                 "key": 270530,
                 "date": "2027-05-30",
-                "availableSeatsTotal": 2,
-                "AG": 2
+                "availableSeatsTotal": 4,
+                "AG": 4
               },
               {
                 "key": 270531,
@@ -2144,6 +2218,12 @@
                 "AP": 2
               },
               {
+                "key": 270912,
+                "date": "2027-09-12",
+                "availableSeatsTotal": 6,
+                "AP": 6
+              },
+              {
                 "key": 270913,
                 "date": "2027-09-13",
                 "availableSeatsTotal": 2,
@@ -2180,21 +2260,28 @@
                 "availableSeatsTotal": 10,
                 "AG": 4,
                 "AP": 6
+              },
+              {
+                "key": 270924,
+                "date": "2027-09-24",
+                "availableSeatsTotal": 10,
+                "AG": 4,
+                "AP": 6
+              },
+              {
+                "key": 270925,
+                "date": "2027-09-25",
+                "availableSeatsTotal": 8,
+                "AG": 4,
+                "AP": 4
               }
             ],
             "inbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 6,
-                "AP": 5,
-                "AB": 1
-              },
-              {
                 "key": 261121,
                 "date": "2026-11-21",
-                "availableSeatsTotal": 9,
-                "AG": 8,
+                "availableSeatsTotal": 11,
+                "AG": 10,
                 "AB": 1
               },
               {
@@ -2202,6 +2289,12 @@
                 "date": "2026-11-22",
                 "availableSeatsTotal": 4,
                 "AG": 4
+              },
+              {
+                "key": 261127,
+                "date": "2026-11-27",
+                "availableSeatsTotal": 1,
+                "AP": 1
               },
               {
                 "key": 261224,
@@ -2246,8 +2339,9 @@
               {
                 "key": 261231,
                 "date": "2026-12-31",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 11,
+                "AG": 10,
+                "AB": 1
               },
               {
                 "key": 270106,
@@ -2258,8 +2352,9 @@
               {
                 "key": 270107,
                 "date": "2027-01-07",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270110,
@@ -2290,8 +2385,9 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 9,
-                "AG": 9
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270117,
@@ -2337,9 +2433,9 @@
               {
                 "key": 270123,
                 "date": "2027-01-23",
-                "availableSeatsTotal": 15,
+                "availableSeatsTotal": 17,
                 "AG": 10,
-                "AP": 5
+                "AP": 7
               },
               {
                 "key": 270124,
@@ -2743,8 +2839,16 @@
               {
                 "key": 270911,
                 "date": "2027-09-11",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 10,
+                "AG": 4,
+                "AP": 6
+              },
+              {
+                "key": 270912,
+                "date": "2027-09-12",
+                "availableSeatsTotal": 3,
+                "AG": 2,
+                "AB": 1
               },
               {
                 "key": 270913,
@@ -2851,16 +2955,18 @@
               {
                 "key": 270930,
                 "date": "2027-09-30",
-                "availableSeatsTotal": 10,
+                "availableSeatsTotal": 12,
                 "AG": 4,
-                "AP": 6
+                "AP": 6,
+                "AB": 2
               },
               {
                 "key": 271001,
                 "date": "2027-10-01",
-                "availableSeatsTotal": 10,
+                "availableSeatsTotal": 11,
                 "AG": 4,
-                "AP": 6
+                "AP": 6,
+                "AB": 1
               },
               {
                 "key": 271002,
@@ -2936,13 +3042,6 @@
           "availability": {
             "outbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 18,
-                "AG": 10,
-                "AP": 8
-              },
-              {
                 "key": 261119,
                 "date": "2026-11-19",
                 "availableSeatsTotal": 20,
@@ -2966,15 +3065,15 @@
               {
                 "key": 261123,
                 "date": "2026-11-23",
-                "availableSeatsTotal": 5,
-                "AG": 3,
+                "availableSeatsTotal": 6,
+                "AG": 4,
                 "AP": 2
               },
               {
                 "key": 261124,
                 "date": "2026-11-24",
-                "availableSeatsTotal": 10,
-                "AG": 3,
+                "availableSeatsTotal": 11,
+                "AG": 4,
                 "AP": 7
               },
               {
@@ -3009,8 +3108,8 @@
               {
                 "key": 261208,
                 "date": "2026-12-08",
-                "availableSeatsTotal": 5,
-                "AG": 2,
+                "availableSeatsTotal": 13,
+                "AG": 10,
                 "AP": 3
               },
               {
@@ -3097,9 +3196,9 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 14,
+                "availableSeatsTotal": 15,
                 "AG": 10,
-                "AP": 4
+                "AP": 5
               },
               {
                 "key": 270117,
@@ -3154,9 +3253,9 @@
               {
                 "key": 270125,
                 "date": "2027-01-25",
-                "availableSeatsTotal": 14,
+                "availableSeatsTotal": 16,
                 "AG": 10,
-                "AP": 4
+                "AP": 6
               },
               {
                 "key": 270126,
@@ -3182,9 +3281,10 @@
               {
                 "key": 270130,
                 "date": "2027-01-30",
-                "availableSeatsTotal": 15,
+                "availableSeatsTotal": 16,
                 "AG": 10,
-                "AP": 5
+                "AP": 5,
+                "AB": 1
               },
               {
                 "key": 270131,
@@ -3209,8 +3309,9 @@
               {
                 "key": 270205,
                 "date": "2027-02-05",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 13,
+                "AG": 10,
+                "AP": 3
               },
               {
                 "key": 270206,
@@ -3395,6 +3496,12 @@
                 "availableSeatsTotal": 8,
                 "AG": 4,
                 "AP": 4
+              },
+              {
+                "key": 270406,
+                "date": "2027-04-06",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270410,
@@ -3601,10 +3708,10 @@
               {
                 "key": 270515,
                 "date": "2027-05-15",
-                "availableSeatsTotal": 7,
+                "availableSeatsTotal": 8,
                 "AG": 4,
                 "AP": 2,
-                "AB": 1
+                "AB": 2
               },
               {
                 "key": 270516,
@@ -3880,8 +3987,9 @@
               {
                 "key": 270119,
                 "date": "2027-01-19",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270122,
@@ -4133,12 +4241,6 @@
           "availability": {
             "outbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 10,
-                "AG": 10
-              },
-              {
                 "key": 261119,
                 "date": "2026-11-19",
                 "availableSeatsTotal": 13,
@@ -4148,8 +4250,10 @@
               {
                 "key": 261120,
                 "date": "2026-11-20",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 15,
+                "AG": 4,
+                "AP": 10,
+                "AB": 1
               },
               {
                 "key": 261121,
@@ -4165,6 +4269,22 @@
                 "availableSeatsTotal": 15,
                 "AG": 10,
                 "AP": 4,
+                "AB": 1
+              },
+              {
+                "key": 261123,
+                "date": "2026-11-23",
+                "availableSeatsTotal": 9,
+                "AG": 4,
+                "AP": 2,
+                "AB": 3
+              },
+              {
+                "key": 261124,
+                "date": "2026-11-24",
+                "availableSeatsTotal": 12,
+                "AG": 4,
+                "AP": 7,
                 "AB": 1
               },
               {
@@ -4262,10 +4382,28 @@
                 "AB": 1
               },
               {
+                "key": 261216,
+                "date": "2026-12-16",
+                "availableSeatsTotal": 2,
+                "AB": 2
+              },
+              {
+                "key": 261220,
+                "date": "2026-12-20",
+                "availableSeatsTotal": 3,
+                "AG": 3
+              },
+              {
                 "key": 261224,
                 "date": "2026-12-24",
                 "availableSeatsTotal": 1,
                 "AG": 1
+              },
+              {
+                "key": 261226,
+                "date": "2026-12-26",
+                "availableSeatsTotal": 2,
+                "AP": 2
               },
               {
                 "key": 270105,
@@ -4409,9 +4547,9 @@
               {
                 "key": 270125,
                 "date": "2027-01-25",
-                "availableSeatsTotal": 15,
+                "availableSeatsTotal": 17,
                 "AG": 10,
-                "AP": 4,
+                "AP": 6,
                 "AB": 1
               },
               {
@@ -4566,14 +4704,14 @@
               {
                 "key": 270217,
                 "date": "2027-02-17",
-                "availableSeatsTotal": 6,
-                "AG": 6
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270218,
                 "date": "2027-02-18",
-                "availableSeatsTotal": 6,
-                "AG": 6
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270219,
@@ -4665,8 +4803,8 @@
               {
                 "key": 270304,
                 "date": "2027-03-04",
-                "availableSeatsTotal": 10,
-                "AG": 6,
+                "availableSeatsTotal": 12,
+                "AG": 8,
                 "AP": 4
               },
               {
@@ -4722,8 +4860,9 @@
               {
                 "key": 270312,
                 "date": "2027-03-12",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 15,
+                "AG": 10,
+                "AP": 5
               },
               {
                 "key": 270313,
@@ -4738,16 +4877,42 @@
                 "AG": 4
               },
               {
-                "key": 270410,
-                "date": "2027-04-10",
+                "key": 270408,
+                "date": "2027-04-08",
                 "availableSeatsTotal": 1,
                 "AG": 1
               },
               {
+                "key": 270409,
+                "date": "2027-04-09",
+                "availableSeatsTotal": 4,
+                "AG": 1,
+                "AP": 3
+              },
+              {
+                "key": 270410,
+                "date": "2027-04-10",
+                "availableSeatsTotal": 7,
+                "AG": 1,
+                "AP": 6
+              },
+              {
                 "key": 270411,
                 "date": "2027-04-11",
-                "availableSeatsTotal": 1,
-                "AG": 1
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270412,
+                "date": "2027-04-12",
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270414,
+                "date": "2027-04-14",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270416,
@@ -4790,8 +4955,9 @@
               {
                 "key": 270423,
                 "date": "2027-04-23",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 5,
+                "AG": 4,
+                "AP": 1
               },
               {
                 "key": 270424,
@@ -4871,9 +5037,9 @@
               {
                 "key": 270506,
                 "date": "2027-05-06",
-                "availableSeatsTotal": 7,
+                "availableSeatsTotal": 8,
                 "AG": 4,
-                "AP": 3
+                "AP": 4
               },
               {
                 "key": 270507,
@@ -4985,9 +5151,9 @@
               {
                 "key": 270522,
                 "date": "2027-05-22",
-                "availableSeatsTotal": 5,
+                "availableSeatsTotal": 6,
                 "AG": 4,
-                "AB": 1
+                "AB": 2
               },
               {
                 "key": 270523,
@@ -5019,9 +5185,9 @@
               {
                 "key": 270527,
                 "date": "2027-05-27",
-                "availableSeatsTotal": 8,
+                "availableSeatsTotal": 10,
                 "AG": 4,
-                "AP": 3,
+                "AP": 5,
                 "AB": 1
               },
               {
@@ -5041,8 +5207,8 @@
               {
                 "key": 270530,
                 "date": "2027-05-30",
-                "availableSeatsTotal": 2,
-                "AG": 2
+                "availableSeatsTotal": 4,
+                "AG": 4
               },
               {
                 "key": 270531,
@@ -5125,8 +5291,9 @@
               {
                 "key": 270912,
                 "date": "2027-09-12",
-                "availableSeatsTotal": 2,
-                "AG": 2
+                "availableSeatsTotal": 8,
+                "AG": 2,
+                "AP": 6
               },
               {
                 "key": 270913,
@@ -5166,21 +5333,28 @@
                 "availableSeatsTotal": 8,
                 "AG": 2,
                 "AP": 6
+              },
+              {
+                "key": 270924,
+                "date": "2027-09-24",
+                "availableSeatsTotal": 7,
+                "AG": 2,
+                "AP": 5
+              },
+              {
+                "key": 270925,
+                "date": "2027-09-25",
+                "availableSeatsTotal": 6,
+                "AG": 2,
+                "AP": 4
               }
             ],
             "inbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 6,
-                "AP": 5,
-                "AB": 1
-              },
-              {
                 "key": 261121,
                 "date": "2026-11-21",
-                "availableSeatsTotal": 9,
-                "AG": 8,
+                "availableSeatsTotal": 11,
+                "AG": 10,
                 "AB": 1
               },
               {
@@ -5249,8 +5423,9 @@
               {
                 "key": 270107,
                 "date": "2027-01-07",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270110,
@@ -5288,8 +5463,9 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 9,
-                "AG": 9
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270117,
@@ -5704,6 +5880,13 @@
                 "AG": 4
               },
               {
+                "key": 270908,
+                "date": "2027-09-08",
+                "availableSeatsTotal": 10,
+                "AG": 4,
+                "AP": 6
+              },
+              {
                 "key": 270909,
                 "date": "2027-09-09",
                 "availableSeatsTotal": 3,
@@ -5719,8 +5902,15 @@
               {
                 "key": 270911,
                 "date": "2027-09-11",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 9,
+                "AG": 4,
+                "AP": 5
+              },
+              {
+                "key": 270912,
+                "date": "2027-09-12",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270913,
@@ -5904,13 +6094,6 @@
           "availability": {
             "outbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 18,
-                "AG": 10,
-                "AP": 8
-              },
-              {
                 "key": 261119,
                 "date": "2026-11-19",
                 "availableSeatsTotal": 20,
@@ -5920,8 +6103,9 @@
               {
                 "key": 261120,
                 "date": "2026-11-20",
-                "availableSeatsTotal": 1,
-                "AP": 1
+                "availableSeatsTotal": 4,
+                "AP": 1,
+                "AB": 3
               },
               {
                 "key": 261122,
@@ -5933,9 +6117,15 @@
               {
                 "key": 261124,
                 "date": "2026-11-24",
-                "availableSeatsTotal": 11,
-                "AG": 3,
+                "availableSeatsTotal": 12,
+                "AG": 4,
                 "AP": 8
+              },
+              {
+                "key": 261126,
+                "date": "2026-11-26",
+                "availableSeatsTotal": 3,
+                "AP": 3
               },
               {
                 "key": 261204,
@@ -5984,9 +6174,9 @@
               {
                 "key": 261213,
                 "date": "2026-12-13",
-                "availableSeatsTotal": 21,
+                "availableSeatsTotal": 22,
                 "AG": 10,
-                "AP": 9,
+                "AP": 10,
                 "AB": 2
               },
               {
@@ -5995,6 +6185,13 @@
                 "availableSeatsTotal": 20,
                 "AG": 10,
                 "AP": 10
+              },
+              {
+                "key": 261224,
+                "date": "2026-12-24",
+                "availableSeatsTotal": 14,
+                "AG": 10,
+                "AP": 4
               },
               {
                 "key": 261225,
@@ -6042,9 +6239,9 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 14,
+                "availableSeatsTotal": 18,
                 "AG": 10,
-                "AP": 4
+                "AP": 8
               },
               {
                 "key": 270117,
@@ -6120,9 +6317,10 @@
               {
                 "key": 270131,
                 "date": "2027-01-31",
-                "availableSeatsTotal": 20,
+                "availableSeatsTotal": 21,
                 "AG": 10,
-                "AP": 10
+                "AP": 10,
+                "AB": 1
               },
               {
                 "key": 270201,
@@ -6141,8 +6339,9 @@
               {
                 "key": 270205,
                 "date": "2027-02-05",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 13,
+                "AG": 10,
+                "AP": 3
               },
               {
                 "key": 270207,
@@ -6314,6 +6513,18 @@
                 "availableSeatsTotal": 18,
                 "AG": 10,
                 "AP": 8
+              },
+              {
+                "key": 270405,
+                "date": "2027-04-05",
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270406,
+                "date": "2027-04-06",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270410,
@@ -6789,8 +7000,9 @@
               {
                 "key": 270119,
                 "date": "2027-01-19",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270122,
@@ -7048,12 +7260,6 @@
           "availability": {
             "outbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 10,
-                "AG": 10
-              },
-              {
                 "key": 261119,
                 "date": "2026-11-19",
                 "availableSeatsTotal": 13,
@@ -7063,9 +7269,10 @@
               {
                 "key": 261120,
                 "date": "2026-11-20",
-                "availableSeatsTotal": 14,
+                "availableSeatsTotal": 15,
                 "AG": 10,
-                "AP": 4
+                "AP": 4,
+                "AB": 1
               },
               {
                 "key": 261121,
@@ -7083,6 +7290,20 @@
                 "AB": 1
               },
               {
+                "key": 261123,
+                "date": "2026-11-23",
+                "availableSeatsTotal": 1,
+                "AB": 1
+              },
+              {
+                "key": 261124,
+                "date": "2026-11-24",
+                "availableSeatsTotal": 24,
+                "AG": 4,
+                "AP": 10,
+                "AB": 10
+              },
+              {
                 "key": 261202,
                 "date": "2026-12-02",
                 "availableSeatsTotal": 2,
@@ -7098,9 +7319,9 @@
               {
                 "key": 261204,
                 "date": "2026-12-04",
-                "availableSeatsTotal": 20,
+                "availableSeatsTotal": 21,
                 "AG": 10,
-                "AP": 9,
+                "AP": 10,
                 "AB": 1
               },
               {
@@ -7127,9 +7348,10 @@
               {
                 "key": 261208,
                 "date": "2026-12-08",
-                "availableSeatsTotal": 20,
+                "availableSeatsTotal": 21,
                 "AG": 10,
-                "AP": 10
+                "AP": 10,
+                "AB": 1
               },
               {
                 "key": 261209,
@@ -7178,17 +7400,35 @@
               {
                 "key": 261215,
                 "date": "2026-12-15",
-                "availableSeatsTotal": 21,
+                "availableSeatsTotal": 22,
                 "AG": 10,
                 "AP": 10,
-                "AB": 1
+                "AB": 2
+              },
+              {
+                "key": 261216,
+                "date": "2026-12-16",
+                "availableSeatsTotal": 2,
+                "AB": 2
+              },
+              {
+                "key": 261219,
+                "date": "2026-12-19",
+                "availableSeatsTotal": 3,
+                "AG": 3
+              },
+              {
+                "key": 261220,
+                "date": "2026-12-20",
+                "availableSeatsTotal": 3,
+                "AG": 3
               },
               {
                 "key": 261225,
                 "date": "2026-12-25",
-                "availableSeatsTotal": 10,
+                "availableSeatsTotal": 12,
                 "AG": 2,
-                "AP": 8
+                "AP": 10
               },
               {
                 "key": 270105,
@@ -7266,8 +7506,8 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 11,
-                "AG": 9,
+                "availableSeatsTotal": 12,
+                "AG": 10,
                 "AB": 2
               },
               {
@@ -7484,26 +7724,26 @@
               {
                 "key": 270217,
                 "date": "2027-02-17",
-                "availableSeatsTotal": 6,
-                "AG": 6
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270218,
                 "date": "2027-02-18",
-                "availableSeatsTotal": 6,
-                "AG": 6
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270219,
                 "date": "2027-02-19",
-                "availableSeatsTotal": 6,
-                "AG": 6
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270220,
                 "date": "2027-02-20",
-                "availableSeatsTotal": 2,
-                "AG": 2
+                "availableSeatsTotal": 8,
+                "AG": 8
               },
               {
                 "key": 270221,
@@ -7641,20 +7881,53 @@
               {
                 "key": 270312,
                 "date": "2027-03-12",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 18,
+                "AG": 10,
+                "AP": 8
+              },
+              {
+                "key": 270408,
+                "date": "2027-04-08",
+                "availableSeatsTotal": 1,
+                "AG": 1
+              },
+              {
+                "key": 270409,
+                "date": "2027-04-09",
+                "availableSeatsTotal": 6,
+                "AG": 1,
+                "AP": 5
               },
               {
                 "key": 270410,
                 "date": "2027-04-10",
-                "availableSeatsTotal": 1,
-                "AG": 1
+                "availableSeatsTotal": 7,
+                "AG": 1,
+                "AP": 6
               },
               {
                 "key": 270411,
                 "date": "2027-04-11",
-                "availableSeatsTotal": 1,
-                "AG": 1
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270412,
+                "date": "2027-04-12",
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270413,
+                "date": "2027-04-13",
+                "availableSeatsTotal": 2,
+                "AG": 2
+              },
+              {
+                "key": 270414,
+                "date": "2027-04-14",
+                "availableSeatsTotal": 2,
+                "AG": 2
               },
               {
                 "key": 270416,
@@ -7745,8 +8018,8 @@
               {
                 "key": 270430,
                 "date": "2027-04-30",
-                "availableSeatsTotal": 8,
-                "AG": 2,
+                "availableSeatsTotal": 10,
+                "AG": 4,
                 "AP": 6
               },
               {
@@ -8013,15 +8286,16 @@
               {
                 "key": 270911,
                 "date": "2027-09-11",
-                "availableSeatsTotal": 4,
+                "availableSeatsTotal": 8,
                 "AG": 2,
-                "AP": 2
+                "AP": 6
               },
               {
                 "key": 270912,
                 "date": "2027-09-12",
-                "availableSeatsTotal": 2,
-                "AG": 2
+                "availableSeatsTotal": 8,
+                "AG": 2,
+                "AP": 6
               },
               {
                 "key": 270913,
@@ -8068,21 +8342,28 @@
                 "AG": 4,
                 "AP": 6,
                 "AB": 2
+              },
+              {
+                "key": 270924,
+                "date": "2027-09-24",
+                "availableSeatsTotal": 8,
+                "AG": 2,
+                "AP": 6
+              },
+              {
+                "key": 270925,
+                "date": "2027-09-25",
+                "availableSeatsTotal": 6,
+                "AG": 2,
+                "AP": 4
               }
             ],
             "inbound": [
               {
-                "key": 261118,
-                "date": "2026-11-18",
-                "availableSeatsTotal": 6,
-                "AP": 5,
-                "AB": 1
-              },
-              {
                 "key": 261121,
                 "date": "2026-11-21",
-                "availableSeatsTotal": 9,
-                "AG": 8,
+                "availableSeatsTotal": 11,
+                "AG": 10,
                 "AB": 1
               },
               {
@@ -8131,8 +8412,9 @@
               {
                 "key": 270107,
                 "date": "2027-01-07",
-                "availableSeatsTotal": 10,
-                "AG": 10
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270110,
@@ -8170,8 +8452,9 @@
               {
                 "key": 270116,
                 "date": "2027-01-16",
-                "availableSeatsTotal": 9,
-                "AG": 9
+                "availableSeatsTotal": 12,
+                "AG": 10,
+                "AP": 2
               },
               {
                 "key": 270117,
@@ -8605,8 +8888,9 @@
               {
                 "key": 270911,
                 "date": "2027-09-11",
-                "availableSeatsTotal": 4,
-                "AG": 4
+                "availableSeatsTotal": 9,
+                "AG": 4,
+                "AP": 5
               },
               {
                 "key": 270912,
@@ -8729,7 +9013,8 @@
               {
                 "key": 271004,
                 "date": "2027-10-04",
-                "availableSeatsTotal": 6,
+                "availableSeatsTotal": 8,
+                "AG": 2,
                 "AP": 6
               },
               {
@@ -8748,7 +9033,8 @@
               {
                 "key": 271011,
                 "date": "2027-10-11",
-                "availableSeatsTotal": 6,
+                "availableSeatsTotal": 8,
+                "AG": 2,
                 "AP": 6
               }
             ]
